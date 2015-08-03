@@ -1,0 +1,36 @@
+<div ng-show="produtos.length > 0">
+	<h3>Produtos Cadastrados</h3>
+	<table class="table">
+		<tr>
+			<th></th>
+			<th>Nome</th>
+			<th>Valor</th>
+			<th>Unidade de Medida</th>
+		</tr>
+		<tr ng-repeat="produto in produtos">
+			<td><input type="checkbox" ng-model="produto.selecionado" /></td>
+			<td>{{produto.nome}}</td>
+			<td>{{produto.valorPadrao}}</td>
+			<td>{{produto.unidadeMedida}}</td>
+		</tr>
+	</table>
+</div>
+<span ng-show="produtos.length <= 0"><strong>Nenhum Produto cadastrado</strong></span>
+
+<!-- {{produtos}} -->
+
+
+
+<!--     {
+      "codigo": "sf87",
+      "nome": "Vinho Tinto",
+      "descricao": "Vinho tinto de primeira qualidade",
+      "unidadeMedida": "lt",
+      "valorPadrao": "156,44",
+      "criadoEm": "2015-08-01T00:37:10.512Z",
+      "categoria": "55bc0b8817147df51bb82b52",
+      "ativo": true,
+      "valorEspecial": [
+        {"segunda-feira":"66,12"}, {"terça-feira":"125,52"}
+      ]
+    } -->

@@ -1,0 +1,18 @@
+<div ng-show="produtos.length > 0">
+	<h3>Produtos Cadastrados</h3>
+	<table class="table">
+		<tr>
+			<th></th>
+			<th>Nome</th>
+			<th>Valor</th>
+			<th>Unidade de Medida</th>
+		</tr>
+		<tr ng-repeat="produto in produtos">
+			<td><input type="checkbox" ng-model="produto.selecionado" /></td>
+			<td>{{produto.nome}}</td>
+			<td>{{produto.valorHoje}}</td>
+			<td>{{produto.unidadeMedida}}</td>
+		</tr>
+	</table>
+</div>
+<span ng-show="produtos.length <= 0"><strong>Nenhum Produto cadastrado</strong></span>

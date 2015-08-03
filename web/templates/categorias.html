@@ -1,0 +1,16 @@
+<h3>Categorias Cadastradas</h3>
+<table class="table" ng-show="categorias.length > 0">
+	<tr>
+		<th></th>
+		<th>Categoria</th>
+		<th>Código</th>
+		<th>Ativa</th>
+	</tr>
+	<tr ng-repeat="categoria in categorias">
+		<td><input type="checkbox" ng-model="categoria.selecionado"/></td>
+		<td>{{categoria.categoria}}</td>
+		<td>{{categoria.codigo}}</td>
+		<td>{{categoria.ativa}}</td>
+	</tr>
+</table>
+<!-- {{categorias}} -->

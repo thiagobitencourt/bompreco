@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tela de exibição - Bom Preço ltda</title>
+
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular/angular-locale_pt-br.js"></script>
+	<script src="lib/angular/angular-messages.js"></script>
+	<script src="lib/angular/angular-cookies.js"></script>
+	<script src="lib/angular/angular-route.js"></script>
+
+	<script src="js/bompreco.js"></script>
+	<script src="js/controller/mainCtrl.js"></script>
+	<script src="js/controller/categoriasCtrl.js"></script>
+	<script src="js/controller/produtosCtrl.js"></script>
+	<script src="js/controller/tvCtrl.js"></script>
+</head>
+
+<body ng-app="bompreco">
+	<nav class="navbar navbar-default" ng-controller="mainCtrl">
+		<button class="btn btn-default navbar-btn" ng-click="goToCategorias()">Categorias</button>
+		<button class="btn btn-default navbar-btn" ng-click="goToProdutos()">Produtos</button>
+		<button class="btn btn-default navbar-btn" ng-click="goToTv()">TV</button> 
+	</nav>
+	<div ng-view></div>
+
+</body>
+</html>

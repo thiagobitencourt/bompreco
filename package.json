@@ -1,0 +1,21 @@
+{
+  "name": "bompreco",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://thiagobitencourt@bitbucket.org/thiagobitencourt/bompreco.tv.br.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "body-parser": "~1.13.3",
+    "express": "~4.13.2",
+    "mongoose": "~4.1.0",
+    "mongoose-relationship": "~0.1.4"
+  }
+}

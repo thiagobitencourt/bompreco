@@ -28,7 +28,7 @@ app.get('/categorias/all', function(req, res){
 	Categorias.find({}, function(err, categorias){
 		if(err) return res.status(500).send({error: 'error to save categoria'});
 
-		res.status(200).send({categorias: categorias});
+		res.status(200).send(categorias);
 	});
 });
 
@@ -41,7 +41,7 @@ app.get('/categorias/:id', function(req, res){
 	Categorias.findById(idCategoria, function(err, categoria){
 		if(err) return res.status(500).send({error: 'error to save categoria'});
 
-		res.status(200).send({categoria: categoria});
+		res.status(200).send(categoria);
 	});
 });
 
@@ -123,8 +123,34 @@ app.get('/produtos/all', function(req, res){
 	});
 });
 
+app.get('/produtos/these/:produtos', function(req, res){
+
+	var produtosArray = req.params.produtos;
+	console.log('Array de produtos: ' + produtosArray);
+
+	Produtos.find({'_id': { $in: produtosArray}}, function(err, produtos){
+
+			if(err) return res.status(500).send({error: err});
+			res.status(200).send(produtos);
+	});
+});
+
+app.get('/produtos/categoria/:categoria', function(req, res){
+
+	console.log("Buscando por categoria");
+	var idCategoria = req.params.categoria;
+	// res.status(200).json({messagen: "Produtos com a categoria: " + idCategoria});	
+
+	Produtos.find({categoria: idCategoria}, function(err, produtos){
+		if(err) return res.status(500).send({error: err});
+
+		res.status(200).send(produtos);
+	});
+});
+
 app.get('/produtos/:id', function(req, res){
 
+	console.log("Buscando por ID");
 	var idProduto = req.params.id;
 
 	Produtos.findById(idProduto, function(err, produto){
@@ -142,13 +168,13 @@ app.post('/produtos', function(req, res){
 	var newProduto = Produtos({
 		  codigo: req.body.codigo,
 		  nome: req.body.nome,
-		  descricao: req.body.descricao,
-		  unidadeMedida: req.body.unidadeMedida,
+		  descricao: req.body.descricao || '',
+		  unidadeMedida: req.body.unidadeMedida || 'kg',
 		  valorPadrao: req.body.valorPadrao,
-		  valorEspecial: req.body.valorEspecial,
+		  valorEspecial: req.body.valorEspecial || '',
 		  categoria: req.body.categoria,
 		  criadoEm: new Date(),
-		  ativo: true
+		  ativo: req.body.ativo || true
 	});
 
 	newProduto.save(function(err){

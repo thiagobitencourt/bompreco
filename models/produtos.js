@@ -12,11 +12,12 @@ var produtoSchema = new Schema({
   valorPadrao: {type: String, required: true},
   valorEspecial: { type : Array , "default" : [] },
   criadoEm: Date,
-  categoria: { type:Schema.ObjectId, required: true, ref:"Categoria", childPath:"produto" },
+  // categoria: { type:Schema.ObjectId, required: true, ref:"Categoria", childPath:"produto" },
+  categoria: { type:Schema.ObjectId, required: true, ref:"Categoria"},
   ativo: Boolean
 });
 
-produtoSchema.plugin(relationship, { relationshipPathName:'categoria' });
+// produtoSchema.plugin(relationship, { relationshipPathName:'categoria' });
 var Produto = mongoose.model('Produto', produtoSchema);
 
 // make this available to our users in our Node applications

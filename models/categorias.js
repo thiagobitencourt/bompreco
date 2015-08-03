@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var categoriaSchema = new Schema({
   codigo: { type: String, required: true, unique: true },
   categoria: { type: String, required: true, unique: true },
-  produto: [{type: Schema.ObjectId, ref: 'Produto'}],
+  // produto: [{type: Schema.ObjectId, ref: 'Produto'}],
   ativa: Boolean
 });
 

@@ -1,16 +1,67 @@
 <h3>Categorias Cadastradas</h3>
+<input type="checkbox" ng-model="todas" ng-click="showTodas(todas)" /> Mostrar categorias removidas
 <table class="table" ng-show="categorias.length > 0">
 	<tr>
 		<th></th>
 		<th>Categoria</th>
 		<th>Código</th>
 		<th>Ativa</th>
+		<th>Qdt Produtos</th>
 	</tr>
 	<tr ng-repeat="categoria in categorias">
-		<td><input type="checkbox" ng-model="categoria.selecionado"/></td>
+		<td><input type="button" ng-disabled="showDetalhes || !categoria.ativa" ng-click="detalhar(categoria)"/></td>
 		<td>{{categoria.categoria}}</td>
 		<td>{{categoria.codigo}}</td>
-		<td>{{categoria.ativa}}</td>
+		<td><input type="checkbox" ng-disabled="true" ng-checked="categoria.ativa"/>{{categoria.ativa}}</td>
+		<td></td>
 	</tr>
 </table>
+
+<button ng-click="produtosForm(produto.categoria)" ng-if="showDetalhes || needProduto">Novo Produto</button>
+<div ng-if="showDetalhes">
+	<button ng-click="fecharDetalhes()">Fechar</button><br>
+	<table class="table">
+		<tr>
+			<th></th>
+			<th>Nome</th>
+			<th>Valor</th>
+			<th>Unidade de Medida</th>
+		</tr>
+		<tr ng-repeat="produto in produtos">
+			<td></td>
+			<td>{{produto.nome}}</td>
+			<td>{{produto.valorPadrao}}</td>
+			<td>{{produto.unidadeMedida}}</td>
+		</tr>
+	</table>
+</div>
+{{error}}
+{{produtoView}}
+
+<div ng-if="showProdutosForm">
+<br><hr>
+	<form name="produtoForm">
+		<input type="text" ng-model="novoProduto.codigo" name="codigo" placeholder="Codigo" ng-required="true"/>
+		<input type="text" ng-model="novoProduto.nome" name="nome" placeholder="Nome" ng-required="true"/>
+		<input type="text" ng-model="novoProduto.descricao" name="descricao" placeholder="Descrição"/>
+		<input type="text" ng-model="novoProduto.valorPadrao" name="valorPadrao" placeholder="Valor padrão"/>
+		<input type="checkbox" ng-model="novoProduto.ativo" name="ativo" placeholder="Ativo"/>
+		<input type="text" ng-model="novoProduto.valorEspecial" name="valorEspecial" placeholder="Valor Especial - Branco, por enquanto" ng-disabled="true"></input>
+		<!-- <input type="text" ng-model="novoProduto.categoria" name="categoria" placeholder=""/> -->
+	</form>
+	<button ng-click="cadastrarProduto(novoProduto)">Cadastrar Produto</button>
+	<button ng-click="cancelarCadastroProduto()">Cancelar</button>
+</div>
+
+<br><hr>
+<div>
+	<form name="categoriaForm">
+		<input type="text" ng-model="novaCategoria.codigo" name="codigo" placeholder="Codigo" ng-required="true" ng-minlength="4"/>
+		<input type="text" ng-model="novaCategoria.categoria" name="categoria" placeholder="Categoria" ng-required="true"/>
+		<input type="checkbox" ng-model="novaCategoria.ativa" name="ativa" placeholder="Ativa"/>
+	</form>
+	<button ng-click="cadastrarCategoria(novaCategoria)">Cadastrar Categoria</button>
+	<button>Cancelar</button>
+</div>
+<!-- {{novaCategoria}} -->
 <!-- {{categorias}} -->

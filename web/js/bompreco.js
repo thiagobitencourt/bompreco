@@ -11,7 +11,7 @@ angular.module("bompreco").config(function($routeProvider, $locationProvider) {
 			}
 		}
 	});
-	$routeProvider.when("/categorias", {
+	$routeProvider.when("/produtos", {
 		templateUrl: "templates/categorias.html",
 		controller: "categoriasCtrl",
 		resolve: {
@@ -20,14 +20,12 @@ angular.module("bompreco").config(function($routeProvider, $locationProvider) {
 			}
 		}
 	});
-	$routeProvider.when("/produtos", {
-		templateUrl: "templates/produtos.html",
-		controller: "produtosCtrl",
-		resolve: {
-			produtos: function($http){
-				return $http.get("http://localhost:8000/produtos");
-			}
-		}
+	$routeProvider.when("/testes", {
+		templateUrl: "templates/testes.html"
 	});
+	$routeProvider.when("/login", {
+		template: "<h1>LoginPage</h1>"
+	});
+
 	$routeProvider.otherwise({redirectTo: "/"});
 });

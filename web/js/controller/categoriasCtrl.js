@@ -37,6 +37,14 @@ angular.module("bompreco").controller('categoriasCtrl', function ($scope, $locat
 		}
 	}
 
+	$scope.ativarCategoria = function(categoria){
+		categoria.ativa = true;
+	}
+
+	$scope.excluirCategoria = function(categoria){
+		categoria.ativa = false;
+	}
+
 	$scope.produtosForm = function(prCategoria){
 		console.log(prCategoria);
 		$scope.showProdutosForm = true;

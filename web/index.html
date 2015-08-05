@@ -55,6 +55,7 @@
 	<script src="js/controller/categoriasCtrl.js"></script>
 	<script src="js/controller/produtosCtrl.js"></script>
 	<script src="js/controller/tvCtrl.js"></script>
+  <script src="js/controller/sessaoTabsController.js"></script>
 
 	<script src="js/directives/uiAccordionDirective.js"></script>
 </head>
@@ -77,11 +78,19 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
       <ul class="nav navbar-nav">
-        <li><a href="" ng-click="goToProdutos()">Produtos</a></li>
+        <li><a href="#/sessoes">Sessões</a></li>
       </ul>
 
       <ul class="nav navbar-nav">
-        <li><a href="" ng-click="goToTv()"><b>TV</b></a></li>
+        <li><a href="#/categorias">Categorias</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav">
+        <li><a href="#/produtos">Produtos</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav">
+        <li><a href="#/tv"><b>TV</b></a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

@@ -1,0 +1,58 @@
+<h3 align="center">Sessões de produtos</h3>
+<div class="row container-fluid" ng-controller="sessaoTabsController">
+<div class="col-md-12">
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+    	<li ng-repeat="sessao in sessoes | limitTo: limit" class="{active: sessao.ativa}" ><a href="" ng-click="open(sessao)" data-toggle="tab">{{sessao.nome}}</a></li>
+
+      <a href="" ng-click="open()" class="pull-right btn btn-sm btn-success" style="margin-top: 7px;"><span class="glyphicon glyphicon-plus"></span> Nova Sessão</a>
+      
+      <li  class="pull-right"><a ng-click="netxTab()" ng-show="hasMoreTabs"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+
+      <li  class="pull-right" ><a ng-click="prevTab()" ng-show="hasPreviousSession"><i class="glyphicon glyphicon-chevron-left"></i></a></li>
+
+
+<!-- hasMoreTabs -->
+    	<!-- fa-chevron-right -->
+<!-- 
+      <li class="active"><a href="" ng-click="open(1)" data-toggle="tab">Tab 1</a></li>
+      <li><a href="" ng-click="open(2)" data-toggle="tab">Tab 2</a></li>
+      <li><a href="" ng-click="open(3)" data-toggle="tab">Tab 3</a></li> -->
+<!--                   <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="">
+          Dropdown <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="">Action</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="">Another action</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="">Something else here</a></li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="">Separated link</a></li>
+        </ul>
+      </li> -->
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+      	<div ng-if="!showCadastrarSessaoForm">
+        	<p>{{openSessao.descricao}}</p>
+      	</div>
+      	<br>
+        <div ng-if="showCadastrarSessaoForm" class="container-fluid">
+	        <form class="form-horizontal">
+    		    <div class="form-group">
+                  <label for="inputEmail3" class="control-label">Nome</label>
+                    <input type="text" class="form-control" placeholder="Nome" ng-model="novaSessao.nome">
+                </div>
+    			<div class="form-group">
+                  <label>Descrição</label>
+                  <textarea class="form-control" rows="3" placeholder="Descrição para a Sessão" ng-model="novaSessao.descricao" />
+                </div>
+	        </form>
+            <a href="" class="btn btn-sm btn-info btn-flat pull-left" ng-click="salvarSessao(novaSessao)">Salvar Sessao</a>
+			{{novaSessao}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

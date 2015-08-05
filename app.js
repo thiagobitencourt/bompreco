@@ -13,6 +13,31 @@ app.get('/', function(req, res, next){
 
 var Categorias = require('./models/categorias');
 var Produtos = require('./models/produtos');
+var Sessao = require('./models/sessao');
+
+app.get('/sessao', function(req, res){
+
+	// Sessao.find({}).populate('categorias').exec(function(err, sessoes){
+		Sessao.find({}).exec(function(err, sessoes){
+		if(err) return res.status(500).send(err);
+
+		res.status(200).send(sessoes);
+	});
+});
+
+app.post('/sessao', function(req, res){
+
+	var newSes = Sessao({
+		nome: req.body.nome,
+		descricao: req.body.descricao,
+	});
+
+	newSes.save(function(err){
+		if(err) return res.status(500).send(err);
+
+		res.status(200).send(newSes);
+	});
+});
 
 app.get('/categorias', function(req, res){
 
@@ -59,7 +84,8 @@ app.post('/categorias', function(req, res){
 	var newCat = Categorias({
 		codigo: codigo,
 		categoria: categoria,
-		ativa: ativa
+		ativa: ativa,
+		sessao: req.body.sessao
 	});
 
 	// res.status(200).send({message: 'Nova categoria salva', data: newCat});

@@ -25,18 +25,76 @@ app.get('/sessao', function(req, res){
 	});
 });
 
+app.delete('/sessao/erase/:sure', function(req, res){
+
+	var isSure = req.params.sure;
+	console.log("APENAS TESTES >> Não estará em produção!");
+
+	if(isSure == 'true'){
+		Sessao.remove({}, function(err){
+
+			if(err) return res.status(500).send({error: 'Erro ao remover sessoes', message: err.message});
+
+			return res.status(200).send({message: "Todos as sessoes foram deletadas!"});
+		});
+	}else{
+		res.status(400).send({message: "You almost made a mess"});
+	}
+});
+
 app.post('/sessao', function(req, res){
 
-	var newSes = Sessao({
-		nome: req.body.nome,
-		descricao: req.body.descricao,
-	});
+	console.log(JSON.stringify(req.body.padrao));
 
-	newSes.save(function(err){
-		if(err) return res.status(500).send(err);
+	if(!req.body.padrao == true){
+		console.log("here");
+		var newSes = Sessao({
+			nome: req.body.nome,
+			categorias: req.body.categorias,
+			produtos: req.body.produtos
+		});
 
-		res.status(200).send(newSes);
-	});
+		newSes.save(function(err){
+			if(err) return res.status(500).send(err);
+
+			return res.status(200).send(newSes);
+		});
+	}else{
+		var newSes = Sessao({
+			nome: req.body.nome,
+			categorias: req.body.categorias,
+			produtos: req.body.produtos,
+			padrao: req.body.padrao
+		});
+	
+		Sessao.findOne({padrao : true}, function(err, sessao){
+			if(err) return console.log(err.toString());
+
+			if(sessao != null){
+				console.log("Sessao encontrada " + sessao);			
+				sessao.padrao = null;
+				sessao.save(function(err){
+					if(err) return console.log(err.toString());
+
+					console.log("Alterado: " + sessao);
+
+					newSes.save(function(err){
+					if(err) return res.status(500).send(err);
+
+					res.status(200).send(newSes);
+				});
+				});
+			}else{
+				newSes.save(function(err){
+					if(err) return res.status(500).send(err);
+
+					res.status(200).send(newSes);
+				});
+			}
+		});
+
+	}
+	
 });
 
 app.get('/categorias', function(req, res){

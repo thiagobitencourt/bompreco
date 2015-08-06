@@ -2294,6 +2294,7 @@ a:focus {
  * Component: alert
  * ----------------
  */
+ 
 .alert {
   border-radius: 3px;
 }

@@ -5,8 +5,9 @@ var Schema = mongoose.Schema;
 
 var sessaoSchema = new Schema({
   nome: { type: String, required: true, unique: true },
-  descricao: String,
-  categorias: [{ type:Schema.ObjectId, ref:"Categoria"}]
+  categorias: [{ type:Schema.ObjectId, ref:"Categoria"}],
+  produtos: [{type:Schema.ObjectId, ref: "Produto"}],
+  padrao: {type: Boolean}
 });
 
 var Sessao = mongoose.model('Sessao', sessaoSchema);

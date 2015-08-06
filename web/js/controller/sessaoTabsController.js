@@ -1,14 +1,8 @@
 angular.module("bompreco").controller('sessaoTabsController', function ($scope, $location, $http) {
-	/*
-	$scope.sessoes = [{nome: "Sessao1", descricao: "Conteudo da sessao 1"}, {nome: "Sessao2", descricao: "Conteudo da sessao 2"}, {nome: "Sessao3", descricao: "Conteudo da sessao 3"},
-	{nome: "Sessao4", descricao: "Conteudo da sessao 1"}, {nome: "Sessao5", descricao: "Conteudo da sessao 2"}, {nome: "Sessao6", descricao: "Conteudo da sessao 3"}, {nome: "Sessao7", descricao: "Conteudo da sessao 1"}, {nome: "Sessao8", descricao: "Conteudo da sessao 1"},
-	{nome: "Sessao1", descricao: "Conteudo da sessao 1"}, {nome: "Sessao2", descricao: "Conteudo da sessao 2"}, {nome: "Sessao3", descricao: "Conteudo da sessao 3"},
-	{nome: "Sessao4", descricao: "Conteudo da sessao 1"}, {nome: "Sessao5", descricao: "Conteudo da sessao 2"}, {nome: "Sessao6", descricao: "Conteudo da sessao 3"}, {nome: "Sessao7", descricao: "Conteudo da sessao 1"}, {nome: "Sessao8", descricao: "Conteudo da sessao 1"}];
-	*/
 
 	var othersSes = [];
 	var lastTab;
-	var maxTabs = 8;
+	var maxTabs = 6;
 	var currTabIndex = maxTabs;
 
 	var openSes = function(sessoes){
@@ -30,6 +24,9 @@ angular.module("bompreco").controller('sessaoTabsController', function ($scope, 
 			console.log(JSON.stringify(othersSes));
 			console.log(JSON.stringify(sessoes));
 
+		}else if(sessoes.length == 0){
+			$scope.showCadastrarSessaoForm = true;
+			return;
 		}
 		
 		$scope.sessoes = sessoes;
@@ -44,9 +41,15 @@ angular.module("bompreco").controller('sessaoTabsController', function ($scope, 
 
 		if(!hasAtiva){
 			console.log("Não ha uma ativa");
-			sessoes[1].ativa = true
-			$scope.openSessao = sessoes[1];
+			sessoes[0].ativa = true
+			$scope.openSessao = sessoes[0];
 		}
+	}
+
+	$scope.closeAll = function(){
+		$scope.sessoes.forEach(function(ses){
+			ses.ativa = false;
+		});
 	}
 
 	$scope.netxTab = function(){
@@ -63,7 +66,6 @@ angular.module("bompreco").controller('sessaoTabsController', function ($scope, 
 			$scope.hasMoreTabs = false;
 			return;
 		}
-
 		// console.log(JSON.stringify(othersSes));
 		// console.log(JSON.stringify($scope.sessoes));
 	}
@@ -86,9 +88,7 @@ angular.module("bompreco").controller('sessaoTabsController', function ($scope, 
 
 	$scope.open = function(sessao){
 
-		$scope.sessoes.forEach(function(ses){
-			ses.ativa = false;
-		});
+		$scope.closeAll();
 
 		if(!sessao){
 			$scope.showCadastrarSessaoForm = true;
@@ -103,31 +103,56 @@ angular.module("bompreco").controller('sessaoTabsController', function ($scope, 
 
 	$scope.salvarSessao = function(novaSessao){
 		$scope.showCadastrarSessaoForm = false;
-		console.log("Cadastrar sessão " + novaSessao);
-		novaSessao.ativa = true;
+		if(!novaSessao){return;}
+
+		novaSessao.padrao = false;
+		console.log("Cadastrar sessão " + JSON.stringify(novaSessao));
+		// novaSessao.ativa = true;
 		
 		$http.post('http://localhost:8000/sessao', novaSessao).success(function(data, status){
-
+			$scope.closeAll();
+			console.log("Voltou");
 			loadSessoes();
+			openSes($scope.sessoes);
+		}).error(function(data, status){
+			console.log(data);
+		});	
+	};
 
+	$scope.openProdutos = function(categoria){
+		$scope.anySelected = true;
+		categoria.prShowing = true;
+		console.log(categoria);
+
+		$http.get('http://localhost:8000/produtos/categoria/' + categoria._id).success(function(data, status){
+			$scope.produtos = data;
 		}).error(function(data, status){
 			console.log(data);
 		});
-		// console.log("Neste momento será feito um GET das novas sessões e ai irá funcionar");
-		// $scope.sessoes.push(novaSessao);
-		
-		openSes($scope.sessoes);
-	};
+	}
+
+	$scope.closeProdutos = function(categoria){
+		delete $scope.produtos;
+		$scope.anySelected = false;
+		categoria.prShowing = false;
+	}
 
 	var loadSessoes = function(){
 		console.log("Carregando sessões!");
 		$http.get('http://localhost:8000/sessao').success(function(data, status){
 			openSes(data);
+
+			$http.get('http://localhost:8000/categorias').success(function(data, status){
+				$scope.categorias = data;
+				$scope.categorias[0].tempo = 10;
+			}).error(function(data, status){
+				console.log(data);
+			});
+
 		}).error(function(data, status){
 			console.log(data);
 		});
 	}
 
 	loadSessoes();
-
 });

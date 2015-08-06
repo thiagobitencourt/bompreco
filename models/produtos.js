@@ -8,16 +8,18 @@ var produtoSchema = new Schema({
   codigo: { type: String, required: true, unique: true },
   nome: { type: String, required: true, unique: true },
   descricao: String,
+  imagem: String,
   unidadeMedida: {type: String, required: true},
   valorPadrao: {type: String, required: true},
   valorEspecial: { type : Array , "default" : [] },
   criadoEm: Date,
   // categoria: { type:Schema.ObjectId, required: true, ref:"Categoria", childPath:"produto" },
   categoria: { type:Schema.ObjectId, required: true, ref:"Categoria"},
+  // sessao: { type:Schema.ObjectId, required: true, ref:"Sessao", childPath:"produtos" },
   ativo: Boolean
 });
 
-// produtoSchema.plugin(relationship, { relationshipPathName:'categoria' });
+// categoriaSchema.plugin(relationship, { relationshipPathName:'sessao' });
 var Produto = mongoose.model('Produto', produtoSchema);
 
 // make this available to our users in our Node applications

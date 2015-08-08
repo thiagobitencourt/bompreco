@@ -16,7 +16,7 @@
 
         <div class="row" ng-if="!showCadastrarSessaoForm">
           <div class="col-md-6">
-            <h3 class="box-title">Categorias</h3>
+            <h3 class="box-title">Tabelas</h3>
             <table class="table table-bordered">
                 <tr>
                   <th style="width: 10px">Usar</th>
@@ -27,17 +27,6 @@
                 <tr ng-repeat="categoria in categorias">
                   <td><input type="checkbox" ng-model="categoria.selecionado"/></td>
                   <td>{{categoria.categoria}}</td>
-
-<!--                   <td>
-
-                  <div class="row margin">
-                    <div class="col-sm-12">
-                      <input id="range_4" type="text" name="range_4" value="10000;100000" />
-                    </div>
-                  </div>
-
-                  </td> -->
-
                   <td><input style="width: 50px; display: inline;" type="range" min="10" max="60" step="10" ng-model="categoria.tempo" value="categoria.tempo"/> <span style="margin: auto;">{{categoria.tempo || 30}}s</span> </td>
                   <td>
                       <span ng-click="openProdutos(categoria)" ng-if="!categoria.prShowing" class="label label-info" >Mostrar</span>
@@ -45,38 +34,36 @@
                   </td>
                 </tr>
             </table>
-
             <!-- {{categorias}} -->
           </div>
 
           <div ng-show="anySelected" class="col-md-6">
-            <h3 class="box-title">Produtos</h3>
+            <h3 class="box-title">Baners</h3>
             <table class="table table-bordered">
                 <tr>
-                  <th style="width: 10px">Usar</th>
-                  <th style="width: 65px">Imagem</th>
+                  <th style="width: 10px;">Usar</th>
+                  <th style="width: 50px">Imagem</th>
                   <th>Produto</th>
+                  <th style="width: 5px">Ver</th>
                 </tr>
                 <tr ng-repeat="produto in produtos">
                   <td><input type="checkbox" ng-model="produto.selecionado"/></td>
                   <td>
-
                     <div class="media">
                       <div class="media-left">
-                          <img class="media-object" src="images/carnes.jpg" height="42" width="60" alt="Imagem do produto">
+                          <img class="media-object" src="images/carnes.jpg" height="32" width="50" alt="Imagem do produto">
                       </div>
                     </div>
-
-                    <!-- <img src="images/carnes.jpg" height="42" width="60"></td> -->
                   <td>
-                       <!-- {{produto.nome}} -->
+                       {{produto.nome}}
+                  </td>
+                  <td>
+                    <a href=""><i class="fa fa-search" data-toggle="tooltip" title="Visualizar Baner"></i></a>
                   </td>
                 </tr>
             </table>
-
           </div>
         </div>
-
 
         <!-- CADASTRO DE UMA NOVA SESSÃO -->
       	<br>

@@ -207,18 +207,6 @@ app.get('/produtos/all', function(req, res){
 	});
 });
 
-app.get('/produtos/these/:produtos', function(req, res){
-
-	var produtosArray = req.params.produtos;
-	console.log('Array de produtos: ' + produtosArray);
-
-	Produtos.find({'_id': { $in: produtosArray}}, function(err, produtos){
-
-			if(err) return res.status(500).send({error: err});
-			res.status(200).send(produtos);
-	});
-});
-
 app.get('/produtos/categoria/:categoria', function(req, res){
 
 	console.log("Buscando por categoria");

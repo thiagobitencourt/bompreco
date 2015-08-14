@@ -26,26 +26,23 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 		$scope.novaCategoria = categoria;
 		$scope.showCategoriaForm = true;
 		updating = true;
-		console.log(categoria);
 	};
 
 	$scope.excluir = function(categoria){
 		categoriasService.deleteCategoria(categoria._id).success(function(data){
 			loadCategorias();
 		});
-		console.log(categoria);
-		// loadCategorias();
 	};
 
 	$scope.criarNovaCategoria = function(novaCategoria){
 		if(!novaCategoria){
 			delete $scope.novaCategoria;
-			console.log("So volta...");
 			$scope.showCategoriaForm = false;
 			return;
 		}
 
 		var success = function(data){
+			//Ao cadastrar uma categoria, recarrega as categorias e fecha o formulário
 			$scope.showCategoriaForm = false;
 			loadCategorias();
 		}
@@ -61,6 +58,6 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 		}
 	}
 
+	//Carrega informação de quantos produtos tem nesta sessão.
 	loadProdutosLength(categorias);
-	console.log(categorias);
 });

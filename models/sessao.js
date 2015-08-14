@@ -5,12 +5,17 @@ var Schema = mongoose.Schema;
 
 var sessaoSchema = new Schema({
   nome: { type: String, required: true, unique: true },
-  categorias: [{
-    categoria_id : { type:Schema.ObjectId, ref:"Categoria"},
-    tempo : String
-  }],
-  produtos: [{type:Schema.ObjectId, ref: "Produto"}],
-  padrao: {type: Boolean}
+  categorias: 
+  	[{
+    	_id : { type:Schema.ObjectId, ref:"Categoria"},
+    	tempo : String
+  	}],
+  produtos: 
+  	[{
+		categoria: {type:Schema.ObjectId, ref: "Categoria"},
+		produto: {type:Schema.ObjectId, ref: "Produto"}
+	}],
+  padrao: Boolean
 });
 
 var Sessao = mongoose.model('Sessao', sessaoSchema);

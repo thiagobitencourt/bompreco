@@ -1,7 +1,7 @@
 var app = angular.module("bomprecotv");
 
 app.factory("sessaoService", function($http, config){
-	var _sessao = '/sessao';
+	var _sessao = '/sessoes';
 
 	var _getSessoes = function(){
 		return $http.get(config.baseWebUrl + _sessao);

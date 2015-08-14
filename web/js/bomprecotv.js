@@ -42,10 +42,13 @@ $routeProvider
   .when('/404', {
     // controller:'NewProjectController as editProject',
     templateUrl:'view/404.html'
+  }).
+  when('/', {
+    redirectTo:'/sessoes'
   })
   .otherwise({
     redirectTo:'/404'
   });
 }).value("config", {
-	baseWebUrl: "http://localhost:8000"
+	baseWebUrl: "http://localhost:8000/api"
 });

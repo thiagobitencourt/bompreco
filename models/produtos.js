@@ -13,10 +13,7 @@ var produtoSchema = new Schema({
   valorPadrao: {type: String, required: true},
   valorEspecial: { type : Array , "default" : [] },
   criadoEm: Date,
-  // categoria: { type:Schema.ObjectId, required: true, ref:"Categoria", childPath:"produto" },
-  categoria: { type:Schema.ObjectId, required: true, ref:"Categoria"},
-  // sessao: { type:Schema.ObjectId, required: true, ref:"Sessao", childPath:"produtos" },
-  ativo: Boolean
+  categoria: { type:Schema.ObjectId, required: true, ref:"Categoria"}
 });
 
 // categoriaSchema.plugin(relationship, { relationshipPathName:'sessao' });

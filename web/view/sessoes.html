@@ -11,7 +11,11 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li ng-repeat="sessao in sessoes" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">{{sessao.nome}}</a></li>
-        <li class="pull-right" data-toggle="tooltip" title="Nova Sessão"><a ng-click="openNovaSessaoForm()" href=""><i class="fa fa-plus"></i></a></li>  
+        <li class="pull-right" data-toggle="tooltip" title="Nova Sessão">
+          <button class="btn btn-primary" ng-click="openNovaSessaoForm()">
+            <i class="fa fa-plus"></i> Nova Sessão
+          </button>
+        </li> 
       </ul>
       <div class="tab-content">
         <div class="tab-pane active">
@@ -89,7 +93,7 @@
                         </div>
                       </div>
                     <td>
-
+                      {{produto.nome}}
                     </td>
                     <td>
                       <a href=""><i class="fa fa-search" data-toggle="tooltip" title="Visualizar Baner"></i></a>

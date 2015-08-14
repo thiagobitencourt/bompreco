@@ -12,9 +12,9 @@ var sessaoSchema = new Schema({
   	}],
   produtos: 
   	[{
-		categoria: {type:Schema.ObjectId, ref: "Categoria"},
-		produto: {type:Schema.ObjectId, ref: "Produto"}
-	}],
+      categoria: {type:Schema.ObjectId, ref: "Categoria"},
+		  produto: {type:Schema.ObjectId, ref: "Produto"}
+    }],
   padrao: Boolean
 });
 

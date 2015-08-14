@@ -442,6 +442,8 @@ var setRouteSessoes = function(){
 			return res.status(400).send({message: "Um objeto sessão é requerido"});
 		}
 
+		console.warn(JSON.stringify(sessao));
+
 		//Valida os campos da sessão
 		try{
 			var newSessao = new Sessao({
@@ -467,8 +469,8 @@ var setRouteSessoes = function(){
 
 		newSessao.save(function(err){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Error: " + err);
+				return res.status(500).send(err);
 			}
 
 			console.info("Nova sessão cadastrada: " + newSessao._id);

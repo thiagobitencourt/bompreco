@@ -3,18 +3,115 @@
 <head>
 	<meta charset="UTF-8">
     <title>BomPreçoTv | Show TV</title>
+
+    <link href="lib/style.css" rel="stylesheet" type="text/css" media="all"> 
+
 </head>
+
+
 
 <body ng-controller="mainTv">
 
-<h3>Hi... From TV template</h3>
+<div id="container">
+ 		<header>
+            <h1 class="logo">
+                <a href="#">Mercado</a>
+            </h1>
+            <div class="clock">
+            	<img src="images/clock.svg" />
+            	<div id="new">
+            		<ds-widget-clock data-show-digital></ds-widget-clock>
+            	</div>
+           	</div>
+        </header>
+
+        <content>
+
+            <ng-view>
+
+        </content>
+</div>
+
+<div ng-repeat="produto in produtos">
+{{produto.nome}}
+</div>
+
 
 <!-- My Own Scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-resource.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
+<script src="lib/angular-clock.js"></script>
 
-<script src="js/bomprecotv.js"></script>
+<script>
+
+	angular.module("bomprecotvShow", ['ngRoute', 'ds.clock'])
+	.config(function($routeProvider) {
+		$routeProvider
+  		.when('/tabela', {
+		    controller: 'tabelaController',
+		    templateUrl:'tvView/tabela.html',
+		    resolve: {
+  				sessao: function($routeParams){
+  					console.log("1");
+  					console.log($routeParams.sessao);
+  					return $routeParams.sessao;
+  				}
+  			}
+  		})
+  		.when('/baners', {
+  			controller: 'banersController',
+  			templateUrl: 'tvView/baners.html'
+  		})
+  		.when('/:sessao', {
+  			redirectTo: '/tabela'
+  		})
+  		.when('/', {
+  			redirectTo: '/tabela'
+  		});
+  	})
+  	.value("config", {
+		baseWebUrl: "http://localhost:8000/tv"
+	})
+	.controller("mainTv", function($scope, $http){
+
+		// $scope.title = "Hi... From TV template";
+		
+	}).controller("tabelaController", function($scope, $http, $timeout, $location, sessao){
+		
+		var rota = 'http://localhost:8000/api/sessoes/' + sessao;
+
+		console.log("rota: " +  rota);
+		$http.get(rota).success(function(data){
+			$scope.produtos = data;
+			console.log($scope.produtos);
+		});
+
+
+		$scope.sessao = sessao;
+		console.log("2");
+		console.log($scope.sessao);
+
+
+
+		// $timeout(function(){
+
+		// 	$location.path('/baners');
+
+		// }, 5000);
+
+	}).controller("banersController", function($scope, $location, $timeout){
+
+		$timeout(function(){
+
+			$location.path('/tabela');
+
+		}, 5000);
+
+	});
+
+
+</script>
 
 </body>
 </html>

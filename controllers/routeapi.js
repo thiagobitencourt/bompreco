@@ -409,15 +409,39 @@ var setRouteSessoes = function(){
 	});
 
 	//Busca uma sessão, por ID
-	router.get(expressRouteId, function(req, res){
+	// router.get(expressRouteId, function(req, res){
 
-		var sessaoId = req.params.id;
-		if(!sessaoId){
-			console.warn("Id de sessão inválido: " + sessaoId);
-			return res.status(400).send({message: "Id de sessão inválido"});
+	// 	var sessaoId = req.params.id;
+	// 	if(!sessaoId){
+	// 		console.warn("Id de sessão inválido: " + sessaoId);
+	// 		return res.status(400).send({message: "Id de sessão inválido"});
+	// 	}
+
+	// 	Sessao.findOne({_id: sessaoId}, function(err, sessao){
+	// 		if(err){
+	// 			console.error("Error: " + err.message);
+	// 			return res.status(500).send(err.message);
+	// 		}
+
+	// 		//Se não encontrar nenhuma sessao, retorna 404
+	// 		if(!sessao){
+	// 			console.error("Nenhuma sessao encontrada");
+	// 			return res.status(404).send({message:"Nenhuma sessao encontrada"});
+	// 		}
+
+	// 		res.status(200).send(sessao);	
+	// 	});
+	// });
+
+	router.get(expressRouteSimple + '/:nome', function(req, res){
+
+		var sessaoNome = req.params.nome;
+		if(!sessaoNome){
+			console.warn("Nome de sessão inválido: " + sessaoNome);
+			return res.status(400).send({message: "Nome de sessão inválido"});
 		}
 
-		Sessao.findOne({_id: sessaoId}, function(err, sessao){
+		Sessao.findOne({nome: sessaoNome}, function(err, sessao){
 			if(err){
 				console.error("Error: " + err.message);
 				return res.status(500).send(err.message);

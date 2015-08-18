@@ -110,39 +110,39 @@
 					<div class="col-md-6">
 
 						<form role="form" name="novoProdutoForm">
-								<div class="form-group">
-									<label for="inputCodigo">Código</label>
-									<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo">
+							<div class="form-group">
+								<label for="inputCodigo">Código</label>
+								<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo">
 
-				                    <label for="inputNome">Nome</label>
-				                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome">
-								
-				                    <label for="inputDesc">Descrição</label>
-				                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
-				                    </textarea>
+			                    <label for="inputNome">Nome</label>
+			                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome">
+							
+			                    <label for="inputDesc">Descrição</label>
+			                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
+			                    </textarea>
 
-				                    <label for="inputUn">Unidade de Medida</label>
-				                    <input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida">
+			                    <label for="inputUn">Unidade de Medida</label>
+			                    <input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida">
 
-				                    <label for="inputValorP">Valor Padrão</label>
-				                    <input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao">
+			                    <label for="inputValorP">Valor Padrão</label>
+			                    <input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao">
 
-				                    <label for="inputCategoria">Categoria</label>
-				                    <select ng-model="paraCategoria" class="form-control" ng-options="categoria.categoria for categoria in categorias">
-				                    	<option></option>
-				                    </select>
+			                    <label for="inputCategoria">Categoria</label>
+			                    <select ng-model="paraCategoria" class="form-control" ng-options="categoria.categoria for categoria in categorias">
+			                    	<option></option>
+			                    </select>
 
-				                    <label for="inputValorE">Valor Especial</label>
-				                    <input type="text" class="form-control" id="inputValorE" ng-model="novoProduto.valorEspecial">
+			                    <label for="inputValorE">Valor Especial</label>
+			                    <input type="text" class="form-control" id="inputValorE" ng-model="novoProduto.valorEspecial">
 
-								</div>
+							</div>
 
-								<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novaCategoriaForm.$invalid">
-				                    <i class="fa fa-floppy-o"> Salvar</i>
-				                </a>
-				                <a href="" class="btn btn-danger" ng-click="criarNovoProduto()">
-				                    <i class="fa fa-times"> Cancelar</i>
-				                </a>
+							<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novaCategoriaForm.$invalid">
+			                    <i class="fa fa-floppy-o"> Salvar</i>
+			                </a>
+			                <a href="" class="btn btn-danger" ng-click="criarNovoProduto()">
+			                    <i class="fa fa-times"> Cancelar</i>
+			                </a>
 						</form>
 
 					</div>

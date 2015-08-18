@@ -1,0 +1,135 @@
+        <link rel="stylesheet" href="lib/angular-clock.css">
+    <link href='//fonts.googleapis.com/css?family=Syncopate:400,700' rel='stylesheet' type='text/css'>
+
+    <style>
+		body{
+		    height:100%;
+		    background: linear-gradient(0deg, #E39B00, #EB7E02 80%) no-repeat;
+		    font-size: 20px;
+		}
+		table, td, th {
+			/*border: none;*/
+			border: 1px solid #634503;
+		}
+
+		th {
+			background-color: #634503;
+			color: white;
+		}
+
+		td {
+			background-color: #634503;
+			color: white;
+			margin-top: 10px;
+		}
+
+		.dvh {
+			background: rgba(0, 0, 0, 0.72);
+			/*background-color: #634503;*/
+			color: white;
+			height: 50px;
+			margin-bottom: 10px;
+		}
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+    </style>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body ng-controller="mainTv">
+<header>
+	<br>
+	<div class="row container-fluid">
+
+		<div class="col-md-6">
+		<img src="images/logo.png">
+
+		</div>
+
+		<div class="col-md-4 pull-right" style="color: #0800F0;">
+			<br>
+			<strong>
+			<!-- <ds-widget-clock data-show-digital></ds-widget-clock> -->
+			<ds-widget-clock theme="dark" show-secs="true" data-show-digital digital-format="'hh:mm:ss a'"></ds-widget-clock>
+			</strong>
+		</div>
+	</div>
+</header>
+
+
+<div class="row container-fluid">
+
+	<div class="col-md-6" align="center">
+
+		<div align="center" class="dvh">
+			<h1><strong>Tabela 1</strong></h1>
+		</div>
+
+
+		<!-- 
+			display: inline-block;
+			font-size: 35px; 
+		 padding: 9px 1.5%; 
+		 list-style: none; -->
+
+		<ul style="list-style: none; display: inline-block;" ng-repeat="produto in produtos">
+			<li style="margin-bottom: 5px; display: list-item;">
+				<div align="center" style="width: 10%;">
+					<strong>{{produto.codigo}}</strong>
+				</div>
+				
+				<div>
+					<strong>{{produto.nome}}</strong>
+				</div>
+				
+				<div align="center" style="width: 100px">
+					<strong> R$ {{produto.valorPadrao}}</strong>
+				</div>
+
+				<div align="center" style="width: 40px">
+					<strong>{{produto.unidadeMedida}}</strong>
+				</div>
+			</li>
+		</ul>
+
+		<!-- <table class="table table-bordered">
+
+			<tr ng-repeat="produto in produtos">
+				<td align="center" style="width: 80px"><strong>{{produto.codigo}}</strong></td>
+				<td><strong>{{produto.nome}}</strong></td>
+				<td align="center" style="width: 100px"><strong> R$ {{produto.valorPadrao}}</strong></td>
+				<td align="center" style="width: 40px"><strong>{{produto.unidadeMedida}}</strong></td>
+			</tr>
+		</table> -->
+	</div>
+
+
+	<div class="col-md-6" align="center">
+		
+		<div align="center" class="dvh">
+			<h1><strong>Tabela 2</strong></h1>
+		</div>
+
+		<table class="table table-bordered">
+			<tr ng-repeat="produto in produtos">
+				<td align="center" style="width: 80px"><strong>{{produto.codigo}}</strong></td>
+				<td><strong>{{produto.nome}}</strong></td>
+				<td align="center" style="width: 100px"><strong> R$ {{produto.valorPadrao}}</strong></td>
+				<td align="center" style="width: 40px"><strong>{{produto.unidadeMedida}}</strong></td>
+			</tr>
+		</table>
+
+	</div>
+
+</div>

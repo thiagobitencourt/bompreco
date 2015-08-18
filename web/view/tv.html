@@ -7,7 +7,7 @@
     <div class="row">
       <div ng-repeat="sessao in tvCtrl.sessoesFiltered" class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
-          <a href="http://localhost:8000/tv" target="_blank">
+          <a href="http://localhost:8000/tv#/{{sessao.nome}}" target="_blank">
             <span class="info-box-icon bg-aqua" ng-class="{'bg-green': sessao.padrao}">
               <i class="ion-ios-monitor-outline"></i>
             </span>

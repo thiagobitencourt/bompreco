@@ -19,7 +19,7 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active">
-          <div class="row" ng-show="hasSelected">
+          <div class="row" ng-show="hasSelected && !showCadastrarSessaoForm">
             <div class="col-md-6">
 
               <div class="box-header with-border">
@@ -92,6 +92,7 @@
                             <img class="media-object" src="images/carnes.jpg" height="32" width="50" alt="Imagem do produto">
                         </div>
                       </div>
+                    </td>
                     <td>
                       {{produto.nome}}
                     </td>

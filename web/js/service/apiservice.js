@@ -72,7 +72,7 @@ app.factory("produtosService", function($http, config){
 	};
 
 	var _deleteProduto = function(produtoId){
-		return $http.put(config.baseWebUrl + _produtos + '/' + produtoId);		
+		return $http.delete(config.baseWebUrl + _produtos + '/' + produtoId);		
 	};
 
 	var _getByCategoria = function(categoriaId){

@@ -2,20 +2,23 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
   
   $scope.defaultTime = 30;
   $scope.hasSelected = false;
-  $scope.sessoes = Sessoes.data;
+  // $scope.sessoes = Sessoes.data;
 
   //Se o array de sessão for maior que zero então a variavel temSessao é true, se for menor que zero então NÃO tem sessao
-  $scope.temSessao = $scope.sessoes.length > 0? true : false;
+  
 
   var categorias = $scope.categorias = Categorias.data;
   //Sessao apresentada atualmente
   var activeSessao = {};
+
+  var includeThis = [];
 
   var closeAllSes = function(){
     $scope.hasSelected = false;
     activeSessao = {};
     $scope.selectedProdutos = [];
     delete $scope.produtos;
+    includeThis = [];
 
     angular.forEach($scope.sessoes, function(eachSes){
       eachSes.selected = false;
@@ -24,6 +27,7 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
     angular.forEach(categorias, function(eachCat){
       eachCat.selecionada = false;
       eachCat.tempo = $scope.defaultTime;
+      eachCat.temProdutosSelecionado = false;
     });
 
     closeAllPr();
@@ -50,6 +54,8 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
       angular.forEach(categorias, function(categoria){
         if(sPro.categoria == categoria._id){
           categoria.temProdutosSelecionado = true;
+          includeThis.push(sPro);
+          console.log(includeThis);
         }
       });
     });
@@ -79,15 +85,15 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
 
       $scope.produtos = data;
 
-      angular.forEach(activeSessao.produtos, function(sPro){
-        angular.forEach($scope.produtos, function(pr){
-          if(pr._id == sPro.produto){
-            pr.selecionado = true;
-            $scope.selecionaProduto(pr);
-            // $scope.selectedProdutos.push(pr);
+      activeSessao.produtos.forEach(function(produto){
+        $scope.produtos.forEach(function(sPro){
+          if(produto.produto == sPro._id){
+            sPro.selecionado = true;
+            $scope.selecionaProduto(sPro);
           }
         });
       });
+      
     }).error(function(data, status){
       console.log(data);
     });
@@ -101,21 +107,56 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
   $scope.selecionaProduto = function(produto){
     if(produto.selecionado == false){
       console.log("Removendo");
-      var index = $scope.selectedProdutos.indexOf(produto);
-      console.log("index " + index);
-      $scope.selectedProdutos.splice(index, 1);
-      console.log($scope.selectedProdutos);
+
+      var remover = false;
+      var index = -1;
+
+      includeThis.forEach(function(pr){
+        index++;
+        if(pr.produto == produto._id){
+          // console.log("já cadastrado");
+          remover = true;
+        }
+      });
+
+      if(remover == true){
+        console.log("Remover index: " + index);
+        includeThis.splice(index, 1);
+      }
+
+      // var index = $scope.selectedProdutos.indexOf(produto);
+      // console.log("index " + index);
+      // $scope.selectedProdutos.splice(index, 1);
+      console.log(includeThis);
     }else{
       var cadastrar = true;
-      $scope.selectedProdutos.forEach(function(pr){
-        if(pr.codigo == produto.codigo){
-          // console.log("já cadastrado");
+      
+      // includeThis.forEach(function(pr){
+      //   if(pr.codigo == produto.codigo){
+      //     // console.log("já cadastrado");
+      //     cadastrar = false;
+      //   }
+      // });
+
+      // $scope.selectedProdutos.forEach(function(pr){
+      //   if(pr.codigo == produto.codigo){
+      //     // console.log("já cadastrado");
+      //     cadastrar = false;
+      //   }
+      // });
+
+      includeThis.forEach(function(pr){
+        if(pr.produto ==  produto._id){
+          console.log("já cadastrado");
           cadastrar = false;
         }
       });
+
       if(cadastrar == true){
         console.log("Cadastrando");
-        $scope.selectedProdutos.push(produto);
+        var obj = {categoria: produto.categoria, produto: produto._id};
+        includeThis.push(obj);
+        // $scope.selectedProdutos.push(produto);
       }
     }
   }
@@ -131,24 +172,30 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
       activeSessao.categorias.push(objCategoria);
     });
 
-    $scope.selectedProdutos.forEach(function(produto){
-      var objProduto = {categoria: produto.categoria, produto: produto._id};
-      activeSessao.produtos.push(objProduto);
-    });
+    activeSessao.produtos = includeThis;
+
+    // $scope.selectedProdutos.forEach(function(produto){
+    //   console.log(produto);
+    //   var objProduto = {categoria: produto.categoria, produto: produto._id};
+    //   activeSessao.produtos.push(objProduto);
+    //   console.log(activeSessao.produtos);
+    // });
 
     // console.log($scope.selectedProdutos);
     console.log(activeSessao);
     // activeSessao.nome = "Sessao3";
-    sessaoService.updateSessao(activeSessao).success(function(date){
-      reloadSessoes();
+    sessaoService.updateSessao(activeSessao).success(function(data){
+      reloadSessoes(activeSessao);
     });
   }
 
   $scope.criarNovaSessao = function(novaSessao){
     if(!novaSessao){
-      $scope.showCadastrarSessaoForm = false;
-      $scope.hasSelected = true;
-      activeSessao.selected = true;
+      if($scope.temSessao == true){
+        $scope.showCadastrarSessaoForm = false;
+        $scope.hasSelected = true;
+        activeSessao.selected = true;
+      }
       return;
     }
     console.log(novaSessao);
@@ -168,10 +215,50 @@ angular.module('bomprecotv').controller('sessaoController', function($scope, Ses
     activeSessao.selected = false;
   }
 
-  var reloadSessoes = function(){
+  var reloadSessoes = function(sessaoAtual){
     sessaoService.getSessoes().success(function(data){
       $scope.sessoes = data;
+
+      $scope.temSessao = $scope.sessoes.length > 0? true : false;
+      if($scope.temSessao){
+        /*
+          Ao recarregar as sessões verifica-se se existem sessões. 
+          Se existir então uma nova verificação é feita para saber se uma sessão atual esta sendo utilizada.
+          Então, em todas as sessões carregadas verifica-se qual destas estava sendo usada como sessão atual e então reetabelece como sessão selecionada.
+        */
+        var found;
+        if(sessaoAtual){
+
+          $scope.sessoes.forEach(function(sessao){
+            
+            if(sessao._id == sessaoAtual._id){
+              found = true;
+              return $scope.select(sessao);    
+            }
+          });
+
+        }else{
+          /*
+            Se não houver uma sessão atual então busca a sessão padrão para apresentação 
+          */
+          $scope.sessoes.forEach(function(sessao){
+            if(sessao.padrao == true){
+              found = true;
+              return $scope.select(sessao);    
+            }
+          });
+        }
+
+        // Se não houver uma sessão atual e nenhuma sessão padrão for encontrada, então abre a primeira sessão da lista
+        if(!found){
+          $scope.select($scope.sessoes[0]); 
+        }
+      }
+
     });
   }
+
+  //Carrega as sessões e abre a primeira para apresentação
+  reloadSessoes();
 
 });

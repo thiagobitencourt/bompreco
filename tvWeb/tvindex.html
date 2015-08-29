@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="bpTv">
+<head>
+	<meta charset="UTF-8">
+    <title>BomPreçoTv | Show TV</title>
+
+    <link href="lib/style.css" rel="stylesheet" type="text/css" media="all"> 
+
+</head>
+
+<body>
+
+<div id="container">
+	<header>
+        <h1 class="logo">
+            <a href="">Mercado</a>
+        </h1>
+        <div class="clock">
+        	<img src="images/clock.svg" />
+        	<div id="new">
+        		<ds-widget-clock data-show-digital></ds-widget-clock>
+        	</div>
+       	</div>
+    </header>
+
+    <content>
+        <ng-view>
+    </content>
+</div>
+
+<!-- My Own Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
+
+<script src="lib/angular-clock.js"></script>
+<script src="js/bpTv.js"></script>
+<script src="js/controllers.js"></script>
+
+</body>
+</html>

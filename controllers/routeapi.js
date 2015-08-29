@@ -37,8 +37,8 @@ var setRouteCategorias = function(){
 	//Busca uma categoria por ID
 	router.get(expressRouteId, function(req, res){
 
-		var categoria = req.body.categoria;
-		if(!categoria){
+		var idCategoria = req.params.id;
+		if(!idCategoria){
 			console.warn("Categoria não informada");
 			return res.status(400).send({message: "Categoria não informada"});
 		}

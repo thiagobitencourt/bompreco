@@ -9,7 +9,7 @@ var RouterTv = function(){
 	router = express.Router();
 
 	router.get('/sessao', function(req, res){
-		Sessao.find({padrao: true}, function(err, sessao){
+		Sessao.findOne({padrao: true}, function(err, sessao){
 			if(err) return res.status(500).send();
 
 			if(sessao){
@@ -26,7 +26,7 @@ var RouterTv = function(){
 
 		console.log("Nome da sessão: " + nome);
 
-		Sessao.find({nome: nome}, function(err, sessao){
+		Sessao.findOne({nome: nome}, function(err, sessao){
 			if(err) return res.status(500).send();
 
 			if(sessao){

@@ -14,8 +14,9 @@ app.get('/', function(req, res, next){
 	res.sendfile('web/index.html');
 });
 
+app.use(express.static('tvWeb/'));
 app.get('/tv', function(req, res){
-	res.sendfile('web/tvindex.html');
+	res.sendfile('tvWeb/tvindex.html');
 });
 
 app.use('/api', new RouterApi());

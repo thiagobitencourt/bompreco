@@ -1,7 +1,25 @@
-<h2>Banners Aparecem aqui...</h2>
+<style type="text/css">
+.box {
+  display: inline-block;
+  width: 150px;
+  height: 100px;
+  margin: 4em;
+}
 
-<div ng-repeat="produto in produtos">
-	<li >{{produto.produto}}</li>
-	<img src="images/carnes.jpg">
-	<br />
+.imgM {
+  background: #eaeaed;
+  border: 1px solid #9799a7;
+  float: right;
+  margin: 8px 0 0 20px;
+  padding: 4px;
+}
+</style>
+
+<div>
+	<div class="box" ng-repeat="produto in produtos">
+		<li>{{produto.nome}}</li>
+		<li>{{produto.valorHoje}}</li>
+		<img class="imgM" src="images/carnes.jpg" height="180" width="180">
+		<br />
+	</div>
 </div>

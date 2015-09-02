@@ -1,4 +1,4 @@
-angular.module('bomprecotv').controller('produtosController', function($scope, Produtos, categoriasService, produtosService){
+angular.module('bomprecotv').controller('produtosController', function(fileUpload, $scope, Produtos, categoriasService, produtosService){
 
 	var produtos = $scope.produtos = Produtos.data;
 	var categorias = [];
@@ -61,6 +61,7 @@ angular.module('bomprecotv').controller('produtosController', function($scope, P
 	}
 
 	$scope.criarNovoProduto = function(novoProduto){
+
 		if(!novoProduto){
 			delete $scope.novoProduto;
 			$scope.showProdutoForm = false;
@@ -77,12 +78,16 @@ angular.module('bomprecotv').controller('produtosController', function($scope, P
 		}
 
 		novoProduto.categoria = $scope.paraCategoria._id;
-		console.log(novoProduto);
 
 		if(updating == true){
 			produtosService.updateProduto(novoProduto).success(success).error(error);
 		}else{
-			produtosService.postProduto(novoProduto).success(success).error(error);
+			var file = $scope.produtoImagem;
+			fileUpload.uploadFile(file).success(function(data){
+				novoProduto.imagem = data;
+				console.log(novoProduto);
+				produtosService.postProduto(novoProduto).success(success).error(error);
+			});
 		}
 	}
 

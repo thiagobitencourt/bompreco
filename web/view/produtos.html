@@ -59,7 +59,7 @@
 	                <td>
                     	<div class="media">
                         	<div class="media-left">
-                            	<img class="media-object" src="images/carnes.jpg" height="32" width="50" alt="Imagem do produto">
+                            	<img class="media-object" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="32" width="50" alt="Imagem do produto">
                         	</div>
                       	</div>
                     </td>
@@ -121,6 +121,10 @@
 			                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
 			                    </textarea>
 
+			                    <label for="inputImagem">Imagem</label>
+			                    <input type="file" file-model="produtoImagem"/>
+			                    <!-- <input type="file" class="form-control" id="inputImagem" accept="image/*" ng-model="novoProduto.arquivo"> -->
+
 			                    <label for="inputUn">Unidade de Medida</label>
 			                    <input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida">
 
@@ -144,6 +148,8 @@
 			                    <i class="fa fa-times"> Cancelar</i>
 			                </a>
 						</form>
+
+						{{novoProduto}}
 
 					</div>
 					<div class="col-md-3"></div>

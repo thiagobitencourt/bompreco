@@ -91,4 +91,20 @@ app.factory("produtosService", function($http, config){
 		getByCategoriaId: _getByCategoria,
 		getLengthByCategoria : _getLengthByCategoria
 	};
+})
+
+app.factory('fileUpload', function ($http, config) {
+    var _uploadFile = function(file){
+        var fd = new FormData();
+        fd.append('image', file);
+
+        return $http.post(config.baseWebUrl + '/produtos/images', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
+    }
+
+    return {
+    	uploadFile: _uploadFile
+    };
 });

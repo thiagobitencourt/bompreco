@@ -1,8 +1,8 @@
 var express = require('express'); 
 var bodyParser = require('body-parser');
 
-var RouterApi = require('./controllers/routeapi');
-var RouterTv = require('./controllers/routetv');
+var RouterApi = require('./server/controllers/routeapi');
+var RouterTv = require('./server/controllers/routetv');
 
 var app = express();
 
@@ -14,9 +14,8 @@ app.get('/', function(req, res, next){
 	res.sendfile('web/index.html');
 });
 
-app.use(express.static('tvWeb/'));
 app.get('/tv', function(req, res){
-	res.sendfile('tvWeb/tvindex.html');
+	res.sendfile('web/tvindex.html');
 });
 
 app.use('/api', new RouterApi());

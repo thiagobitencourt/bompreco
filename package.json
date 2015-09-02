@@ -1,8 +1,8 @@
 {
-  "name": "bompreco",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "bomPrecoTv",
+  "version": "0.0.1",
+  "description": "Apresentação de produtos em uma TV de exposição",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,8 @@
     "type": "git",
     "url": "https://thiagobitencourt@bitbucket.org/thiagobitencourt/bompreco.tv.br.git"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Thiago R. M. Bitencourt",
+  "license": "GPL V.2",
   "dependencies": {
     "body-parser": "~1.13.3",
     "express": "~4.13.2",

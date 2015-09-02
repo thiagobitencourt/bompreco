@@ -1,0 +1,82 @@
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h2 class="box-title">Categorias</h2>
+		<div class="box-tools">
+			<div class="input-group" style="width: 150px;">
+				<input type="text" ng-model="searchText" class="form-control input-sm pull-right" placeholder="Procurar"/>
+				<div class="input-group-btn">
+					<button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box-body">
+		<div class="row container-fluid">
+			<div ng-show="!showCategoriaForm">
+	            <table class="table table-bordered">
+	              <tr>
+	                <th style="width: 80px"><a href="" ng-click="order = order == 'codigo'? '-codigo' : 'codigo'"><i class="fa fa-sort"></i></a> Código</th>
+	                <th><a href="" ng-click="order = order == 'categoria'? '-categoria' : 'categoria'"><i class="fa fa-sort"></i></a> Categoria</th>
+	                <th style="width: 100px"><a href="" ng-click="order = order == 'produtos'? '-produtos' : 'produtos'"><i class="fa fa-sort"></i></a> Produtos</th>
+	                <th style="width: 100px"> Ações</th>
+	              </tr>
+
+	              <tr ng-repeat="categoria in categorias | orderBy: order | filter: searchText">
+	                <td>
+	                	{{categoria.codigo}}
+	                </td>
+	                <td>
+	                	{{categoria.categoria}}
+	                </td>
+	                <td>
+	                	<div align="center">
+	                		<span class="badge" ng-class="categoria.produtos > 0? 'bg-green':'bg-yellow'">{{categoria.produtos}}
+	                		</span>
+	                	</div>
+	                </td>
+	                <td>
+	                	<div class="tools" align="center">
+	                    	<a href="" class="text-aqua" ng-click="editar(categoria)">
+	                    		<i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i>
+	                    	<a/>
+	                    	&nbsp &nbsp &nbsp
+	                    	<a href="" class="text-red" ng-show="categoria.produtos == 0" ng-click="excluir(categoria)">
+	                    		<i class="fa fa-trash-o" data-toggle="tooltip" title="Excluir"></i>
+	                    	<a/>
+	                  	</div>
+	                </td>
+	              </tr>
+	            </table>
+	            <div>
+	            	<button class="btn btn-primary" ng-click="showCategoriaForm = true"><i class="fa fa-plus"></i> Nova Categoria</button>
+	            </div>
+            </div>
+
+            <!-- <br> -->
+            <div class="row" ng-show="showCategoriaForm">
+              <div class="col-md-8">
+                <form class="form-inline" name="novaCategoriaForm">
+                  <div class="form-group">
+                    
+                    <input style="width: 20%;" type="text" class="form-control" placeholder="Código" ng-model="novaCategoria.codigo" ng-required="true" ng-maxlength="10" ng-minlength="3">
+                    
+                    <input type="text" class="form-control" placeholder="Nome da categoria" ng-model="novaCategoria.categoria" ng-required="true" ng-maxlength="25" ng-minlength="3">
+                    
+                    <a href="" class="btn btn-primary" ng-click="criarNovaCategoria(novaCategoria)" ng-disabled="novaCategoriaForm.$invalid">
+                    	<i class="fa fa-floppy-o"> Salvar</i>
+                    </a>
+                    <a href="" class="btn btn-danger" ng-click="criarNovaCategoria()">
+                    	<i class="fa fa-times"> Cancelar</i>
+                    </a>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-4" ng-if="novaCategoriaForm.$error" style="margin-top: 10px;">
+                <div class="text-red" ng-if="novaCategoriaForm.$error.minlength"><i class="glyphicon glyphicon-remove"></i> Necessário mínimo de 3 caracteres</div>
+                <div class="text-red" ng-if="novaCategoriaForm.$error.maxlength"><i class="glyphicon glyphicon-remove"></i> Permitido máximo de 25 caracteres</div>
+              </div>
+            </div>
+
+		</div>
+	</div>
+</div>

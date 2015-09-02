@@ -1,0 +1,162 @@
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h2 class="box-title">Produtos</h2>
+		<div class="box-tools">
+           
+            <div class="form-inline">
+				<label>Categorias</label>
+				<select class="form-control" ng-model="categoria" style="width: 150px; height: 30px;">
+					<option></option>
+					<option ng-repeat="categoria in categorias">{{categoria.categoria}}</option>
+				</select>
+				&nbsp
+				<div class="input-group pull-right" style="width: 150px;">
+					<input type="text" ng-model="searchText" class="form-control input-sm pull-right" placeholder="Procurar"/>
+					<div class="input-group-btn">
+						<button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+					</div>
+				</div>
+            </div>
+
+		</div>
+	</div>
+	<div class="box-body">
+		<div class="row container-fluid">
+			<div ng-show="!showProdutoForm">
+				<table class="table table-bordered">
+	              <tr>
+	                <th style="width: 80px">
+	                	<a href="" ng-click="order = order == 'codigo'? '-codigo' : 'codigo'">
+	                		<i class="fa fa-sort"></i>
+	                	</a> 
+	                	Código
+	                </th>
+	                <th style="width: 50px">Imagem</th>
+	                <th>
+	                	<a href="" ng-click="order = order == 'nome'? '-nome' : 'nome'">
+	                		<i class="fa fa-sort"></i>
+	                	</a> 
+	                	Nome</th>
+	                <th style="width: 80px">
+	                	<a href="" ng-click="order = order == 'valorPadrao'? '-valorPadrao' : 'valorPadrao'">
+	                		<i class="fa fa-sort"></i>
+	                	</a>
+	                	Preço
+	                </th>
+	                <th style="width: 50px">
+	                	Unidade
+	                </th>
+	                <th><a href="" ng-click="order = order == 'categoria'? '-categoria' : 'categoria'"><i class="fa fa-sort"></i></a> Categoria</th>
+	                <th style="width: 100px"> Ações</th>
+	              </tr>
+
+	              <tr ng-repeat="produto in produtos | orderBy: order | filter: searchText | filter: categoria">
+	                <td>
+	                	{{produto.codigo}}
+	                </td>
+
+
+	                <td>
+                    	<div class="media">
+                        	<div class="media-left">
+                            	<img class="media-object" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="32" width="50" alt="Imagem do produto">
+                        	</div>
+                      	</div>
+                    </td>
+
+	                <td>
+	                	{{produto.nome}}
+	                </td>
+	                <td>
+	                	<div align="center">
+	                		{{produto.valorPadrao}}
+	                		<span class="text-red pull-right" ng-if="produto.valorEspecial.length > 0"><i class="fa fa-star-o" data-toggle="tooltip" title="Possui valor Especial"></i>
+	                		</span>
+	                	</div>
+	                </td>
+	                <td>
+	                	<div align="center">
+	                		{{produto.unidadeMedida}}
+	                	</div>
+	                </td>
+	                <td>
+	                	{{produto.categoriaNome}}
+	                </td>
+	                <td>
+	                	<div class="tools" align="center">
+	                    	<a href="" class="text-aqua" ng-click="editar(produto)">
+	                    		<i class="fa fa-info-circle" data-toggle="tooltip" title="Detalhes"></i>
+	                    	<a/>
+	                    	&nbsp &nbsp &nbsp
+	                    	<a href="" class="text-red" ng-click="excluir(produto)">
+	                    		<i class="fa fa-trash-o" data-toggle="tooltip" title="Excluir"></i>
+	                    	<a/>
+	                  	</div>
+	                </td>
+	              </tr>
+	            </table>
+
+				<div>
+	            	<button class="btn btn-primary" ng-click="showProdutoForm = true;">
+	            		<i class="fa fa-plus"></i> Novo Produto
+	            	</button>
+	            </div>
+			</div>
+
+			<div ng-show="showProdutoForm" class="container-fluid">
+
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+
+						<form role="form" name="novoProdutoForm">
+							<div class="form-group">
+								<label for="inputCodigo">Código</label>
+								<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo">
+
+			                    <label for="inputNome">Nome</label>
+			                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome">
+							
+			                    <label for="inputDesc">Descrição</label>
+			                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
+			                    </textarea>
+
+			                    <label for="inputImagem">Imagem</label>
+			                    <input type="file" file-model="produtoImagem"/>
+			                    <!-- <input type="file" class="form-control" id="inputImagem" accept="image/*" ng-model="novoProduto.arquivo"> -->
+
+			                    <label for="inputUn">Unidade de Medida</label>
+			                    <input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida">
+
+			                    <label for="inputValorP">Valor Padrão</label>
+			                    <input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao">
+
+			                    <label for="inputCategoria">Categoria</label>
+			                    <select ng-model="paraCategoria" class="form-control" ng-options="categoria.categoria for categoria in categorias">
+			                    	<option></option>
+			                    </select>
+
+			                    <label for="inputValorE">Valor Especial</label>
+			                    <input type="text" class="form-control" id="inputValorE" ng-model="novoProduto.valorEspecial">
+
+							</div>
+
+							<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novaCategoriaForm.$invalid">
+			                    <i class="fa fa-floppy-o"> Salvar</i>
+			                </a>
+			                <a href="" class="btn btn-danger" ng-click="criarNovoProduto()">
+			                    <i class="fa fa-times"> Cancelar</i>
+			                </a>
+						</form>
+
+						{{novoProduto}}
+
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>

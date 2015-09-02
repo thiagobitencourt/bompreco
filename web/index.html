@@ -1,118 +1,158 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Tela de exibição - Bom Preço ltda</title>
+<html ng-app="bomprecotv">
+  <head>
+    <meta charset="UTF-8">
+    <title>BomPreçoTv | Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.4 -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome Icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="dist/css/skin-blue.min.css" rel="stylesheet" type="text/css" />
 
-	<!-- <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
-	<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="skin-blue sidebar-mini" ng-controller="homeController as home">
+    <!-- Site wrapper -->
+    <div class="wrapper">
 
-<link href="css/app.css" rel="stylesheet" type="text/css" />
-	<!-- TEMPLATE STUFFS-->
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>TV</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><i><b>Bom</b>Preço</i><b>TV</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">{{home.user.nome}} <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="">Perfil</a></li>
+                  <li><a href="">Sing out</a></li>
+                </ul>
+              </li>
 
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+            </ul>
+          </div>
+        </nav>
+      </header>
 
-	
+      <!-- =============================================== -->
 
-	<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+      <!-- Left side column. contains the sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="header">PAINEL DE CONTROLE</li>
 
-	<link href="dist/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+            <li>
+              <a href="#/sessoes">
+                <i class="fa fa-circle-o text-aqua"></i> <span>Sessões</span>
+              </a>
+            </li>
 
+            <li>
+              <a href="#/categorias">
+                <i class="fa fa-circle-o text-red"></i> <span>Categorias</span>
+              </a>
+            </li>
+            
+            <li>
+              <a href="#/produtos">
+                <i class="fa fa-circle-o text-yellow"></i> <span>Produtos</span>
+              </a>
+            </li>
+            
+            <li>
+              <a href="#/tv">
+                <i class="fa fa-circle-o text-aqua"></i> <span>TV</span>
+              </a>
+            </li>
 
-	<script src="dist/jQuery-2.1.4.min.js" type="text/javascript"></script>
-	<script src="dist/bootstrap.js" type="text/javascript"></script>
-	<script src="dist/fastclick.js" type="text/javascript"></script>
-	<!--
-	<script src="dist/app.js" type="text/javascript"></script>
--->
-	<script src="dist/jquery.sparkline.min.js" type="text/javascript"></script>
-	<script src="dist/jquery-jvectormap-1.2.2.min.js" type="text/javascript"></script>
-    <script src="dist/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
-    <script src="dist/jquery.slimscroll.js" type="text/javascript"></script>
+            <li class="header">USUÁRIO</li>
+            <li>
+              <a href="">
+                <i class="fa fa-circle-o"></i> <span>{{home.user.nome}}</span>
+              </a>
+            </li>
 
-    <script src="dist/Chart.js" type="text/javascript"></script>
-
-    <script src="dist/demo.js" type="text/javascript"></script>
-
-      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-  <script src="dist/ion.rangeSlider.min.js" type="text/javascript"></script>
-  <script src="dist/bootstrap-slider.js" type="text/javascript"></script>
-
-   <link href="dist/_all-skins.min.css" rel="stylesheet" type="text/css" />
-
-	<!-- END OF TEMPLATE STUFFS-->
-
-	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular/angular-locale_pt-br.js"></script>
-	<script src="lib/angular/angular-messages.js"></script>
-	<script src="lib/angular/angular-cookies.js"></script>
-	<script src="lib/angular/angular-route.js"></script>
-
-	<script src="js/bompreco.js"></script>
-	<script src="js/controller/mainCtrl.js"></script>
-	<script src="js/controller/categoriasCtrl.js"></script>
-	<script src="js/controller/produtosCtrl.js"></script>
-	<script src="js/controller/tvCtrl.js"></script>
-  <script src="js/controller/sessaoTabsController.js"></script>
-
-	<script src="js/directives/uiAccordionDirective.js"></script>
-</head>
-
-<body ng-app="bompreco" class="container">
-
-<nav class="navbar navbar-default" ng-controller="mainCtrl">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href=""><span>Bom<i>Preço</i><b>TV</b></span></a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-      <ul class="nav navbar-nav">
-        <li><a href="#/sessoes">Sessões</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav">
-        <li><a href="#/categorias">Categorias</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav">
-        <li><a href="#/produtos">Produtos</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav">
-        <li><a href="#/tv"><b>TV</b></a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-      	<li><img src="images/logo.png" alt="logo" height="45" width="155" style="padding-right: 30px;"/></li>
-        <li><a href="" ng-show="!hasUser" ng-click="goToLogin()">Login</a></li>
-        <li><a href="" ng-show="hasUser" ng-click="goToLogout()">Logout</a></li>
-<!--         <li class="dropdown">
-          <a href="" ng-class="" ng-show="hasUser" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{userName}} <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="">Action</a></li>
-            <li><a href="">Another action</a></li>
-            <li><a href="">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="">Separated link</a></li>
           </ul>
-        </li> -->
-      </ul>
-    </div>
-  </div>
-</nav>
-	<div ng-view></div>
-</body>
+        </section>
+      </aside>
+
+      <!-- =============================================== -->
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <section ng-view class="content">
+
+          <!-- CONTEÚDO -->
+
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 0.0.1 <small><i>β</i></small>
+        </div>
+        <strong>Copyright &copy; 2015-2016 <a href="http://mbitencourt.com.br" target="_blank"><i><b>Bom</b>Preço</i><b>TV</b></a>.</strong> All rights reserved.
+      </footer>
+
+    </div><!-- ./wrapper -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="dist/plugins/jQuery-2.1.4.min.js" type="text/javascript"></script>
+
+    <script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
+    
+    <!-- TODO - If some error ocurrs, try to decomment this scripts bellow-->  
+    <!-- SlimScroll 
+    <script src="dist/plugins/jquery.slimscroll.min.js" type="text/javascript"></script>
+    -->
+    <!-- FastClick 
+    <script src="dist/plugins/fastclick.min.js" type="text/javascript"></script>
+    -->
+
+    <!-- AdminLTE App -->
+    <script src="dist/js/app.min.js" type="text/javascript"></script>
+    <script src="dist/js/demo.js" type="text/javascript"></script>
+
+    <!-- Angular Scripts -->
+    <script src="dist/js/angular.min.js"></script>
+    <script src="dist/js/angular-resource.min.js"></script>
+    <script src="dist/js/angular-route.min.js"></script>
+
+    <!-- My Own Scripts -->
+    <script src="js/bomprecotv.js"></script>
+    <script src="js/controllers/homecontroller.js"></script>
+    <script src="js/controllers/sessaocontroller.js"></script>
+    <script src="js/controllers/categoriascontroller.js"></script>
+    <script src="js/controllers/produtoscontroller.js"></script>
+    <script src="js/controllers/tvcontroller.js"></script>
+    <script src="js/service/apiservice.js"></script>
+
+  </body>
 </html>

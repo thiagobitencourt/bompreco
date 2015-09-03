@@ -5,7 +5,7 @@ var multer  = require('multer');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'web/images/rodutos/')
+    cb(null, 'web/images/produtos/')
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now())
@@ -240,6 +240,42 @@ var setRouteProdutos = function(){
 		});
 	});
 
+	router.get(expressRouteSimple + '/sessao/:id', function(req, res){
+
+		var sessaoId = req.params.id;
+		if(!sessaoId){
+			console.warn("Id de sessão inválido: " + sessaoId);
+			return res.status(400).send({message: "Id de sessão inválido"});
+		}
+
+		Sessao.findOne({_id: sessaoId}, function(err, sessao){
+			if(err){
+				console.error("Error: " + err.message);
+				return res.status(500).send(err.message);
+			}
+
+			//Se não encontrar nenhuma sessao, retorna 404
+			if(!sessao){
+				console.error("Sessão não encontrada");
+				return res.status(404).send({message:"Sessão não encontrada"});
+			}
+
+			var produtosSes = [];
+			sessao.produtos.forEach(function(pr){
+				produtosSes.push(pr.produto);
+			});
+
+			Produtos.find({ _id: { "$in" : produtosSes} }, function(err, produtos){
+				if(err){
+					console.error("Error: " + err.message);
+					return res.status(500).send(err.message);
+				}
+
+				res.status(200).send(produtos);
+			});	
+		});
+	});
+
 	//Todos os produtos de uma categoria
 	router.get(expressRouteSimple + '/categoria/:id', function(req, res){
 
@@ -336,11 +372,11 @@ var setRouteProdutos = function(){
 
 				produto.codigo = currentProduto.codigo;
 				produto.nome = currentProduto.nome;
-				produto.descricao = currentProduto.descricao || produto.descricao || '';
-				produto.imagem = currentProduto.imagem || produto.imagem || '';
-				produto.unidadeMedida = currentProduto.unidadeMedida || produto.unidadeMedida || '';
-				produto.valorPadrao = currentProduto.valorPadrao || produto.valorPadrao;
-				produto.valorEspecial = currentProduto.valorEspecial || produto.valorEspecial || [];
+				produto.descricao = currentProduto.descricao || '';
+				produto.imagem = currentProduto.imagem || '';
+				produto.unidadeMedida = currentProduto.unidadeMedida || '';
+				produto.valorPadrao = currentProduto.valorPadrao || '';
+				produto.valorEspecial = currentProduto.valorEspecial || [];
 				produto.categoria = currentProduto.categoria || produto.categoria;
 
 			}catch(ex){
@@ -428,29 +464,29 @@ var setRouteSessoes = function(){
 	});
 
 	//Busca uma sessão, por ID
-	// router.get(expressRouteId, function(req, res){
+	router.get(expressRouteId, function(req, res){
 
-	// 	var sessaoId = req.params.id;
-	// 	if(!sessaoId){
-	// 		console.warn("Id de sessão inválido: " + sessaoId);
-	// 		return res.status(400).send({message: "Id de sessão inválido"});
-	// 	}
+		var sessaoId = req.params.id;
+		if(!sessaoId){
+			console.warn("Id de sessão inválido: " + sessaoId);
+			return res.status(400).send({message: "Id de sessão inválido"});
+		}
 
-	// 	Sessao.findOne({_id: sessaoId}, function(err, sessao){
-	// 		if(err){
-	// 			console.error("Error: " + err.message);
-	// 			return res.status(500).send(err.message);
-	// 		}
+		Sessao.findOne({_id: sessaoId}, function(err, sessao){
+			if(err){
+				console.error("Error: " + err.message);
+				return res.status(500).send(err.message);
+			}
 
-	// 		//Se não encontrar nenhuma sessao, retorna 404
-	// 		if(!sessao){
-	// 			console.error("Nenhuma sessao encontrada");
-	// 			return res.status(404).send({message:"Nenhuma sessao encontrada"});
-	// 		}
+			//Se não encontrar nenhuma sessao, retorna 404
+			if(!sessao){
+				console.error("Nenhuma sessao encontrada");
+				return res.status(404).send({message:"Nenhuma sessao encontrada"});
+			}
 
-	// 		res.status(200).send(sessao);	
-	// 	});
-	// });
+			res.status(200).send(sessao);	
+		});
+	});
 
 	router.get(expressRouteSimple + '/:nome', function(req, res){
 

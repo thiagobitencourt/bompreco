@@ -70,7 +70,7 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 
 	//Busca os produtos individuais, para apresentar nos baners.
 	var _getProdutosBaner = function(sessaoId){
-		return $http.get("http://localhost:8000/api/produtos");
+		return $http.get("http://localhost:8000/api/produtos/sessao/" + sessaoId);
 	}
 
 

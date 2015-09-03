@@ -6,6 +6,7 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 	var sessoes = sessao.data;
 
 	var showFunction = function(categorias){
+		
 		var cat = categorias.shift();
 
 		console.log(cat.tempo);
@@ -21,17 +22,19 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 		});
 
 		$timeout(function(){
+			console.log("time out for categoria " + cat._id);
 			$location.path('/baners');
-		}, cat.tempo * 1000);
+		}, cat.tempo * 500);
 	}
 
 	if($rootScope.categorias && $rootScope.categorias.length > 0){
 		
+		console.log($rootScope.categorias);
 		showFunction($rootScope.categorias);
 
 	}else{
 
-		if($rootScope.categorias){
+		delete $rootScope.categorias;
 			/*
 			Se houver a variavel rootScope.categorias, significa que não é a primeira execução. 
 			Então recarrega a sessão para pegar alguma possível atualização.
@@ -39,7 +42,7 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 			sessaoService.getSessao(sessoes._id).success(function(data){
 				sessoes = data;
 			});
-		}
+
 		
 		$rootScope.categorias = sessoes.categorias;
 		showFunction($rootScope.categorias);
@@ -89,6 +92,7 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
     loadProdutos(sessoes);
 
 	$timeout(function(){
+		console.log("time out for banners");
 		$location.path('/tabela');
 	}, 5000);
 });

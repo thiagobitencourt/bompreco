@@ -1,8 +1,8 @@
 <style type="text/css">
 .box {
   display: inline-block;
-  width: 150px;
-  height: 100px;
+  width: 250px;
+  height: 250px;
   margin: 4em;
 }
 
@@ -16,10 +16,9 @@
 </style>
 
 <div>
-	<div class="box" ng-repeat="produto in produtos">
-		<li>{{produto.nome}}</li>
-		<li>{{produto.valorHoje}}</li>
-		<img class="imgM" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="180" width="180">
-		<br />
-	</div>
+  	<div class="box" ng-repeat="produto in produtos">
+  		<li>{{produto.nome}}</li>
+  		<li>{{produto.valorHoje}}</li>
+  		<img class="imgM" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="180" width="180">
+  	</div>
 </div>

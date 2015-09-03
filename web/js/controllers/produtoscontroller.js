@@ -64,12 +64,14 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		if(!novoProduto){
 			delete $scope.novoProduto;
+			delete $scope.produtoImagem;
 			$scope.showProdutoForm = false;
 			return;
 		}
 
 		var success = function(data){
 			$scope.showProdutoForm = false;
+			delete $scope.produtoImagem;
 			loadProdutos();
 		}
 
@@ -80,7 +82,16 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		novoProduto.categoria = $scope.paraCategoria._id;
 
 		if(updating == true){
-			produtosService.updateProduto(novoProduto).success(success).error(error);
+			if($scope.produtoImagem){
+				var file = $scope.produtoImagem;
+				fileUpload.uploadFile(file).success(function(data){
+				novoProduto.imagem = data;
+				console.log(novoProduto);
+				produtosService.updateProduto(novoProduto).success(success).error(error);
+			});
+			}else{
+				produtosService.updateProduto(novoProduto).success(success).error(error);
+			}
 		}else{
 			var file = $scope.produtoImagem;
 			fileUpload.uploadFile(file).success(function(data){

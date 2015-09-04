@@ -10,12 +10,17 @@
   <div class="col-md-12">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
-        <li ng-repeat="sessao in sessoes" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">{{sessao.nome}}</a></li>
+        <li ng-repeat="sessao in sessoes | limitTo: limit" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">{{sessao.nome}}</a></li>
         <li class="pull-right" data-toggle="tooltip" title="Nova Sessão">
           <button class="btn btn-primary" ng-click="openNovaSessaoForm()">
             <i class="fa fa-plus"></i> Nova Sessão
           </button>
-        </li> 
+        </li>
+
+        <li  class="pull-right"><a ng-click="netxTab()" ng-show="hasMoreTabs"><i class="fa fa-chevron-right"></i></a></li>
+
+        <li  class="pull-right" ><a ng-click="prevTab()" ng-show="hasPreviousSession"><i class="fa fa-chevron-left"></i></a></li>
+
       </ul>
       <div class="tab-content">
         <div class="tab-pane active">
@@ -131,12 +136,9 @@
                 </form>
               </div>
               <div class="col-md-4" ng-if="novaSessaoForm.$error" style="margin-top: 10px;">
-                <div class="text-red" ng-if="novaSessaoForm.$error.minlength"><i class="glyphicon glyphicon-remove"></i> Necessário mínimo de 3 caracteres</div>
-                <div class="text-red" ng-if="novaSessaoForm.$error.maxlength"><i class="glyphicon glyphicon-remove"></i> Permitido máximo de 10 caracteres</div>
+                <div class="text-red" ng-if="novaSessaoForm.$error.minlength"><i class="fa fa-times"></i> Necessário mínimo de 3 caracteres</div>
+                <div class="text-red" ng-if="novaSessaoForm.$error.maxlength"><i class="fa fa-times"></i> Permitido máximo de 10 caracteres</div>
               </div>
-<!--               <div class="col-md-4" ng-if="novaSessaoError" style="margin-bottom: 20px;">
-                <div class="text-red"><i class="glyphicon glyphicon-remove"></i> {{novaSessaoError}}</div>
-              </div> -->
             </div>
           <!-- FIM DO FORMULARIO DE CADASTRO DE UMA NOVA SESSÃO -->
 

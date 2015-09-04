@@ -4,9 +4,6 @@ $routeProvider
     controller: 'sessaoController',
     templateUrl:'view/sessoes.html',
     resolve: {
-      Sessoes: function (sessaoService) {
-        return sessaoService.getSessoes();
-      },
       Categorias: function (categoriasService) {
         return categoriasService.getCategorias();
       }
@@ -40,7 +37,6 @@ $routeProvider
     }
   })
   .when('/404', {
-    // controller:'NewProjectController as editProject',
     templateUrl:'view/404.html'
   }).
   when('/', {

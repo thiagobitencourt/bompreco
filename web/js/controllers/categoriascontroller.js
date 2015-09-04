@@ -29,8 +29,16 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 	};
 
 	$scope.excluir = function(categoria){
-		categoriasService.deleteCategoria(categoria._id).success(function(data){
-			loadCategorias();
+
+		//Verifica os produtos relacionados a esta categoria. Não pode excluir se houver produtos relacionados
+		produtosService.getLengthByCategoria(categoria._id).success(function(data){
+			if(data[0] == 0){
+				categoriasService.deleteCategoria(categoria._id).success(function(data){
+					loadCategorias();
+				});
+			}else{
+				console.log("Não é possível escluir esta categoria. Existem produtos relacionados a ela.")
+			}
 		});
 	};
 

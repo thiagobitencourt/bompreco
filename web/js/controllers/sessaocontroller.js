@@ -245,7 +245,6 @@ angular.module('bomprecotv').controller('sessaoController',
                 if($scope.sessoes.length > maxTabs){
                     $scope.limit = maxTabs;
                     lastTab = $scope.sessoes.length;
-                    console.log("Última: " + lastTab);
                     
                     othersSes = $scope.sessoes;
                     $scope.sessoes = [];

@@ -68,8 +68,8 @@
 	                	{{produto.nome}}
 	                </td>
 	                <td>
-	                	<div align="center">
-	                		{{produto.valorPadrao}}
+	                	<div align="left">
+	                		{{produto.valorPadrao | realbrasileiro}}
 	                		<span class="text-red pull-right" ng-if="produto.valorEspecial.length > 0"><i class="fa fa-star-o" data-toggle="tooltip" title="Possui valor Especial"></i>
 	                		</span>
 	                	</div>
@@ -111,42 +111,126 @@
 
 						<form role="form" name="novoProdutoForm">
 							<div class="form-group">
-								<label for="inputCodigo">Código</label>
-								<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo">
 
-			                    <label for="inputNome">Nome</label>
-			                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome">
-							
-			                    <label for="inputDesc">Descrição</label>
-			                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
-			                    </textarea>
+								<div class="row">
 
-			                    <label for="inputImagem">Imagem</label>
-			                    <input type="file" file-model="produtoImagem"/>
-			                    <!-- <input type="file" class="form-control" id="inputImagem" accept="image/*" ng-model="novoProduto.arquivo"> -->
+									<div class="col-md-4">
+										<label for="inputCodigo">Código*</label>
+										<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo" ng-required="true">
+									</div>
+								
+									<div class="col-md-8">
+					                    <label for="inputNome">Nome*</label>
+					                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome" ng-required="true">
+					                </div>
 
-			                    <label for="inputUn">Unidade de Medida</label>
-			                    <input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida">
+			                    </div>
 
-			                    <label for="inputValorP">Valor Padrão</label>
-			                    <input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao">
+			                    <div class="row">
 
-			                    <label for="inputCategoria">Categoria</label>
-			                    <select ng-model="paraCategoria" class="form-control" ng-options="categoria.categoria for categoria in categorias">
-			                    	<option></option>
-			                    </select>
+			                    	<div class="col-md-6">
+			                    		<label for="inputCategoria">Categoria*</label>
+					                    <select ng-model="paraCategoria" ng-required="true" class="form-control" ng-options="categoria.categoria for categoria in categorias">
+					                    	<option></option>
+					                    </select>
+			                    	</div>
 
-			                    <label for="inputValorE">Valor Especial</label>
-			                    <input type="text" class="form-control" id="inputValorE" ng-model="novoProduto.valorEspecial">
+									<div class="col-md-3">
+										<label for="inputUn">Unidade*</label>
+			                    		<input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida" ng-required="true">
+			                    	</div>
 
+			                    	<div class="col-md-3">
+
+			                    		<label for="inputValorP">Valor Padrão*</label>
+			                    		<input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao" ng-required="true">
+
+			                    	</div>
+
+			                    </div>
+
+			                    <div class="row">
+
+									<div class="col-md-12">
+										<label for="inputValorE">Valor Especial</label>
+
+										<div class="row">
+					                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Segunda-feira">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[0]">
+					                    	</div>
+					                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Terça-feira">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[1]">
+					                    	</div>
+					                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Quarta-feira">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[2]">
+					                    	</div>
+					                    						                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Quinta-feira">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[3]">
+					                    	</div>
+					                    						                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Sexta-feira">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[4]">
+					                    	</div>
+					                    						                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Sábado">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[5]">
+					                    	</div>
+					                    						                    	<div class="col-md-2">
+					                    		<input type="checkbox" data-toggle="tooltip" title="Domingo">
+					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[6]">
+					                    	</div>
+					                    </div>
+
+
+
+			                    	</div>
+
+			                    </div>
+								
+				                <div class="row">
+			                    	<div class="col-md-12">
+					                    <label for="inputDesc">Descrição</label>
+					                    <textarea class="form-control" rows="5" id="inputDesc" ng-model="novoProduto.descricao">
+					                    </textarea>
+			                    	</div>
+			                    </div>
+
+			                    <div class="row">
+			                    	<div class="col-md-12">
+			                    		<label for="inputImagem">Imagem</label>
+			                    		<input type="file" file-model="produtoImagem"/>
+			                    	</div>
+			                    </div>
+
+<!-- 			                    <div class="row">
+			                    	<div class="col-md-">
+			                    	
+			                    	</div>
+									<div class="col-md-">
+			                    	
+			                    	</div>
+			                    </div> -->
+
+
+			                    <br />
+			                	<p class="text-red" ng-if="!novoProdutoForm.$pristine && novoProdutoForm.$error.required">
+			                		<i class="fa fa-times"></i> Campos obrigatórios não preenchidos
+			                	</p>
+
+			                    <p class="text-yellow">* Campos obrigatórios</p>
+								
+								<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novoProdutoForm.$invalid">
+				                    <i class="fa fa-floppy-o"> Salvar</i>
+				                </a>
+				                <a href="" class="btn btn-danger" ng-click="criarNovoProduto()">
+				                    <i class="fa fa-times"> Cancelar</i>
+				                </a>
 							</div>
 
-							<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novaCategoriaForm.$invalid">
-			                    <i class="fa fa-floppy-o"> Salvar</i>
-			                </a>
-			                <a href="" class="btn btn-danger" ng-click="criarNovoProduto()">
-			                    <i class="fa fa-times"> Cancelar</i>
-			                </a>
 						</form>
 
 						{{novoProduto}}

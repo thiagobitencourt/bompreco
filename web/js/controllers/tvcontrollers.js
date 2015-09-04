@@ -63,15 +63,19 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 		weekDay[6] = "sábado";
 		weekDay[7] = "domingo";
 
-    	var d = weekDay[new Date().getDay()];
+    	var hoje = weekDay[new Date().getDay()];
 
     	produtos.forEach(function(produto){
 	    	if(produto.valorEspecial && produto.valorEspecial.length > 0){
-	    		var dias = produto.valorEspecial;
+	    		
+	    		var diasEspeciais = produto.valorEspecial;
 
-	    		dias.forEach(function(dia){
-	    			if(dia[d]){
-	    				produto.valorHoje = dia[d];
+	    		diasEspeciais.forEach(function(iterator){
+	    			if(iterator.dia == hoje){
+
+	    				produto.valorHoje = iterator.valor;
+	    				return;
+
 	    			}else if(!produto.valorHoje){
 	    				produto.valorHoje = produto.valorPadrao;
 	    			}

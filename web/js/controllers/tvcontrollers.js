@@ -49,7 +49,14 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 	}
 })
 
-.controller("banersController", function($scope, $location, $timeout, sessao, produtosService){
+.controller("banersController", function($scope, $rootScope, $location, $timeout, sessao, produtosService){
+
+	var maxShow = 4;
+	var index = $rootScope.indexPr || 0;
+	var restartIndex = 0;
+	$scope.showing = [];
+
+	console.log("Index inicial: " + index);
 
 	var sessoes = sessao.data;
 
@@ -88,8 +95,32 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 
     var loadProdutos = function(sessao){
 		produtosService.getProdutosBaner(sessao._id).success(function(data){
-			$scope.produtos = data;
-    		defineValor($scope.produtos);
+			var produtos = $scope.produtos = data;
+
+    		defineValor(produtos);
+    		/*
+			Pega maxShow produtos no array de produtos e guarda o index da ultima posição utilizada no rootScope.
+			Na próxima iteração irá continuar a partir do index armazenado em rootScope e pegar mais maxShow elementos.
+			Quando o index 'estourar' a lista de elementos, então reiniciar o index para buscar a partir do primeiro elemento.
+			
+			OBS: Quando o número de elemento do array de produtos é menor que o valor em maxShow 
+			então acontece de os primeiros produtos se repetirem até atingir o valor de maxShow. 
+			Porém, isso gerou um erro no ng-repeat por não aceitar elementos repetidos por padrão. 
+			Para contornar esta situação, foi adicionado 'track by $index' no ng-repeat. 
+			Solução documentada aqui: https://docs.angularjs.org/error/ngRepeat/dupes
+    		*/
+    		var maxS = index + maxShow-1;
+    		for(index; index <= maxS; index++){
+
+    			if(produtos[index]){
+    				$scope.showing.push(produtos[index]);
+    				$rootScope.indexPr = index;
+    			}else{
+    				$scope.showing.push(produtos[restartIndex]);
+    				$rootScope.indexPr = restartIndex;
+    				restartIndex++;
+    			}
+    		}
 		});
     }
 
@@ -98,5 +129,5 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 	$timeout(function(){
 		console.log("time out for banners");
 		$location.path('/tabela');
-	}, 5000);
+	}, 6000);
 });

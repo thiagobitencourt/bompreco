@@ -3,50 +3,135 @@ angular.module("bpTv")
 .controller("tabelaController", 
 function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produtosService, categoriasService){
 
-	var sessoes = sessao.data;
+	var sessao = sessao.data;
 
-	var showFunction = function(categorias){
-		
-		var cat = categorias.shift();
+	var configSes = function(sessao){
+		console.log("nova sessao");
 
-		console.log(cat.tempo);
+		//Será um usado no futuro, talvez próximo.
+		// if($routeParams.sessao)
+		// 	return sessaoService.getSessao($routeParams.sessao);
+		// else
+		// 	return sessaoService.getPadrao();
 
-		categoriasService.getCategoria(cat._id).success(function(data){
+		configCategorias(sessao.categorias);
+
+		// sessaoService.getSessao(sessao._id).success(function(data){
+		// 	sessao = data;
+		// 	console.log("Aqui - Voltando");
+		// 	console.log(sessao);
+		// 	configCategorias(sessao.categorias);
+		// });
+	}
+
+	//Mostra 6, porque inicia em 0.
+	var maxShow = 5;
+	$scope.showingPr = [];
+
+	var configCategorias = function(categorias){
+		// console.log(categorias);
+		var index = $rootScope.indexCatPr || 0;
+
+		if(!categorias[index])
+			index = 0;
+
+		var categoria = categorias[index];
+
+		categoriasService.getCategoria(categoria._id).success(function(data){
 			$scope.currentCategoria = data;
-
-			console.log($scope.currentCategoria.categoria);
 			
-			produtosService.getProdutos($scope.currentCategoria._id).success(function(data){
-				$scope.produtos = data;
-			});
+			console.log("Tempo: " + categoria.tempo);
+			configProdutos(categoria);
+
+			if(!$rootScope.useIndexPr){
+				console.log("Incrementando index");
+				index++;
+				$rootScope.indexCatPr = index;
+			}
+			
+			console.log("Index scope: " + $rootScope.indexCatPr);
 		});
+	}
 
+	var configProdutos = function(categoria){
+
+		var produtos = [];
+		produtosService.getProdutos(categoria._id).success(function(data){
+
+			produtos = data;
+
+			defineValor(produtos);
+			console.log(produtos);
+
+			var restartedIndex = false;
+			var useIndex = $rootScope.useIndexPr || 0;
+			for(var it = 0; it <= maxShow; it++){
+
+				if(!produtos[useIndex]){
+					useIndex = 0;
+					restartedIndex = true;
+				}
+
+				$scope.showingPr.push(produtos[useIndex]);
+				useIndex++;
+			}
+
+			if(!restartedIndex){
+				if(useIndex <= produtos.length){
+					console.log("há mais produtos a serem mostrados");
+					$rootScope.useIndexPr = useIndex;
+				}
+			}else{
+				console.log("Todos os produtos foram mostrados");
+				delete $rootScope.useIndexPr;
+				console.log($rootScope.useIndexPr);
+			}
+
+			configTimer(categoria.tempo);
+		});
+	}
+
+	var configTimer = function(tempo){
 		$timeout(function(){
-			console.log("time out for categoria " + cat._id);
+			console.log("time out for categoria " + $scope.currentCategoria._id);
 			$location.path('/baners');
-		}, cat.tempo * 500);
+		}, tempo * 500);
 	}
 
-	if($rootScope.categorias && $rootScope.categorias.length > 0){
-		
-		console.log($rootScope.categorias);
-		showFunction($rootScope.categorias);
+	configSes(sessao);
 
-	}else{
+	var defineValor = function(produtos){
+	    var weekDay = new Array(7);
+	    weekDay[1] = "segunda-feira";
+	    weekDay[2] = "terça-feira"; 
+	    weekDay[3] = "quarta-feira";
+		weekDay[4] = "quinta-feira";
+		weekDay[5] = "sexta-feira";
+		weekDay[6] = "sábado";
+		weekDay[7] = "domingo";
 
-		delete $rootScope.categorias;
-			/*
-			Se houver a variavel rootScope.categorias, significa que não é a primeira execução. 
-			Então recarrega a sessão para pegar alguma possível atualização.
-			*/
-			sessaoService.getSessao(sessoes._id).success(function(data){
-				sessoes = data;
-			});
+    	var hoje = weekDay[new Date().getDay()];
 
-		
-		$rootScope.categorias = sessoes.categorias;
-		showFunction($rootScope.categorias);
-	}
+    	produtos.forEach(function(produto){
+	    	if(produto.valorEspecial && produto.valorEspecial.length > 0){
+	    		
+	    		var diasEspeciais = produto.valorEspecial;
+
+	    		diasEspeciais.forEach(function(iterator){
+	    			if(iterator.dia == hoje){
+
+	    				produto.valorHoje = iterator.valor;
+	    				return;
+
+	    			}else if(!produto.valorHoje){
+	    				produto.valorHoje = produto.valorPadrao;
+	    			}
+	    		});
+	    	}else{
+	    		produto.valorHoje = produto.valorPadrao;
+	    	}
+    	});
+    }
 })
 
 .controller("banersController", function($scope, $rootScope, $location, $timeout, sessao, produtosService){

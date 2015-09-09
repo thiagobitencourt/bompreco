@@ -1,24 +1,38 @@
-<style type="text/css">
-.box {
-  display: inline-block;
-  width: 250px;
-  height: 250px;
-  margin: 4em;
-}
+<!-- GAMBIA TEMPORÁRIA. SERÁ REFATORADA COM UM NOVO CSS -->
+<div class="row">
+  <div>
+    	<div class="col-md-6" align="center">
+    		<li>{{showing[0].nome}}</li>
+        <img ng-src="images/produtos/{{showing[0].imagem || 'default.jpg'}}" height="220" width="320">
+    		<li>{{showing[0].valorHoje}}</li>
+    	</div>
+  </div>
 
-.imgM {
-  background: #eaeaed;
-  border: 1px solid #9799a7;
-  float: right;
-  margin: 8px 0 0 20px;
-  padding: 4px;
-}
-</style>
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[1].nome}}</li>
+        <img ng-src="images/produtos/{{showing[1].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[1].valorHoje}}</li>
+      </div>
+  </div>
+</div>
 
-<div>
-  	<div class="box" ng-repeat="produto in showing track by $index">
-  		<li>{{produto.nome}}</li>
-  		<li>{{produto.valorHoje}}</li>
-  		<img class="imgM" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="180" width="180">
-  	</div>
+<br />
+
+<div class="row">
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[2].nome}}</li>
+        <img ng-src="images/produtos/{{showing[2].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[2].valorHoje}}</li>
+      </div>
+  </div>
+
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[3].nome}}</li>
+        <img ng-src="images/produtos/{{showing[3].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[3].valorHoje}}</li>
+      </div>
+  </div>
 </div>

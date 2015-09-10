@@ -430,6 +430,12 @@ var setRouteProdutos = function(){
 //Altera a sessão padrão, para deixar de ser padrão
 var alterarSessaoPadrao = function(callback){
 
+	/*
+	Busca a sessão padrão, se encontrar esta sessão deixa de ser a sessão padrão.
+	O callback só recebe parâmetro de erro, então se for null é porque correu tudo bem.
+	Está função é usada para alterar a sessão padrão, 
+	portanto, se uma sessão padrão não for encontrada não tem problema.
+	*/
 	Sessao.findOne({padrao : true}, function(err, sessao){
 		if(err)	return callback(err);
 
@@ -438,9 +444,11 @@ var alterarSessaoPadrao = function(callback){
 			sessao.save(function(err){
 				if(err) return callback(err);
 
-				console.warn("Alterado: " + sessao);
 				return callback(null);
 			});
+		}else{
+			console.warn("Não havia sessão padrão");
+			return callback(null);
 		}
 	});
 };
@@ -539,6 +547,27 @@ var setRouteSessoes = function(){
 						return res.status(500).send(err.message);
 					}
 					newSessao.padrao = sessao.padrao;
+
+					newSessao.save(function(err){
+						if(err){
+							console.error("Error: " + err);
+							return res.status(500).send(err);
+						}
+
+						console.info("Nova sessão cadastrada: " + newSessao._id);
+						res.status(201).send(newSessao);
+					});
+				});
+
+			}else{
+				newSessao.save(function(err){
+					if(err){
+						console.error("Error: " + err);
+						return res.status(500).send(err);
+					}
+
+					console.info("Nova sessão cadastrada: " + newSessao._id);
+					res.status(201).send(newSessao);
 				});
 			}
 
@@ -546,15 +575,7 @@ var setRouteSessoes = function(){
 			return res.status(400).send({message: "Objeto sessão inválido"});
 		}
 
-		newSessao.save(function(err){
-			if(err){
-				console.error("Error: " + err);
-				return res.status(500).send(err);
-			}
-
-			console.info("Nova sessão cadastrada: " + newSessao._id);
-			res.status(201).send(newSessao);
-		});
+		
 	});
 
 	//Altera uma sessão existe, por ID
@@ -591,23 +612,59 @@ var setRouteSessoes = function(){
 				sessao.produtos = currentSessao.produtos || sessao.produtos || [];
 
 				//Sessão esta sendo definida para padrão. Altera sessão padrão atual
-				if(currentSessao.padrao === true && sessao.padrao !== true ){
+				if(currentSessao.padrao === true && !sessao.padrao){
 					alterarSessaoPadrao(function(err){
 						if(err){
 							console.error("Error: " + err.message);
 							return res.status(500).send(err.message);
 						}
 						sessao.padrao = currentSessao.padrao;
+
+						sessao.save();
+						console.info("Sessão Alterada");
+						res.status(204).send();
 					});
+
+				}else if(!currentSessao.padrao && sessao.padrao === true){
+					sessao.padrao = null;
+
+					sessao.save(function(err){
+						if(err){
+							console.error("Error0: " + err);
+							// return res.status(500).send(err.message);
+						}
+						console.info("Sessão Alterada");
+
+						Sessao.findOne({}, function(err, sessaoPadrao){
+							if(err){
+								console.error("Error1: " + err);
+								// return res.status(500).send(err.message);
+							}
+
+							if(sessaoPadrao){
+								console.log("Nova sessão padrão: " + sessaoPadrao.nome);
+								sessaoPadrao.padrao = true;
+								sessaoPadrao.save(function(err){
+									if(err){
+										console.error("Error2: " + err);
+										// return res.status(500).send(err.message);
+									}
+									return res.status(204).send();
+								});
+							}else{
+								return res.status(204).send();
+							}
+						});
+					});
+				}else{
+					sessao.save();
+					console.info("Sessão Alterada");
+					res.status(204).send();
 				}
 
 			}catch(ex){
 				return res.status(400).send({message: "Objeto sessão inválido"});
 			}
-
-			sessao.save();
-			console.info("Sessão Alterada");
-			res.status(204).send();
 		});
 	});
 
@@ -623,7 +680,7 @@ var setRouteSessoes = function(){
 		console.log("Delete by ID: " + sessaoId);
 		Sessao.findOne({_id: sessaoId}, function(err, sessao){
 			if(err){
-				console.error("Error: " + err.message);
+				console.error("Error: " + err);
 				return res.status(500).send(err.message);
 			}
 
@@ -640,26 +697,32 @@ var setRouteSessoes = function(){
 
 			sessao.remove();
 
-			Sessao.findOne({}, function(err, sessaoPadrao){
-				if(err){
-					console.error("Error: " + err.message);
-					// return res.status(500).send(err.message);
-				}
+			//Se a sessão removida era padrão, então define outra sessão como padrão.
+			if(wasPadrao){
+				Sessao.findOne({}, function(err, sessaoPadrao){
+					if(err){
+						console.error("Error: " + err.message);
+						// return res.status(500).send(err.message);
+					}
 
-				if(sessaoPadrao){
-					sessaoPadrao.padrao = true;
-					sessaoPadrao.save(function(err){
-						if(err){
-							console.error("Error: " + err.message);
-							// return res.status(500).send(err.message);
-						}
+					if(sessaoPadrao){
+						sessaoPadrao.padrao = true;
+						sessaoPadrao.save(function(err){
+							if(err){
+								console.error("Error: " + err.message);
+								// return res.status(500).send(err.message);
+							}
+							return res.status(204).send();
+						});
+					}else{
 						return res.status(204).send();
-					});
-				}
-			});
+					}
+				});
+			}else{
+				return res.status(204).send();
+			}
 
 			console.info("Sessão removida");
-			res.status(204).send();
 		});
 	});		
 };

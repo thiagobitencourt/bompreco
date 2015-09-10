@@ -6,7 +6,6 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 	var sessao = sessao.data;
 
 	var configSes = function(sessao){
-		console.log("nova sessao");
 
 		//Será um usado no futuro, talvez próximo.
 		// if($routeParams.sessao)
@@ -18,8 +17,6 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 
 		// sessaoService.getSessao(sessao._id).success(function(data){
 		// 	sessao = data;
-		// 	console.log("Aqui - Voltando");
-		// 	console.log(sessao);
 		// 	configCategorias(sessao.categorias);
 		// });
 	}
@@ -40,20 +37,19 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 		categoriasService.getCategoria(categoria._id).success(function(data){
 			$scope.currentCategoria = data;
 			
-			console.log("Tempo: " + categoria.tempo);
-			configProdutos(categoria);
-
-			if(!$rootScope.useIndexPr){
-				console.log("Incrementando index");
-				index++;
-				$rootScope.indexCatPr = index;
-			}
-			
-			console.log("Index scope: " + $rootScope.indexCatPr);
+			configProdutos(categoria, function(){
+				if(!$rootScope.useIndexPr){
+					console.log("Incrementando index");
+					index++;
+					$rootScope.indexCatPr = index;
+				}
+				
+				console.log("Index scope: " + $rootScope.indexCatPr);
+			});
 		});
 	}
 
-	var configProdutos = function(categoria){
+	var configProdutos = function(categoria, callback){
 
 		var produtos = [];
 		produtosService.getProdutos(categoria._id).success(function(data){
@@ -88,6 +84,7 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 			}
 
 			configTimer(categoria.tempo);
+			return callback();
 		});
 	}
 

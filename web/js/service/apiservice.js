@@ -16,7 +16,7 @@ app.factory("sessaoService", function($http, config){
 	}
 
 	var _deleteSessao = function(sessaoId){
-		return $http.put(config.baseWebUrl + _sessao + '/' + sessaoId);		
+		return $http.delete(config.baseWebUrl + _sessao + '/' + sessaoId);		
 	}
 
 	return {

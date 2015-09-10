@@ -4,6 +4,8 @@ angular.module('bomprecotv').controller('sessaoController',
     $scope.defaultTime = 30;
     $scope.hasSelected = false;
 
+    $scope.isDefault = false;
+
     var lastTab; //Ultima sessão sendo mostrada [ se1 | se2 | se3 | ultimaSes |      < - > (Nova Sessão)] 
     var maxTabs = 6; // Número máximo de sessões sendo mostrada
     var currTabIndex = maxTabs; //Indice da sessão atual.
@@ -16,6 +18,7 @@ angular.module('bomprecotv').controller('sessaoController',
     var closeAllSes = function(){
         $scope.hasSelected = false;
         activeSessao = {};
+        $scope.isDefault = false;
         $scope.selectedProdutos = [];
         delete $scope.produtos;
         produtosSessao = {};
@@ -87,6 +90,12 @@ angular.module('bomprecotv').controller('sessaoController',
 
         //Registra a sessão clicada como corrente/ativa
         activeSessao = sessao;
+
+        console.log(activeSessao);
+        //Se a sesão ativa é a padrão, então seleciona o check-box.
+        if(activeSessao.padrao)
+            $scope.isDefault = true;
+
         $scope.hasSelected = true;
         openSessao(sessao);
     }
@@ -133,7 +142,6 @@ angular.module('bomprecotv').controller('sessaoController',
     /*
     Salva as alterações realizadas na sessão corrente 
     TODO: Manter uma variável que indica que foi realizada alguma alteração na sessão para ativar ou não o botão salvar;
-    TODO: Criar um botão de excluir sessão;
     TODO: Criar a opção de definir a sessão com padrão.
     */
     $scope.salvarSessao = function(categorias){
@@ -153,10 +161,31 @@ angular.module('bomprecotv').controller('sessaoController',
             activeSessao.produtos.push(produto);
         });
 
+        //Recebe a configuração de sessão padrão
+        activeSessao.padrao = $scope.isDefault;
+
         sessaoService.updateSessao(activeSessao).success(function(data){
+            /* 
+            Define como falso, porque se acontecer de a sessão estar deixando de ser padrão 
+            então ao recarregar as sessões esta sessão não deve mais estar como padrão.
+            Se por acaso esta sessão for a padrão, então isso será configurado na função select
+            que é chamado dentro da função loadSessoes();
+            */
+            activeSessao.padrao = false;
             loadSessoes(activeSessao);
         });
     }
+
+    /*
+    Remove uma sessão
+    */
+    $scope.excluirSessao = function(){
+        sessaoService.deleteSessao(activeSessao._id).success(function(data){
+            //Após o retorno de sucesso do back-end, recarrega as sessões.
+            loadSessoes();
+        });
+    }
+
 
     /* 
     Cadastra a nova sessão e fecha o formulário. 
@@ -196,6 +225,8 @@ angular.module('bomprecotv').controller('sessaoController',
     var loadSessoes = function(sessaoAtual){
 
         sessaoService.getSessoes().success(function(data){
+
+            console.log("Carregou sessoes!");
             $scope.sessoes = data;
 
             $scope.temSessao = $scope.sessoes.length > 0? true : false;

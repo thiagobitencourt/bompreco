@@ -68,6 +68,11 @@
                 <button class="btn btn-success" ng-click="salvarSessao(categorias)">
                   <i class="fa fa-floppy-o"> Salvar</i>
                 </button>
+                <button class="btn btn-danger" ng-click="excluirSessao()">
+                  <i class="fa fa-times"> Excluir</i>
+                </button>
+                  <input type="checkbox" class="pull-right" ng-checked="isDefault" ng-model="isDefault"> </input>
+                  <p class="text-red pull-right">Sessão padrão&nbsp&nbsp</p>
               </div>
 
             </div><!-- END COL-MD-6 -->

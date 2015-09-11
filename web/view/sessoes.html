@@ -10,7 +10,12 @@
   <div class="col-md-12">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
-        <li ng-repeat="sessao in sessoes | limitTo: limit" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">{{sessao.nome}}</a></li>
+        <li ng-repeat="sessao in sessoes | limitTo: limit" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">
+          {{sessao.nome}} &nbsp
+          <span class="text-red pull-right" ng-if="sessao.padrao">
+            <i class="fa fa-star-o" data-toggle="tooltip" title="Sessão Padrão"></i>
+          </span>
+        </a></li>
         <li class="pull-right" data-toggle="tooltip" title="Nova Sessão">
           <button class="btn btn-primary" ng-click="openNovaSessaoForm()">
             <i class="fa fa-plus"></i> Nova Sessão
@@ -29,6 +34,14 @@
 
               <div class="box-header with-border">
                 <h3 class="box-title">Tabelas</h3>
+
+                <div class="input-group pull-right" style="width: 150px;">
+                  <input type="text" ng-model="searchCategoria" class="form-control input-sm pull-right" placeholder="Procurar"/>
+                  <div class="input-group-btn">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+
               </div>
               <div class="box-body">
 
@@ -40,7 +53,7 @@
                     <th style="width: 40px">Produtos</th>
                   </tr>
 
-                  <tr ng-repeat="categoria in categorias">
+                  <tr ng-repeat="categoria in categorias | filter: searchCategoria">
                     <td>
                       <input type="checkbox" ng-checked="categoria.selecionada" ng-model="categoria.selecionada"/>
                     </td>
@@ -82,6 +95,14 @@
 
               <div class="box-header with-border">
                   <h3 class="box-title">Baners</h3>
+
+                  <div class="input-group pull-right" style="width: 150px;">
+                    <input type="text" ng-model="searchProduto" class="form-control input-sm pull-right" placeholder="Procurar"/>
+                    <div class="input-group-btn">
+                      <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+
               </div>
               <div class="box-body">
 
@@ -92,7 +113,7 @@
                     <th>Produto</th>
                     <th style="width: 5px">Ver</th>
                   </tr>
-                  <tr ng-repeat="produto in produtos">
+                  <tr ng-repeat="produto in produtos | filter: searchProduto">
                     <td>
                       <input type="checkbox" ng-checked="produto.selecionado" ng-model="produto.selecionado" ng-click="selecionaProduto(produto)"/>
                     </td>

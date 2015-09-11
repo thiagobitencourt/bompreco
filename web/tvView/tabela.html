@@ -1,27 +1,3 @@
-
-<!-- SIMPLES HTML. SEM NENHUM CSS
-<table>
-    <th align="center">{{currentCategoria.categoria}}</th>
-    <tr ng-repeat="produto in produtos">
-        <td>
-            {{produto.codigo}}
-        </td>
-     
-        <td>
-            {{produto.nome}}
-        </td>
-     
-        <td>
-            R$ {{produto.valorPadrao}}
-        </td>
-     
-        <td>
-            {{produto.unidadeMedida}}
-        </td>
-    </tr>
-</table>
- -->
-
 <div class="leFt">
     <h1>{{currentCategoria.categoria}}</h1>
     <ul>
@@ -35,12 +11,12 @@
 </div>
 
 <!-- <div class="riGht">
-    <h1>Carne Bovina</h1>
+    <h1>{{currentCategoria.categoria}}</h1>
     <ul>
-        <li ng-repeat="produto in produtos">
+        <li ng-repeat="produto in showingPr track by $index">
             <div class="coDe">{{produto.codigo}}</div>
             <div class="proD">{{produto.nome}}</div>
-            <div class="vaL">R$ {{produto.valorPadrao}}</div>
+            <div class="vaL">R$ {{produto.valorHoje}}</div>
             <div class="unI">{{produto.unidadeMedida}}</div>
         </li>
     </ul>

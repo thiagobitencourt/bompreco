@@ -11,6 +11,8 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	var produtos = $scope.produtos = Produtos.data;
 	var categorias = [];
 	var updating = false;
+	$scope.showProdutoForm = false;
+	$scope.unidadesMedidas = ['kg', 'lt', 'gr', 'un', 'pe'];
 
 	var loadCategorias = function(){
 		categoriasService.getCategorias().success(function(data){
@@ -41,10 +43,12 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		}).error(function(data){
 			console.log(data);
 		});
-
 	}
 
 	$scope.editar = function(produto){
+
+		configSemana(produto.valorEspecial);
+
 		$scope.novoProduto = produto;
 
 		angular.forEach(categorias, function(categoria){
@@ -68,15 +72,13 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		});
 	}
 
-	$scope.criarNovoProduto = function(novoProduto){
+	var configSemana = function(semana){
 
-		if(!novoProduto){
-			delete $scope.novoProduto;
-			delete $scope.produtoImagem;
-			$scope.showProdutoForm = false;
-			return;
+		if(semana){
+			var hasSemana = true;
 		}
 
+		var d = $scope.week = [];
 		var weekDay = new Array(7);
 	    weekDay[0] = "segunda-feira";
 	    weekDay[1] = "terça-feira"; 
@@ -86,25 +88,57 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		weekDay[5] = "sábado";
 		weekDay[6] = "domingo";
 
-		var dias = {};
-		novoProduto.valorEspecial = [];
-
-		for(var i in novoProduto.dias){
-			var dia = {} ;
-			dia[weekDay[i]] = novoProduto.dias[i];
-
-			var obj = {dia: weekDay[i], valor: novoProduto.dias[i]};
-			console.log(obj);
-
-			novoProduto.valorEspecial.push(obj);
+		var defObj = function(day){
+			var obj = {};
+			obj.valor = null;
+			obj.check = false;
+			obj.dia = day;
+			return obj;
 		}
-		
-			// console.log(JSON.stringify(dias));
 
-		// novoProduto.valorEspecial.forEach(function(dia){
-		// 	console.log("dia");
-		// 	console.log(dia);
-		// });
+		var it = 0;
+		angular.forEach(weekDay, function(day){
+			
+			if(hasSemana){
+				if(semana[it] && semana[it].dia == day){
+					var obj = {};
+					obj.valor = semana[it].valor;
+					obj.check = true;
+					obj.dia = semana[it].dia;
+
+					d.push(obj);
+					it++;
+				}else{
+					d.push(defObj(day));	
+				}
+			}else{
+				d.push(defObj(day));
+			}
+		});
+	}
+
+	$scope.showForm = function(){
+		$scope.showProdutoForm = true;
+
+		configSemana();
+	}
+
+	$scope.criarNovoProduto = function(novoProduto){
+
+		if(!novoProduto){
+			delete $scope.novoProduto;
+			delete $scope.produtoImagem;
+			$scope.showProdutoForm = false;
+			return;
+		}
+
+		novoProduto.valorEspecial = [];
+		angular.forEach($scope.week, function(day){
+			if(day.check){
+				day.valor = day.valor.replace('R$','');
+				novoProduto.valorEspecial.push({dia: day.dia, valor: day.valor});				
+			}
+		});
 
 		var success = function(data){
 			$scope.showProdutoForm = false;
@@ -117,9 +151,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		}
 
 		novoProduto.categoria = $scope.paraCategoria._id;
-		// novoProduto.valorEspecial = JSON.parse(dias);
-
-		console.log(novoProduto.valorEspecial);
+		novoProduto.valorPadrao = novoProduto.valorPadrao.replace('R$','');
 
 		if(updating == true){
 			if($scope.produtoImagem){

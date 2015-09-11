@@ -97,23 +97,20 @@
 	            </table>
 
 				<div>
-	            	<button class="btn btn-primary" ng-click="showProdutoForm = true;">
+	            	<button class="btn btn-primary" ng-click="showForm()">
 	            		<i class="fa fa-plus"></i> Novo Produto
 	            	</button>
 	            </div>
 			</div>
 
 			<div ng-show="showProdutoForm" class="container-fluid">
-
 				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
+					<div class="col-md-12">
 
 						<form role="form" name="novoProdutoForm">
 							<div class="form-group">
 
 								<div class="row">
-
 									<div class="col-md-4">
 										<label for="inputCodigo">Código*</label>
 										<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo" ng-required="true">
@@ -123,11 +120,9 @@
 					                    <label for="inputNome">Nome*</label>
 					                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome" ng-required="true">
 					                </div>
-
 			                    </div>
 
 			                    <div class="row">
-
 			                    	<div class="col-md-6">
 			                    		<label for="inputCategoria">Categoria*</label>
 					                    <select ng-model="paraCategoria" ng-required="true" class="form-control" ng-options="categoria.categoria for categoria in categorias">
@@ -137,58 +132,33 @@
 
 									<div class="col-md-3">
 										<label for="inputUn">Unidade*</label>
-			                    		<input type="text" class="form-control" id="inputUn" ng-model="novoProduto.unidadeMedida" ng-required="true">
+
+										<select id="inputUn" ng-model="novoProduto.unidadeMedida" ng-required="true" class="form-control" ng-options="un as un for un in unidadesMedidas">
+					                    	<option></option>
+					                    </select>
 			                    	</div>
 
 			                    	<div class="col-md-3">
-
 			                    		<label for="inputValorP">Valor Padrão*</label>
-			                    		<input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao" ng-required="true">
-
+			                    		<input type="text" class="form-control" id="inputValorP" ng-model="novoProduto.valorPadrao" ng-required="true" money-mask>
 			                    	</div>
-
 			                    </div>
 
 			                    <div class="row">
-
 									<div class="col-md-12">
 										<label for="inputValorE">Valor Especial</label>
-
+										<br />
 										<div class="row">
-					                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Segunda-feira">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[0]">
-					                    	</div>
-					                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Terça-feira">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[1]">
-					                    	</div>
-					                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Quarta-feira">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[2]">
-					                    	</div>
-					                    						                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Quinta-feira">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[3]">
-					                    	</div>
-					                    						                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Sexta-feira">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[4]">
-					                    	</div>
-					                    						                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Sábado">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[5]">
-					                    	</div>
-					                    						                    	<div class="col-md-2">
-					                    		<input type="checkbox" data-toggle="tooltip" title="Domingo">
-					                    		<input type="text" class="form-control" ng-model="novoProduto.dias[6]">
-					                    	</div>
-					                    </div>
-
-
-
+											<div class="col-md-3" ng-repeat="dia in week">
+												<div class="input-group">
+													<span class="input-group-addon">
+														<input type="checkbox" data-toggle="tooltip" title="{{dia.dia}}" ng-model="dia.check">
+													</span>
+													<input type="text" ng-disabled="!dia.check" class="form-control" ng-model="dia.valor" money-mask>
+												</div>
+											</div>
+										</div>
 			                    	</div>
-
 			                    </div>
 								
 				                <div class="row">
@@ -205,16 +175,6 @@
 			                    		<input type="file" file-model="produtoImagem"/>
 			                    	</div>
 			                    </div>
-
-<!-- 			                    <div class="row">
-			                    	<div class="col-md-">
-			                    	
-			                    	</div>
-									<div class="col-md-">
-			                    	
-			                    	</div>
-			                    </div> -->
-
 
 			                    <br />
 			                	<p class="text-red" ng-if="!novoProdutoForm.$pristine && novoProdutoForm.$error.required">
@@ -233,14 +193,12 @@
 
 						</form>
 
-						{{novoProduto}}
+						<!-- {{novoProduto}} -->
 
 					</div>
-					<div class="col-md-3"></div>
 				</div>
 
 			</div>
-
 		</div>
 	</div>
 </div>

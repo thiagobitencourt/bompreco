@@ -35,7 +35,7 @@ function formatReal( int ){
   return (neg ? '-'+tmp : tmp);
 }
 
-angular.module('bomprecotv', ['ngRoute']).config(function($routeProvider) {
+angular.module('bomprecotv', ['ngRoute', 'money-mask']).config(function($routeProvider) {
 $routeProvider
   .when('/sessoes', {
     controller: 'sessaoController',

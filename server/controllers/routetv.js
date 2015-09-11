@@ -8,20 +8,36 @@ var RouterTv = function(){
 
 	router = express.Router();
 
-	router.get('/sessao', function(req, res){
+	var buscaSessaoPadrao = function(done){
 		Sessao.findOne({padrao: true}, function(err, sessao){
-			if(err) return res.status(500).send();
+			if(err) return done(err, null);
+			done(null, sessao);
+		});
+	}
+
+	router.get('/sessao', function(req, res){
+		
+		buscaSessaoPadrao(function(err, sessao){
+			if(err) return res.status(500).send("Internal Error: " + err);
 
 			if(sessao){
-				res.status(200).send(sessao);
+				return res.status(200).send(sessao);
+			}else{
+				var message = "Sessão padrão não encontrada";
+				console.log(message);
+				return res.status(400).send(message);	
 			}
 		});
 	});
 
 	router.get('/sessao/:sessao', function(req, res){
+		
+		//Redireciona qualquer requisição para a sessão padrão.
+		return res.redirect("/tv/sessao");
+
 		var nome = req.params.sessao;
 		if(!nome){
-			return res.redirect("/padrao");
+			return res.redirect("/tv/sessao");
 		}
 
 		console.log("Nome da sessão: " + nome);

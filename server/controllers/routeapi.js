@@ -30,6 +30,71 @@ var RouterApi = function(){
 	return router;
 }
 
+//Funções globais
+var qdtProdutosEmCategoria = function(categoriaId, done){
+
+	Produtos.find({categoria: categoriaId}).exec(function(err, produtos){
+		if(err){
+			return done(err, null);
+		}
+
+		return done(null, produtos.length);
+	});
+}
+
+var removerProdutoDaSessao = function(produto, done){
+	/*
+	Ao remover um produto, se este produto eh referenciado por uma sessão então esta referência deve ser removida.
+	*/
+	Sessao.find({produtos: {$elemMatch: {produto: produto._id}}}).exec(function(err, sessoes){
+		if(err) return done(err);
+
+		sessoes.forEach(function(ses){
+			var keep = [];
+
+			ses.produtos.forEach(function(pr){
+				var prStr = pr.produto.toString();
+				if(prStr.indexOf(produto._id) == -1){
+					keep.push(pr);
+				}
+			});
+
+			ses.produtos = [];
+			ses.produtos = keep;
+
+			ses.save();
+		});
+		done(null);
+	});
+}
+
+//Altera a sessão padrão, para deixar de ser padrão
+var alterarSessaoPadrao = function(callback){
+
+	/*
+	Busca a sessão padrão, se encontrar esta sessão deixa de ser a sessão padrão.
+	O callback só recebe parâmetro de erro, então se for null é porque correu tudo bem.
+	Está função é usada para alterar a sessão padrão, 
+	portanto, se uma sessão padrão não for encontrada não tem problema.
+	*/
+	Sessao.findOne({padrao : true}, function(err, sessao){
+		if(err)	return callback(err);
+
+		if(sessao){		
+			sessao.padrao = null;
+			sessao.save(function(err){
+				if(err) return callback(err);
+
+				return callback(null);
+			});
+		}else{
+			console.warn("Não havia sessão padrão");
+			return callback(null);
+		}
+	});
+};
+
+
 var setRouteCategorias = function(){
 
 	var expressRouteSimple = "/categorias";
@@ -175,9 +240,20 @@ var setRouteCategorias = function(){
 				return res.status(404).send({message:"Nenhuma categoria encontrada"});
 			}
 
-			categoria.remove();
-			console.info("Categoria removida");
-			res.status(204).send();
+			qdtProdutosEmCategoria(categoriaId, function(err, numProd){
+				if(err){
+					console.error("Error: " + err.message);
+					return res.status(500).send(err.message);
+				}
+
+				if(numProd != 0){
+					return res.status(400).send({message: "Não é possível remover esta categoria"});
+				}
+
+				categoria.remove();
+				console.info("Categoria removida");
+				res.status(204).send();
+			});
 		});
 	});	
 };
@@ -230,13 +306,13 @@ var setRouteProdutos = function(){
 			return res.status(400).send({message: "Id de categoria inválido"});
 		}
 
-		Produtos.find({categoria: categoriaId}).exec(function(err, produtos){
+		qdtProdutosEmCategoria(categoriaId, function(err, numProd){
 			if(err){
 				console.error("Error: " + err.message);
 				return res.status(500).send(err.message);
 			}
 
-			res.status(200).send([produtos.length]);
+			return res.status(200).send([numProd]);
 		});
 	});
 
@@ -418,39 +494,20 @@ var setRouteProdutos = function(){
 			}
 			
 			//TODO: Remover referencias em todas as categorias que este produto esta contido
-			console.warn("TODO: Remover referencias em todas as categorias que este produto esta contido");
 
-			produto.remove();
-			console.info("Produto removido");
-			res.status(204).send();
+			removerProdutoDaSessao(produto, function(err){
+				if(err){
+					console.error("Error: " + err.message);
+					return res.status(500).send(err.message);
+				}
+
+				produto.remove();
+				console.info("Produto removido");
+				return res.status(204).send();
+			});
+
 		});
 	});	
-};
-
-//Altera a sessão padrão, para deixar de ser padrão
-var alterarSessaoPadrao = function(callback){
-
-	/*
-	Busca a sessão padrão, se encontrar esta sessão deixa de ser a sessão padrão.
-	O callback só recebe parâmetro de erro, então se for null é porque correu tudo bem.
-	Está função é usada para alterar a sessão padrão, 
-	portanto, se uma sessão padrão não for encontrada não tem problema.
-	*/
-	Sessao.findOne({padrao : true}, function(err, sessao){
-		if(err)	return callback(err);
-
-		if(sessao){		
-			sessao.padrao = null;
-			sessao.save(function(err){
-				if(err) return callback(err);
-
-				return callback(null);
-			});
-		}else{
-			console.warn("Não havia sessão padrão");
-			return callback(null);
-		}
-	});
 };
 
 var setRouteSessoes = function(){

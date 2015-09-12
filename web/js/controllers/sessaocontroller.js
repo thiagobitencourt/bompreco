@@ -142,7 +142,6 @@ angular.module('bomprecotv').controller('sessaoController',
     /*
     Salva as alterações realizadas na sessão corrente 
     TODO: Manter uma variável que indica que foi realizada alguma alteração na sessão para ativar ou não o botão salvar;
-    TODO: Criar a opção de definir a sessão com padrão.
     */
     $scope.salvarSessao = function(categorias){
         var salvarCategorias = categorias.filter(function(eachCat){

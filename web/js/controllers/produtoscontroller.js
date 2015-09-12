@@ -1,4 +1,4 @@
-angular.module('bomprecotv').controller('produtosController', function(fileUpload, $scope, Produtos, categoriasService, produtosService){
+angular.module('bomprecotv').controller('produtosController', function(fileUpload, $modal, $scope, Produtos, categoriasService, produtosService){
 
 	/*
 	TODO: No formulario de cadastro de novo produto. 
@@ -65,11 +65,27 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	$scope.excluir = function(produto){
 		// console.log(produto);
 
-		produtosService.deleteProduto(produto._id).success(function(data){
-			loadProdutos();
-		}).error(function(data){
+		var modalInstance = $modal.open({
+            animation: false,
+            templateUrl: 'confirmModal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+                item: function () {
+                  return produto.nome;
+                }
+            }
+        });
 
-		});
+        modalInstance.result.then(function (selectedItem) {
+			produtosService.deleteProduto(produto._id).success(function(data){
+				loadProdutos();
+			}).error(function(data){
+
+			});
+        }, function () {
+            // console.info('Modal dismissed at: ' + new Date());
+        });
 	}
 
 	var configSemana = function(semana){

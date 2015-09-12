@@ -1,4 +1,4 @@
-angular.module('bomprecotv').controller('categoriasController', function($scope, Categorias, categoriasService, produtosService){
+angular.module('bomprecotv').controller('categoriasController', function($scope, $modal, Categorias, categoriasService, produtosService){
 
 	var categorias = $scope.categorias = Categorias.data;
 	var updating = false;
@@ -30,16 +30,33 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 
 	$scope.excluir = function(categoria){
 
-		//Verifica os produtos relacionados a esta categoria. Não pode excluir se houver produtos relacionados
-		produtosService.getLengthByCategoria(categoria._id).success(function(data){
-			if(data[0] == 0){
-				categoriasService.deleteCategoria(categoria._id).success(function(data){
-					loadCategorias();
-				});
-			}else{
-				console.log("Não é possível escluir esta categoria. Existem produtos relacionados a ela.")
-			}
-		});
+		var modalInstance = $modal.open({
+            animation: false,
+            templateUrl: 'confirmModal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+                item: function () {
+                  return categoria.categoria;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            //Verifica os produtos relacionados a esta categoria. Não pode excluir se houver produtos relacionados
+			produtosService.getLengthByCategoria(categoria._id).success(function(data){
+				if(data[0] == 0){
+					categoriasService.deleteCategoria(categoria._id).success(function(data){
+						loadCategorias();
+					});
+				}else{
+					//TODO: Mensagem ao usuário.
+					console.log("Não é possível escluir esta categoria. Existem produtos relacionados a ela.")
+				}
+			});
+        }, function () {
+            // console.info('Modal dismissed at: ' + new Date());
+        });
 	};
 
 	$scope.criarNovaCategoria = function(novaCategoria){

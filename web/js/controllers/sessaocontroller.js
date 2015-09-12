@@ -1,5 +1,5 @@
 angular.module('bomprecotv').controller('sessaoController', 
-    function($scope, Categorias, sessaoService, produtosService){
+    function($scope, Categorias, sessaoService, produtosService, $modal){
 
     $scope.defaultTime = 30;
     $scope.hasSelected = false;
@@ -179,9 +179,26 @@ angular.module('bomprecotv').controller('sessaoController',
     Remove uma sessão
     */
     $scope.excluirSessao = function(){
-        sessaoService.deleteSessao(activeSessao._id).success(function(data){
-            //Após o retorno de sucesso do back-end, recarrega as sessões.
-            loadSessoes();
+
+        var modalInstance = $modal.open({
+            animation: false,
+            templateUrl: 'confirmModal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+                item: function () {
+                  return activeSessao.nome;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            sessaoService.deleteSessao(activeSessao._id).success(function(data){
+                //Após o retorno de sucesso do back-end, recarrega as sessões.
+                loadSessoes();
+            });
+        }, function () {
+            // console.info('Modal dismissed at: ' + new Date());
         });
     }
 

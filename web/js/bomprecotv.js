@@ -35,7 +35,7 @@ function formatReal( int ){
   return (neg ? '-'+tmp : tmp);
 }
 
-angular.module('bomprecotv', ['ngRoute', 'money-mask']).config(function($routeProvider) {
+angular.module('bomprecotv', ['ngRoute', 'money-mask', 'ui.bootstrap']).config(function($routeProvider) {
 $routeProvider
   .when('/sessoes', {
     controller: 'sessaoController',
@@ -105,5 +105,17 @@ $routeProvider
 .filter('realbrasileiro', function() {
   return function(input) {
     return 'R$ ' + formatReal(input);
+  };
+})
+
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, item) {
+  $scope.item = item;
+
+  $scope.ok = function () {
+    $modalInstance.close('excluir');
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancelar');
   };
 });

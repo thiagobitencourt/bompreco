@@ -49,7 +49,7 @@
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">{{home.user.nome}} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="">Perfil</a></li>
-                  <li><a href="">Sing out</a></li>
+                  <li><a href="/logout">Sair</a></li>
                 </ul>
               </li>
 
@@ -151,11 +151,21 @@
     <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
     <script type="text/ng-template" id="confirmModal.html">
       <div class="modal-header">
-          <h3 class="modal-title">Deseja excluir {{item}} ?</h3>
+          <h3 class="modal-title">{{titulo}}</h3>
       </div>
       <div class="modal-footer">
           <button class="btn btn-primary" type="button" ng-click="ok()">Excluir</button>
-          <button class="btn btn-danger" type="button" ng-click="cancel()">Cancelar</button>
+          <button class="btn btn-danger" ng-if="!notCancel"type="button" ng-click="cancel()">Cancelar</button>
+      </div>
+    </script>
+
+    <!-- MODAL DE ERROR -->
+    <script type="text/ng-template" id="errorModal.html">
+      <div class="modal-header">
+          <h3 class="modal-title text-red">{{titulo}}</h3>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-danger" type="button" ng-click="ok()">OK</button>
       </div>
     </script>
 

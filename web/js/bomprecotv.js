@@ -108,11 +108,11 @@ $routeProvider
   };
 })
 
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance, item) {
-  $scope.item = item;
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, titulo) {
+  $scope.titulo = titulo;
 
   $scope.ok = function () {
-    $modalInstance.close('excluir');
+    $modalInstance.close('ok');
   };
 
   $scope.cancel = function () {

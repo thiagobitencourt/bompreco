@@ -10,8 +10,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(express.static('web/'));
-app.get('/', function(req, res, next){
-	res.sendfile('web/index.html');
+app.get('/', function(req, res){
+	return res.sendfile('web/index.html');
+});
+
+app.get('/login', function(req, res){
+	return res.sendfile('web/login.html');
+});
+
+app.get('/logout', function(req, res){
+	return res.redirect('/login.html');
 });
 
 app.get('/tv', function(req, res){

@@ -105,8 +105,8 @@ var setRouteCategorias = function(){
 
 		Categorias.find({}, function(err, categorias){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Categorias.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categorias"});
 			}
 
 			res.status(200).send(categorias);
@@ -124,8 +124,8 @@ var setRouteCategorias = function(){
 
 		Categorias.findById(idCategoria, function(err, categoria){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Categorias.findById Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categoria"});
 			}
 
 			//Se não encontrar nenhuma categoria, retorna 404
@@ -159,8 +159,8 @@ var setRouteCategorias = function(){
 
 		newCategoria.save(function(err){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("newCategoria.save Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao cadastrar nova categoria"});
 			}
 
 			console.log("Categoria inserida: " + newCategoria._id);
@@ -186,8 +186,8 @@ var setRouteCategorias = function(){
 
 		Categorias.findOne({_id: categoriaId}, function(err, categoria){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Categorias.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categoria"});
 			}
 
 			//Se não encontrar nenhuma categoria, retorna 404
@@ -208,8 +208,8 @@ var setRouteCategorias = function(){
 
 			categoria.save(function(err, cat){
 				if(err){
-					console.error("Error: " + err.message);
-					return res.status(500).send(err.message);
+					console.error("categoria.save Error: " + err.message);
+					return res.status(500).send({message: "500: Erro ao atualizar categoria"});
 				}
 				
 				console.info("Categoria Alterada: " + categoriaId);
@@ -230,8 +230,8 @@ var setRouteCategorias = function(){
 		console.log("Delete by ID: " + categoriaId);
 		Categorias.findOne({_id: categoriaId}, function(err, categoria){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Categorias.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categoria"});
 			}
 
 			//Se não encontrar nenhuma categoria, retorna 404
@@ -242,8 +242,8 @@ var setRouteCategorias = function(){
 
 			qdtProdutosEmCategoria(categoriaId, function(err, numProd){
 				if(err){
-					console.error("Error: " + err.message);
-					return res.status(500).send(err.message);
+					console.error("qdtProdutosEmCategoria Error: " + err.message);
+					return res.status(500).send({message: "500: Erro ao remover categoria"});
 				}
 
 				if(numProd != 0){
@@ -268,8 +268,8 @@ var setRouteProdutos = function(){
 
 		Produtos.find({}, function(err, produtos){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Produtos.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produtos"});
 			}
 
 			res.status(200).send(produtos);
@@ -283,8 +283,8 @@ var setRouteProdutos = function(){
 
 		Produtos.findById(produtoId, function(err, produto){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Produtos.findById Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produto"});
 			}
 
 			//Se não encontrar nenhum produto, retorna 404
@@ -308,8 +308,8 @@ var setRouteProdutos = function(){
 
 		qdtProdutosEmCategoria(categoriaId, function(err, numProd){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("qdtProdutosEmCategoria Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar quantidade de produto"});
 			}
 
 			return res.status(200).send([numProd]);
@@ -326,8 +326,8 @@ var setRouteProdutos = function(){
 
 		Sessao.findOne({_id: sessaoId}, function(err, sessao){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			//Se não encontrar nenhuma sessao, retorna 404
@@ -343,8 +343,8 @@ var setRouteProdutos = function(){
 
 			Produtos.find({ _id: { "$in" : produtosSes} }, function(err, produtos){
 				if(err){
-					console.error("Error: " + err.message);
-					return res.status(500).send(err.message);
+					console.error("Produtos.find Error: " + err.message);
+					return res.status(500).send({message: "500: Erro ao carregar produtos da sessão"});
 				}
 
 				res.status(200).send(produtos);
@@ -363,8 +363,8 @@ var setRouteProdutos = function(){
 
 		Produtos.find({categoria: categoriaId}, function(err, produtos){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Produtos.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produtos da categora"});
 			}
 
 			res.status(200).send(produtos);
@@ -406,8 +406,8 @@ var setRouteProdutos = function(){
 
 		newProduto.save(function(err){
 			if(err){
-				console.error("Error: " + err);
-				return res.status(500).send(err.message);
+				console.error("newProduto.save Error: " + err);
+				return res.status(500).send({message: "500: Erro ao salvar novo produtos"});
 			}
 
 			console.info("Novo produto cadastrado: " + newProduto._id);
@@ -433,8 +433,8 @@ var setRouteProdutos = function(){
 
 		Produtos.findOne({_id: produtoId}, function(err, produto){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Produtos.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produtos"});
 			}
 
 			//Se não encontrar nenhum produto, retorna 404
@@ -462,7 +462,7 @@ var setRouteProdutos = function(){
 			produto.save(function(err, cat){
 				if(err){
 					console.error("Error: " + err.message);
-					return res.status(500).send(err.message);
+					return res.status(500).send({message: "500: Erro ao atualizar produto"});
 				}
 				
 				console.info("Produto Alterado: " + produtoId);
@@ -484,7 +484,7 @@ var setRouteProdutos = function(){
 		Produtos.findOne({_id: produtoId}, function(err, produto){
 			if(err){
 				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produto"});
 			}
 
 			//Se não encontrar nenhum produto, retorna 404
@@ -497,8 +497,8 @@ var setRouteProdutos = function(){
 
 			removerProdutoDaSessao(produto, function(err){
 				if(err){
-					console.error("Error: " + err.message);
-					return res.status(500).send(err.message);
+					console.error("removerProdutoDaSessao Error: " + err.message);
+					return res.status(500).send({message: "500: Erro ao atualizar sessao com este produto"});
 				}
 
 				produto.remove();
@@ -520,8 +520,8 @@ var setRouteSessoes = function(){
 
 		Sessao.find({}).exec(function(err, sessoes){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Sessao.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessões"});
 			}
 
 			res.status(200).send(sessoes);
@@ -540,7 +540,7 @@ var setRouteSessoes = function(){
 		Sessao.findOne({_id: sessaoId}, function(err, sessao){
 			if(err){
 				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			//Se não encontrar nenhuma sessao, retorna 404
@@ -563,8 +563,8 @@ var setRouteSessoes = function(){
 
 		Sessao.findOne({nome: sessaoNome}, function(err, sessao){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			//Se não encontrar nenhuma sessao, retorna 404
@@ -600,15 +600,15 @@ var setRouteSessoes = function(){
 			if(sessao.padrao && sessao.padrao === true ){
 				alterarSessaoPadrao(function(err){
 					if(err){
-						console.error("Error: " + err.message);
-						return res.status(500).send(err.message);
+						console.error("alterarSessaoPadrao Error: " + err.message);
+						return res.status(500).send({message: "500: Erro ao alterar sessão padrão"});
 					}
 					newSessao.padrao = sessao.padrao;
 
 					newSessao.save(function(err){
 						if(err){
-							console.error("Error: " + err);
-							return res.status(500).send(err);
+							console.error("newSessao.save Error 1: " + err);
+							return res.status(500).send({message: "500: Erro ao salvar nova sessão"});
 						}
 
 						console.info("Nova sessão cadastrada: " + newSessao._id);
@@ -619,8 +619,8 @@ var setRouteSessoes = function(){
 			}else{
 				newSessao.save(function(err){
 					if(err){
-						console.error("Error: " + err);
-						return res.status(500).send(err);
+						console.error("newSessao.save Error 2: " + err);
+						return res.status(500).send({message: "500: Erro ao salvar nova sessão"});
 					}
 
 					console.info("Nova sessão cadastrada: " + newSessao._id);
@@ -652,8 +652,8 @@ var setRouteSessoes = function(){
 		console.log("Update by ID: " + sessaoId);
 		Sessao.findOne({_id: sessaoId}, function(err, sessao){
 			if(err){
-				console.error("Error: " + err.message);
-				return res.status(500).send(err.message);
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			//Se não encontrar nenhuma sessao, retorna 404
@@ -672,8 +672,8 @@ var setRouteSessoes = function(){
 				if(currentSessao.padrao === true && !sessao.padrao){
 					alterarSessaoPadrao(function(err){
 						if(err){
-							console.error("Error: " + err.message);
-							return res.status(500).send(err.message);
+							console.error("alterarSessaoPadrao Error 2: " + err.message);
+							return res.status(500).send({message: "500: Erro ao alterar sessão padrão"});
 						}
 						sessao.padrao = currentSessao.padrao;
 
@@ -737,8 +737,8 @@ var setRouteSessoes = function(){
 		console.log("Delete by ID: " + sessaoId);
 		Sessao.findOne({_id: sessaoId}, function(err, sessao){
 			if(err){
-				console.error("Error: " + err);
-				return res.status(500).send(err.message);
+				console.error("Sessao.findOne Error: " + err);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			//Se não encontrar nenhuma sessao, retorna 404

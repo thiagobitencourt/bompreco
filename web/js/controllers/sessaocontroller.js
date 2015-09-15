@@ -15,6 +15,27 @@ angular.module('bomprecotv').controller('sessaoController',
     var activeSessao = {};
     var produtosSessao = {};
 
+    var openModalError = function(errorMessage){
+
+        var modalInstance = $modal.open({
+            animation: false,
+            templateUrl: 'errorModal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+                titulo: function () {
+                  return errorMessage;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            console.log("Modal Fechada");
+        }, function () {
+            // console.info('Modal dismissed at: ' + new Date());
+        });
+    }
+
     var closeAllSes = function(){
         $scope.hasSelected = false;
         activeSessao = {};
@@ -117,6 +138,7 @@ angular.module('bomprecotv').controller('sessaoController',
 
         }).error(function(data, status){
             console.log(data);
+            openModalError(data.message);
         });
     }
 
@@ -172,6 +194,8 @@ angular.module('bomprecotv').controller('sessaoController',
             */
             activeSessao.padrao = false;
             loadSessoes(activeSessao);
+        }).error(function(data, status){
+            openModalError(data.message);
         });
     }
 
@@ -186,8 +210,8 @@ angular.module('bomprecotv').controller('sessaoController',
             controller: 'ModalInstanceCtrl',
             size: 'sm',
             resolve: {
-                item: function () {
-                  return activeSessao.nome;
+                titulo: function () {
+                  return "Deseja excluir " + activeSessao.nome + "?";
                 }
             }
         });
@@ -196,7 +220,10 @@ angular.module('bomprecotv').controller('sessaoController',
             sessaoService.deleteSessao(activeSessao._id).success(function(data){
                 //Após o retorno de sucesso do back-end, recarrega as sessões.
                 loadSessoes();
+            }).error(function(data, status){
+                openModalError(data.message);
             });
+
         }, function () {
             // console.info('Modal dismissed at: ' + new Date());
         });
@@ -227,6 +254,7 @@ angular.module('bomprecotv').controller('sessaoController',
             loadSessoes();
         }).error(function(data){
             console.log(data);
+            openModalError(data.message);
         });
     }
 
@@ -242,9 +270,7 @@ angular.module('bomprecotv').controller('sessaoController',
 
         sessaoService.getSessoes().success(function(data){
 
-            console.log("Carregou sessoes!");
             $scope.sessoes = data;
-
             $scope.temSessao = $scope.sessoes.length > 0? true : false;
             if($scope.temSessao){
                 /*
@@ -303,6 +329,8 @@ angular.module('bomprecotv').controller('sessaoController',
                     $scope.hasMoreTabs = true;
                 }
             }
+        }).error(function(data){
+            openModalError(data.message);
         });
     }
 
@@ -356,5 +384,4 @@ angular.module('bomprecotv').controller('sessaoController',
 
     //Carrega as sessões e abre a primeira para apresentação
     loadSessoes();
-
 });

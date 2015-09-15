@@ -18,7 +18,10 @@ var RouterTv = function(){
 	router.get('/sessao', function(req, res){
 		
 		buscaSessaoPadrao(function(err, sessao){
-			if(err) return res.status(500).send("Internal Error: " + err);
+			if(err){
+				console.error("buscaSessaoPadrao Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});	
+			}
 
 			if(sessao){
 				return res.status(200).send(sessao);
@@ -43,7 +46,10 @@ var RouterTv = function(){
 		console.log("Nome da sessão: " + nome);
 
 		Sessao.findOne({nome: nome}, function(err, sessao){
-			if(err) return res.status(500).send();
+			if(err){
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});	
+			}
 
 			if(sessao){
 				res.status(200).send(sessao);

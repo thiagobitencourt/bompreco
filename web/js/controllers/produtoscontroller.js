@@ -14,6 +14,27 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	$scope.showProdutoForm = false;
 	$scope.unidadesMedidas = ['kg', 'lt', 'gr', 'un', 'pe'];
 
+	var openModalError = function(errorMessage){
+
+        var modalInstance = $modal.open({
+            animation: false,
+            templateUrl: 'errorModal.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'sm',
+            resolve: {
+                titulo: function () {
+                  return errorMessage;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            console.log("Modal Fechada");
+        }, function () {
+            // console.info('Modal dismissed at: ' + new Date());
+        });
+    }
+
 	var loadCategorias = function(){
 		categoriasService.getCategorias().success(function(data){
 
@@ -30,6 +51,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		}).error(function(data){
 			console.log(data);
+			openModalError(data.message);
 		});
 	}
 
@@ -42,6 +64,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		}).error(function(data){
 			console.log(data);
+			openModalError(data.message);
 		});
 	}
 
@@ -71,8 +94,8 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
             controller: 'ModalInstanceCtrl',
             size: 'sm',
             resolve: {
-                item: function () {
-                  return produto.nome;
+                titulo: function () {
+                  return "Deseja excluir " + produto.nome + "?";
                 }
             }
         });
@@ -81,7 +104,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 			produtosService.deleteProduto(produto._id).success(function(data){
 				loadProdutos();
 			}).error(function(data){
-
+				openModalError(data.message);
 			});
         }, function () {
             // console.info('Modal dismissed at: ' + new Date());
@@ -164,6 +187,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		var error = function(data){
 			console.log(data);
+			openModalError(data.message);
 		}
 
 		novoProduto.categoria = $scope.paraCategoria._id;
@@ -186,6 +210,8 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 				novoProduto.imagem = data;
 				console.log(novoProduto);
 				produtosService.postProduto(novoProduto).success(success).error(error);
+			}).error(function(data){
+				openModalError(data.message);
 			});
 		}
 	}

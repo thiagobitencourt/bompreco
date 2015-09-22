@@ -104,14 +104,6 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 
     		produtos = defineValor.definir(produtos);
 
-    		angular.forEach(produtos, function(pr){
-
-    			$http.get("http://localhost:8000/tv/images/produtos" + pr.imagem).success(function(data){
-    				pr.imagem = data;
-    			});
-
-    		});
-
     		/*
 			Pega maxShow produtos no array de produtos e guarda o index da ultima posição utilizada no rootScope.
 			Na próxima iteração irá continuar a partir do index armazenado em rootScope e pegar mais maxShow elementos.

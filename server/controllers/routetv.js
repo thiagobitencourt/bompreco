@@ -126,11 +126,106 @@ var RouterTv = function(){
 }
 
 var setRouteCategorias = function(){
-	//TODO: implement
+	var expressRouteSimple = "/categorias";
+	var expressRouteId =  expressRouteSimple + "/:id";
+
+	//Busca todas as categorias cadastradas
+	router.get(expressRouteSimple, function(req, res){
+
+		Categorias.find({}, function(err, categorias){
+			if(err){
+				console.error("Categorias.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categorias"});
+			}
+
+			res.status(200).send(categorias);
+		});
+	});
+
+		//Busca uma categoria por ID
+	router.get(expressRouteId, function(req, res){
+
+		var idCategoria = req.params.id;
+		if(!idCategoria){
+			console.warn("Categoria não informada");
+			return res.status(400).send({message: "Categoria não informada"});
+		}
+
+		Categorias.findById(idCategoria, function(err, categoria){
+			if(err){
+				console.error("Categorias.findById Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar categoria"});
+			}
+
+			//Se não encontrar nenhuma categoria, retorna 404
+			if(!categoria){
+				console.error("Nenhuma categoria encontrada");
+				return res.status(404).send({message:"Nenhuma categoria encontrada"});
+			}
+
+			res.status(200).send(categoria);
+		});
+	});
 };
 
 var setRouteProdutos = function(){
-	//TODO: implement
+	var expressRouteSimple = "/produtos";
+	var expressRouteId =  expressRouteSimple + "/:id";
+
+	//Todos os produtos de uma categoria
+	router.get(expressRouteSimple + '/categoria/:id', function(req, res){
+
+		var categoriaId = req.params.id;
+		if(!categoriaId){
+			console.warn("Id de categoria inválido: " + categoriaId);
+			return res.status(400).send({message: "Id de categoria inválido"});
+		}
+
+		Produtos.find({categoria: categoriaId}, function(err, produtos){
+			if(err){
+				console.error("Produtos.find Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar produtos da categora"});
+			}
+
+			res.status(200).send(produtos);
+		});
+	});
+
+	router.get(expressRouteSimple + '/sessao/:id', function(req, res){
+
+		var sessaoId = req.params.id;
+		if(!sessaoId){
+			console.warn("Id de sessão inválido: " + sessaoId);
+			return res.status(400).send({message: "Id de sessão inválido"});
+		}
+
+		Sessao.findOne({_id: sessaoId}, function(err, sessao){
+			if(err){
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
+			}
+
+			//Se não encontrar nenhuma sessao, retorna 404
+			if(!sessao){
+				console.error("Sessão não encontrada");
+				return res.status(404).send({message:"Sessão não encontrada"});
+			}
+
+			var produtosSes = [];
+			sessao.produtos.forEach(function(pr){
+				produtosSes.push(pr.produto);
+			});
+
+			Produtos.find({ _id: { "$in" : produtosSes} }, function(err, produtos){
+				if(err){
+					console.error("Produtos.find Error: " + err.message);
+					return res.status(500).send({message: "500: Erro ao carregar produtos da sessão"});
+				}
+
+				res.status(200).send(produtos);
+			});	
+		});
+	});
 };
 
 var setRouteSessoes = function(){

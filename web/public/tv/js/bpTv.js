@@ -39,7 +39,6 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 })
 
 .value("config", {
-	baseWebUrl:"http://localhost:8000/api",
 	baseWebTvUrl: "http://localhost:8000/tv",
 	sessaoUrl: "/sessao"
 })
@@ -65,12 +64,12 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 	var _produtos = '/produtos';
 
 	var _getProdutos = function(categoriaId){
-		return $http.get(config.baseWebUrl + _produtos + '/categoria/' + categoriaId);		
+		return $http.get(config.baseWebTvUrl + _produtos + '/categoria/' + categoriaId);		
 	};
 
 	//Busca os produtos individuais, para apresentar nos baners.
 	var _getProdutosBaner = function(sessaoId){
-		return $http.get(config.baseWebUrl + _produtos  + "/sessao/" + sessaoId);
+		return $http.get(config.baseWebTvUrl + _produtos  + '/sessao/' + sessaoId);
 	}
 
 	return {
@@ -83,11 +82,11 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 	var _categorias = '/categorias';
 
 	var _getCategorias = function(sessaoId){
-		return $http.get(config.baseWebUrl + _categorias);
+		return $http.get(config.baseWebTvUrl + _categorias);
 	};
 
 	var _getCategoria = function(categoriaId){
-		return $http.get(config.baseWebUrl + _categorias + "/" + categoriaId);
+		return $http.get(config.baseWebTvUrl + _categorias + "/" + categoriaId);
 	}
 
 	return {

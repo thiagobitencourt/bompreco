@@ -3,7 +3,7 @@
   <div>
     	<div class="col-md-6" align="center">
     		<li>{{showing[0].nome}}</li>
-        <img ng-src="images/produtos/default.jpg" height="220" width="320">
+        <img ng-src="images/produtos/{{showing[0].imagem || 'default.jpg'}}" height="220" width="320">
     		<li>{{showing[0].valorHoje}}</li>
     	</div>
   </div>

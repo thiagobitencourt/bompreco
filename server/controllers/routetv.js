@@ -57,6 +57,67 @@ var RouterTv = function(){
 		});
 	});
 
+	router.get('images/produtos/:name', function(req, res){
+
+		console.log("Getting Images");
+
+		var imgName = req.params.name;
+		res.sendfile('web/private/images/produtos/');
+		console.log(dir);
+		res.sendfile(dir + imgName);
+
+	});
+
+	router.get('/image/:name', function(req, res){
+
+		var imgName = req.params.name;
+
+		console.log("image name >>> " + imgName);
+
+		var fs = require('fs');
+		var dir = 'web/private/images/produtos/';
+		console.log(dir);
+
+		fs.readFile(dir + imgName, function (err, data) {
+			if (err) throw err;
+
+
+			// res.sendfile('web/private/images/produtos/' + imgName);
+
+			console.log("Imagem...")
+  			// console.log(data);
+
+  			var b = new Buffer(data, 'base64');
+  			console.log(b);
+			var s = b.toString();
+			// console.log(s);
+			res.header('Content-type', 'image/jpg');
+
+			// res.headers['Content-type'] = 'image/jpg';
+			res.send(b);
+		});	
+
+		// var dir = 'private/images/produtos/';
+		// console.log(dir);
+
+		// res.sendfile('web/private/images/produtos/' + imgName);
+		
+		// buscaSessaoPadrao(function(err, sessao){
+		// 	if(err){
+		// 		console.error("buscaSessaoPadrao Error: " + err.message);
+		// 		return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});	
+		// 	}
+
+		// 	if(sessao){
+		// 		return res.status(200).send(sessao);
+		// 	}else{
+		// 		var message = "Sessão padrão não encontrada";
+		// 		console.log(message);
+		// 		return res.status(400).send(message);	
+		// 	}
+		// });
+	});
+
 	setRouteCategorias();
 	setRouteProdutos();
 	setRouteSessoes();

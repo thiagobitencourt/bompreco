@@ -1,0 +1,38 @@
+<!-- GAMBIA TEMPORÁRIA. SERÁ REFATORADA COM UM NOVO CSS -->
+<div class="row">
+  <div>
+    	<div class="col-md-6" align="center">
+    		<li>{{showing[0].nome}}</li>
+        <img ng-src="images/produtos/default.jpg" height="220" width="320">
+    		<li>{{showing[0].valorHoje}}</li>
+    	</div>
+  </div>
+
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[1].nome}}</li>
+        <img ng-src="images/produtos/{{showing[1].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[1].valorHoje}}</li>
+      </div>
+  </div>
+</div>
+
+<br />
+
+<div class="row">
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[2].nome}}</li>
+        <img ng-src="images/produtos/{{showing[2].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[2].valorHoje}}</li>
+      </div>
+  </div>
+
+  <div>
+      <div class="col-md-6" align="center">
+        <li>{{showing[3].nome}}</li>
+        <img ng-src="images/produtos/{{showing[3].imagem || 'default.jpg'}}" height="220" width="320">
+        <li>{{showing[3].valorHoje}}</li>
+      </div>
+  </div>
+</div>

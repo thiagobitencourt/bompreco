@@ -17,6 +17,10 @@
     "express": "~4.13.2",
     "mongoose": "~4.1.0",
     "mongoose-relationship": "~0.1.4",
-    "multer": "~1.0.3"
+    "multer": "~1.0.3",
+    "winston": "~1.0.1",
+    "express-session": "~1.11.3",
+    "connect-mongo": "~0.8.2",
+    "client-session": "~0.1.7"
   }
 }

@@ -1,4 +1,4 @@
-angular.module("bpTv", ['ngRoute', 'ds.clock'])
+angular.module("bpTv", ['ngRoute'])
 .config(function($routeProvider) {
 
 	$routeProvider

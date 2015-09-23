@@ -1,0 +1,423 @@
+/*! normalize.css v1.0.1 | MIT License | git.io/normalize */
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}
+audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
+audio:not([controls]){display:none;height:0}
+[hidden]{display:none}
+html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+html,button,input,select,textarea{font-family:sans-serif}
+body{margin:0}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+h2{font-size:1.5em;margin:.83em 0}
+h3{font-size:1.17em;margin:1em 0}
+h4{font-size:1em;margin:1.33em 0}
+h5{font-size:.83em;margin:1.67em 0}
+h6{font-size:.75em;margin:2.33em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+blockquote{margin:1em 40px}
+dfn{font-style:italic}
+mark{background:#ff0;color:#000}
+p,pre{margin:1em 0}
+code,kbd,pre,samp{font-family:monospace,serif;_font-family:'courier new',monospace;font-size:1em}
+pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
+q{quotes:none}
+q:before,q:after{content:'';content:none}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-0.5em}
+sub{bottom:-0.25em}
+dl,menu,ol,ul{margin:1em 0}
+dd{margin:0 0 0 40px}
+menu,ol,ul{padding:0 0 0 40px}
+nav ul,nav ol{list-style:none;list-style-image:none}
+img{border:0;-ms-interpolation-mode:bicubic}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+form{margin:0}
+fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0;white-space:normal;*margin-left:-7px}
+button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline;*vertical-align:middle}
+button,input{line-height:normal}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer;*overflow:visible}
+button[disabled],input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;*height:13px;*width:13px}
+input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+
+/**Fim do Normalize**/
+
+html body {
+    height: 100%;
+}
+
+#container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    background: #de5d08;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #de5d08 0%, #e8970a 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #de5d08), color-stop(100%, #e8970a));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #de5d08 0%, #e8970a 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #de5d08 0%, #e8970a 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #de5d08 0%, #e8970a 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #de5d08 0%, #e8970a 100%);
+    /* W3C */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#de5d08', endColorstr='#e8970a', GradientType=0);
+    /* IE6-9 */
+}
+
+header {
+    position: relative;
+    overflow: hidden;
+}
+
+h1.logo {
+    display: inline-block;
+    float: left;
+    margin: 8px 0 10px 20px
+}
+
+h1.logo a {
+    display: block;
+    text-indent: -1000px;
+    height: 106px;
+    width: 380px;
+    background: url("../../images/logo.svg") no-repeat
+}
+
+.clock {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    float: right;
+    background: #000;
+    color: #fff;
+    font-size: 50px;
+    padding: 10px 20px;
+    margin: 10px 20px 10px;
+    font-family: 'Graduate', cursive;
+    font-family: 'Graduate', cursive;
+}
+
+.clock img {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px
+}
+
+.clock:before {
+    position: absolute;
+    content: "";
+    width: 150%;
+    height: 100%;
+    top: -50%;
+    left: -30%;
+    z-index: 0;
+    border-radius: 80%;
+    background: #000000;
+    /* Old browsers */
+    background: #141414;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #141414 54%, #777777 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(54%, #141414), color-stop(100%, #777777));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #141414 54%, #777777 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #141414 54%, #777777 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #141414 54%, #777777 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #141414 54%, #777777 100%);
+    /* W3C */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#141414', endColorstr='#777777', GradientType=0);
+    /* IE6-9 */
+}
+
+#new {
+    position: relative;
+    font-family: 'Graduate', cursive;
+    display: inline-block;
+    margin-left: 15px;
+    margin-top: 7px
+}
+
+article h1{
+    display: block;
+    text-align: center;
+    margin: 0 22px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 60px
+}
+ul.precos{
+    display: table;
+    list-style: none;
+    padding: 0;
+    margin: 0 20px;
+    border-spacing:2px;
+    border-collapse:separate; 
+    height: auto;
+}
+ul.precos li{
+    display: table-row;
+}
+ul.precos li div{
+    display: table-cell;
+    color: #fff;
+    vertical-align: middle;
+    padding: 10px 20px;
+    font-size: 60px;
+}
+ul.precos li:nth-child(2n+1) div{
+    background: rgba(0, 0, 0, 0.4);
+}
+ul.precos li:nth-child(2n+2) div{
+    background: rgba(0, 0, 0, 0.7)
+}
+ul.precos li div:first-child{
+    width: 15%;
+    text-align: center;
+    font-size: 50px
+}
+ul.precos li div:nth-child(2){
+    width: 60%;
+    font-weight: 600
+}
+ul.precos li div:nth-child(3){
+    width: 25%;
+    text-align: center;
+    font-weight: 600
+}
+ul.precos li div:last-child{
+    text-align: center;
+}
+
+ul.banner{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    margin-left: -2%;
+    margin-top: 10px
+}
+ul.banner li{
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    width: 30%;
+    height: 370px;
+    margin-left: 2%;
+    margin-bottom: 2%;
+       border-color: #DDDDDD; 
+    border-radius: 0px; 
+    box-shadow: 0px 1px 4px 0px #735117, 0px 0px 20px #b95310;
+    background: rgba(8, 3, 0, 0.78)
+}
+ul.banner li img{
+    position: absolute;
+    min-width: 100%;
+    width: auto;
+    max-height:100%;
+    height: auto;
+    left: 0;
+  
+}
+ul.banner li span{
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff500;
+    padding: 10px;
+    margin-top: 300px;
+    font-weight: 600;
+    font-size: 30px
+ 
+}
+ul.banner li span:first-child{
+    margin-right: -4px;
+    color: #fff;
+    font-weight: 200;
+}
+/**Relogio_Analógico**/
+
+.outer_face {
+    float: left;
+    position: relative;
+    width: 80px;
+    /* width of clock */
+    height: 80px;
+    /* height of clock */
+    border-radius: 100%;
+    /* clock round corner radius */
+    background: white;
+    box-shadow: inset 0 0 10px gray;
+    border: 0 solid gray;
+    /* thickness of outer border */
+}
+
+.outer_face::before,
+.outer_face::after,
+.outer_face .marker {
+    /* time markers syle */
+    content: "";
+    position: absolute;
+    width: 3px;
+    /* width of 12-6 and 3-9 markers */
+    height: 100%;
+    background: black;
+    z-index: 0;
+    left: 50%;
+    margin-left: -1px;
+    /* set this value of 1/2 marker width */
+    top: 0
+}
+
+.outer_face::after {
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg)
+}
+
+.outer_face .marker {
+    background: gray;
+    width: 2px;
+    /* width of all other markers */
+    margin-left: 0px/* set this value of 1/2 marker width */
+}
+
+.outer_face .marker.oneseven {
+    -moz-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    -webkit-transform: rotate(30deg);
+    transform: rotate(30deg)
+}
+
+.outer_face .marker.twoeight {
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg)
+}
+
+.outer_face .marker.fourten {
+    -moz-transform: rotate(120deg);
+    -ms-transform: rotate(120deg);
+    -webkit-transform: rotate(120deg);
+    transform: rotate(120deg)
+}
+
+.outer_face .marker.fiveeleven {
+    -moz-transform: rotate(150deg);
+    -ms-transform: rotate(150deg);
+    -webkit-transform: rotate(150deg);
+    transform: rotate(150deg)
+}
+
+.inner_face {
+    position: relative;
+    width: 88%;
+    height: 88%;
+    background: white;
+    -moz-border-radius: 1000px;
+    -webkit-border-radius: 1000px;
+    border-radius: 1000px;
+    z-index: 1000;
+    left: 6%;
+    /* set this value of 1/2 width value*/
+    top: 6%/* set this value of 1/2 height value*/
+}
+
+.inner_face::before {
+    /* clock center circle small */
+    content: "";
+    width: 8px;
+    /* width of inner circle */
+    height: 8px;
+    /* height of inner circle */
+    border-radius: 8px;
+    margin-left: -4px;
+    /* set this value of 1/2 width value*/
+    margin-top: -4px;
+    /* set this value of 1/2 height value*/
+    background: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 0 30px blue;
+}
+
+.inner_face::after {
+    content: "QUARTZ";
+    position: absolute;
+    width: 100%;
+    font-size: 7px;
+    color: gray;
+    text-align: center;
+    top: 75%
+}
+
+.hand,
+.hand.hour {
+    position: absolute;
+    width: 3px;
+    /* width of hour hand */
+    height: 30%;
+    /* height of hour hand */
+    top: 20%;
+    /* set top to 50% - height */
+    left: 50%;
+    margin-left: -2px;
+    /* set this value to 1/2 width */
+    background: black;
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -moz-transform-origin: bottom;
+    -ms-transform-origin: bottom;
+    -webkit-transform-origin: bottom;
+    transform-origin: bottom;
+    z-index: -1;
+    -moz-box-shadow: 0 0 3px gray;
+    -webkit-box-shadow: 0 0 3px gray;
+    box-shadow: 0 0 3px gray
+}
+
+.hand.minute {
+    height: 45%;
+    /* height of min hand */
+    top: 5%;
+    /* set top to 50% - height */
+    width: 3px;
+    /* width of min hand */
+    margin-left: -1px;
+    /* set this value to 1/2 width */
+}
+
+.hand.second {
+    height: 50%;
+    /* height of sec hand */
+    width: 1px;
+    /* width of sec hand */
+    margin-left: -1px;
+    /* set this value to 1/2 width */
+    top: 0;
+    background: red
+}

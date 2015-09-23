@@ -1,93 +1,116 @@
+global.__base = __dirname + '/server/';
+
+var mongoose = require('mongoose');
 var express = require('express'); 
 var bodyParser = require('body-parser');
 var session = require('client-sessions');
+var LoggingSystem = require('./server/utils/log');
+var logger = require('winston');
+var args = process.argv;
 
 var RouterApi = require('./server/controllers/routeapi');
 var RouterTv = require('./server/controllers/routetv');
 
-var app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 
-// Use this configuration.
-app.use(session({
-  cookieName: 'appSession',
-  secret: 'eg[isfd-8yF9-7w2315df{}+Ijsli;;to8',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000
-  // httpOnly: true,
-  // secure: true,
-  // ephemeral: true
-}));
+	if(err)
+		return console.error("DB error : " + err);
 
-app.post('/login', function(req, res){
-	console.log(req.body);
-
-	//TODO: Validar usuário na base de dados
-	if(req.body.username != "thiago"){
-		return res.status(401).send({message: "Usuário inválido"});
-	}else if (req.body.password != "thiago"){
-		return res.status(401).send({message: "Senha inválida"});
-	}else{
-
-		req.appSession.user = {username: "thiago", _id:"12345", nome: "Thiago Bitencourt"};
-
-		var user = {nome: "Thiago Bitencourt"};
-		return res.status(200).send(user);
+	var logDebug = false;
+	if(args.indexOf('--debug') > -1)
+		logDebug = true;
+	var loggingErrors = LoggingSystem.configure(logDebug);
+	if(loggingErrors){
+		return console.error(loggingErrors);		
 	}
-});
+	logger.info("Logger online.");
 
-app.get('/logout', function(req, res){
-	delete req.appSession.user;
-	return res.redirect('/login');
-});
+	var app = express();
 
-app.get('/session', function(req, res){
-	if(req.appSession && req.appSession.user){
-		return res.send(req.appSession.user);
-	}else{
+	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.json());
+
+	// Use this configuration.
+	app.use(session({
+	  cookieName: 'session',
+	  secret: 'MySuperSecretSessionPass',
+	  duration: 30 * 60 * 1000,
+	  activeDuration: 5 * 60 * 1000
+	}));
+
+	app.post('/login', function(req, res){
+
+		//TODO: Validar usuário na base de dados
+		if(req.body.username != "thiago"){
+			return res.status(401).send({message: "Usuário inválido"});
+		}else if (req.body.password != "thiago"){
+			return res.status(401).send({message: "Senha inválida"});
+		}else{
+
+			var userData = {username: "thiago", _id:"12345", nome: "Thiago Bitencourt"};
+			logger.debug(userData);
+
+			req.session.userData = userData;
+
+			var user = {nome: "Thiago Bitencourt"};
+			return res.status(200).send(user);
+		}
+	});
+
+	app.get('/logout', function(req, res){
+		delete req.session.user;
 		return res.redirect('/login');
-	}
-});
+	});
 
-var isSessionAuthorized = function(req,res,next){
-	//check session
-	// ...
-	if(req.appSession && req.appSession.user){
-		console.log("HAS SESSION - " + JSON.stringify(req.appSession));
-		return res.redirect('/web');
-	}
+	app.get('/session', function(req, res){
+		if(req.session && req.session.userData){
+			return res.send(req.session.userData);
+		}else{
+			return res.redirect('/login');
+		}
+	});
 
-	return res.redirect('/login');
-};
+	var isSessionAuthorized = function(req,res,next){
+		//check session
+		// ...
+		if(req.session && req.session.userData){
+			console.log("HAS SESSION - " + JSON.stringify(req.session));
+			return res.redirect('/web');
+		}
 
-var hasSession = function(req, res, next){
-	if(req.appSession && req.appSession.user)
+		console.log("SEM SESSÃO");
+		return res.redirect('/login');
+	};
+
+	var hasSession = function(req, res, next){
+		if(req.session && req.session.userData)
+			return next();
+
+		return res.redirect('/login');
+	};
+
+	app.get('/', isSessionAuthorized);
+
+	app.use('/login', function(req, res, next){
+		if(req.session && req.session.userData)
+			return res.redirect('/web');
+
 		return next();
+	});
+	app.use('/login', express.static('web/public/login'));
 
-	return res.redirect('/login');
-};
+	app.use('/tv', express.static('web/public/tv'));
+	app.use('/images', express.static('web/images/'));
 
-app.get('/', isSessionAuthorized);
+	app.use('/web', hasSession);
+	app.use('/web', express.static('web/private'));
 
-app.use('/login', function(req, res, next){
-	if(req.appSession && req.appSession.user)
-		return res.redirect('/web');
+	app.use('/api', hasSession);
+	app.use('/api', new RouterApi());
 
-	return next();
+	app.use('/tv', new RouterTv());
+
+	app.listen(8000);
+
 });
-app.use('/login', express.static('web/public/login'));
-
-app.use('/tv', express.static('web/public/tv'));
-app.use('/images', express.static('web/images/'));
-
-app.use('/web', hasSession);
-app.use('/web', express.static('web/private'));
-
-app.use('/api', hasSession);
-app.use('/api', new RouterApi());
-
-app.use('/tv', new RouterTv());
-
-app.listen(8000);

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/bompreco');
 
 var Schema = mongoose.Schema;
 var relationship = require("mongoose-relationship");

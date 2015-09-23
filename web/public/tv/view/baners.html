@@ -1,38 +1,50 @@
-<!-- GAMBIA TEMPORÁRIA. SERÁ REFATORADA COM UM NOVO CSS -->
-<div class="row">
-  <div>
-    	<div class="col-md-6" align="center">
-    		<li>{{showing[0].nome}}</li>
-        <img ng-src="/images/produtos/{{showing[0].imagem || 'default.jpg'}}" height="220" width="320">
-    		<li>{{showing[0].valorHoje}}</li>
-    	</div>
-  </div>
+<ul class="banner">
+    <li ng-repeat="pr in showing track by $index">
+      <div>
+            <span>{{pr.nome}}</span>
+            <span>R$ {{pr.valorHoje}}</span>
+            <!-- Tamanho da imagem temporario -->
+            <img ng-src="/images/produtos/{{pr.imagem}}">
+        </div>  
+    </li>
+    
+    <!-- 
 
-  <div>
-      <div class="col-md-6" align="center">
-        <li>{{showing[1].nome}}</li>
-        <img ng-src="/images/produtos/{{showing[1].imagem || 'default.jpg'}}" height="220" width="320">
-        <li>{{showing[1].valorHoje}}</li>
-      </div>
-  </div>
-</div>
-
-<br />
-
-<div class="row">
-  <div>
-      <div class="col-md-6" align="center">
-        <li>{{showing[2].nome}}</li>
-        <img ng-src="/images/produtos/{{showing[2].imagem || 'default.jpg'}}" height="220" width="320">
-        <li>{{showing[2].valorHoje}}</li>
-      </div>
-  </div>
-
-  <div>
-      <div class="col-md-6" align="center">
-        <li>{{showing[3].nome}}</li>
-        <img ng-src="/images/produtos/{{showing[3].imagem || 'default.jpg'}}" height="220" width="320">
-        <li>{{showing[3].valorHoje}}</li>
-      </div>
-  </div>
-</div>
+    <li>
+      <div>
+          <span>Filé Mignon</span>
+          <span>R$ 55,00</span>
+    <img src="imagens/fila.jpg">
+    </div>  
+    </li>
+              <li>
+      <div>
+          <span>Maminha</span>
+          <span>R$ 32,00</span>
+    <img src="imagens/maminha.jpg">
+    </div>  
+    </li>
+              <li>
+      <div>
+          <span>Costela</span>
+          <span>R$ 16,84</span>
+    <img src="imagens/Costela.jpg">
+    </div>  
+    </li>
+              <li>
+      <div>
+          <span>Contrafilé</span>
+          <span>R$ 49,90</span>
+    <img src="imagens/contra1.jpg">
+    </div>  
+    </li>
+              <li>
+      <div>
+          <span>Fraldinha</span>
+          <span>R$ 35,00</span>
+    <img src="imagens/fraldinha_0.jpg">
+    </div>  
+    </li>
+-->
+          
+</ul>

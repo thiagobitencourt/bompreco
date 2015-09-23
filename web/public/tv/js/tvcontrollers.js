@@ -81,6 +81,7 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 	}
 
 	var configTimer = function(tempo){
+		console.log("Tempo: " + tempo);
 		$timeout(function(){
 			$location.path('/baners');
 		}, tempo * 1000);
@@ -91,11 +92,6 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 
 .controller("banersController", function($http, $scope, $rootScope, $location, $timeout, sessao, produtosService, defineValor){
 
-	var maxShow = 4;
-	var index = $rootScope.indexPr || 0;
-	var restartIndex = 0;
-	$scope.showing = [];
-
 	var sessoes = sessao.data;
 
     var loadProdutos = function(sessao){
@@ -103,6 +99,10 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 			var produtos = $scope.produtos = data;
 
     		produtos = defineValor.definir(produtos);
+
+    		var maxShow = 6;
+			var index = $rootScope.indexPr || 0;
+			$scope.showing = [];
 
     		/*
 			Pega maxShow produtos no array de produtos e guarda o index da ultima posição utilizada no rootScope.
@@ -115,15 +115,22 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 			Para contornar esta situação, foi adicionado 'track by $index' no ng-repeat. 
 			Solução documentada aqui: https://docs.angularjs.org/error/ngRepeat/dupes
     		*/
+    		var restartIndex = 0;
     		var maxS = index + maxShow-1;
-    		for(index; index <= maxS; index++){
 
+    		for(index; index <= maxS; index++){
     			if(produtos[index]){
     				$scope.showing.push(produtos[index]);
     				$rootScope.indexPr = index;
     			}else{
-    				$scope.showing.push(produtos[restartIndex]);
-    				$rootScope.indexPr = restartIndex;
+    				if(produtos[restartIndex]){
+    					$scope.showing.push(produtos[restartIndex]);
+    					$rootScope.indexPr = restartIndex;
+    				}else{
+    					restartIndex = 0;
+    					$scope.showing.push(produtos[restartIndex]);
+    					$rootScope.indexPr = restartIndex;
+    				}
     				restartIndex++;
     			}
     		}

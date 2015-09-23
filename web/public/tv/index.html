@@ -1,43 +1,111 @@
 <!DOCTYPE html>
-<html ng-app="bpTv">
+<html ng-app="bpTv" lang="pt-br">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>BomPreçoTv | Show TV</title>
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-        <!-- Bootstrap 3.3.4 -->
-    <link href="lib/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="lib/css/tvstyle.css" rel="stylesheet" type="text/css" media="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="lib/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href='http://fonts.googleapis.com/css?family=Graduate' rel='stylesheet' type='text/css'>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 
-<body>
+<body onload="startTime()">
 
-<div id="container">
-	<header>
-        <h1 class="logo">
-            <a href="">Mercado</a>
-        </h1>
-        <div class="clock">
-        	<img src="images/clock.svg" />
-        	<div id="new">
-        		<ds-widget-clock data-show-digital></ds-widget-clock>
-        	</div>
-       	</div>
-    </header>
+    <div id="container">
+        <header>
+            <h1 class="logo">
+                <a href="">Mercado Hayet</a>
+            </h1>
+            <div class="clock">
+                <div id="liveclock" class="outer_face">
 
-    <content>
-        <ng-view>
-    </content>
-</div>
+                    <div class="marker oneseven"></div>
+                    <div class="marker twoeight"></div>
+                    <div class="marker fourten"></div>
+                    <div class="marker fiveeleven"></div>
 
-<!-- My Own Scripts -->
-<script src="lib/js/angular.min.js"></script>
-<script src="lib/js/angular-resource.min.js"></script>
-<script src="lib/js/angular-route.min.js"></script>
-<script src="lib/js/angular-clock.js"></script>
+                    <div class="inner_face">
+                        <div class="hand hour"></div>
+                        <div class="hand minute"></div>
+                        <div class="hand second"></div>
+                    </div>
 
-<script src="js/bpTv.js"></script>
-<script src="js/tvcontrollers.js"></script>
+                </div>
+
+                <div id="new"></div>
+            </div>
+        </header>
+        <article>
+
+            <ng-view>
+
+        </article>
+    </div>
+
+    <!-- My Own Scripts -->
+    <script src="lib/js/angular.min.js"></script>
+    <script src="lib/js/angular-resource.min.js"></script>
+    <script src="lib/js/angular-route.min.js"></script>
+
+    <script src="js/bpTv.js"></script>
+    <script src="js/tvcontrollers.js"></script>
+
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('new').innerHTML = h + ":" + m + ":" + s;
+            var t = setTimeout(function () {
+                startTime()
+            }, 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }; // add zero in front of numbers < 10
+            return i;
+        }
+        /***********************************************
+         * CSS3 Analog Clock- by JavaScript Kit (www.javascriptkit.com)
+         * Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and 100s more
+         ***********************************************/
+
+        var $hands = $('#liveclock div.hand')
+
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function (f) {
+            setTimeout(f, 60)
+        }
+
+
+        function updateclock() {
+            var curdate = new Date()
+            var hour_as_degree = (curdate.getHours() + curdate.getMinutes() / 60) / 12 * 360
+            var minute_as_degree = curdate.getMinutes() / 60 * 360
+            var second_as_degree = (curdate.getSeconds() + curdate.getMilliseconds() / 1000) / 60 * 360
+            $hands.filter('.hour').css({
+                transform: 'rotate(' + hour_as_degree + 'deg)'
+            })
+            $hands.filter('.minute').css({
+                transform: 'rotate(' + minute_as_degree + 'deg)'
+            })
+            $hands.filter('.second').css({
+                transform: 'rotate(' + second_as_degree + 'deg)'
+            })
+            requestAnimationFrame(updateclock)
+        }
+
+        requestAnimationFrame(updateclock)
+    </script>
 
 </body>
+
 </html>

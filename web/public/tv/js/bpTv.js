@@ -1,12 +1,10 @@
 angular.module("bpTv", ['ngRoute', 'ds.clock'])
 .config(function($routeProvider) {
-	
-	console.log("Load Controllers");
 
 	$routeProvider
 	.when('/tabela', {
 	    controller: 'tabelaController',
-	    templateUrl:'tvView/tabela.html',
+	    templateUrl:'view/tabela.html',
 	    resolve: 
 			{
 				sessao: function($routeParams, sessaoService){
@@ -19,7 +17,7 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 	})
 	.when('/baners', {
 		controller: 'banersController',
-		templateUrl: 'tvView/baners.html',
+		templateUrl: 'view/baners.html',
 		resolve: 
 			{
 				sessao: function($routeParams, sessaoService){
@@ -39,7 +37,7 @@ angular.module("bpTv", ['ngRoute', 'ds.clock'])
 })
 
 .value("config", {
-	baseWebTvUrl: "http://localhost:8000/tv",
+	baseWebTvUrl: window.location.origin + '/tv',
 	sessaoUrl: "/sessao"
 })
 

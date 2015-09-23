@@ -83,7 +83,7 @@ $routeProvider
     redirectTo:'/404'
   });
 }).value("config", {
-	baseWebUrl: "http://localhost:8000/api"
+	baseWebUrl: window.location.origin + '/api'
 })
 
 .directive('fileModel', ['$parse', function ($parse) {

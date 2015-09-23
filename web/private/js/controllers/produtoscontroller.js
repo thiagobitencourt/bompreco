@@ -1,13 +1,5 @@
 angular.module('bomprecotv').controller('produtosController', function(fileUpload, $modal, $scope, Produtos, categoriasService, produtosService){
 
-	/*
-	TODO: No formulario de cadastro de novo produto. 
-	Ao selecionar uma imagem e cancelar a operação de cadastro a imagem não é retirada do campo 
-	e ao clicar novamente no botão de novo Produto a mesma imagem ainda esta carregada.
-	Não encontrei uma maneira de limpar a imagem ao cancelar ou ao salvar. 
-	Possível solução usando ng-file-upload: https://github.com/danialfarid/ng-file-upload
-	*/
-
 	var produtos = $scope.produtos = Produtos.data;
 	var categorias = [];
 	var updating = false;
@@ -86,8 +78,6 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	}
 
 	$scope.excluir = function(produto){
-		// console.log(produto);
-
 		var modalInstance = $modal.open({
             animation: false,
             templateUrl: 'confirmModal.html',
@@ -156,6 +146,15 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		});
 	}
 
+	var clearForm = function(){
+		var opFile = "opFile";
+    	document.getElementById(opFile).innerHTML = document.getElementById(opFile).innerHTML;
+
+    	delete $scope.paraCategoria;
+    	delete $scope.novoProduto;
+		delete $scope.produtoImagem;
+	}
+
 	$scope.showForm = function(){
 		$scope.showProdutoForm = true;
 
@@ -165,8 +164,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	$scope.criarNovoProduto = function(novoProduto){
 
 		if(!novoProduto){
-			delete $scope.novoProduto;
-			delete $scope.produtoImagem;
+			clearForm();
 			$scope.showProdutoForm = false;
 			return;
 		}
@@ -181,7 +179,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		var success = function(data){
 			$scope.showProdutoForm = false;
-			delete $scope.produtoImagem;
+			clearForm();
 			loadProdutos();
 		}
 
@@ -211,7 +209,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 				console.log(novoProduto);
 				produtosService.postProduto(novoProduto).success(success).error(error);
 			}).error(function(data){
-				openModalError(data.message);
+				openModalError("Erro ao salvar imagem!");
 			});
 		}
 	}

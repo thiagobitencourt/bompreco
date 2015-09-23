@@ -6,7 +6,7 @@ var multer  = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // cb(null, 'web/images/produtos/')
-    cb(null, 'web/public/tv/images/produtos/')
+    cb(null, 'web/images/produtos/')
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now())
@@ -408,7 +408,13 @@ var setRouteProdutos = function(){
 		newProduto.save(function(err){
 			if(err){
 				console.error("newProduto.save Error: " + err);
-				return res.status(500).send({message: "500: Erro ao salvar novo produtos"});
+				var message = "500: Erro ao salvar novo produtos";
+
+				if(err.code == 11000){
+					message = "Nome de produto já cadastrado";
+				}
+
+				return res.status(500).send({message: message});
 			}
 
 			console.info("Novo produto cadastrado: " + newProduto._id);

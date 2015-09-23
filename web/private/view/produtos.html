@@ -59,7 +59,7 @@
 	                <td>
                     	<div class="media">
                         	<div class="media-left">
-                            	<img class="media-object" ng-src="images/produtos/{{produto.imagem || 'default.jpg'}}" height="32" width="50" alt="Imagem do produto">
+                            	<img class="media-object" ng-src="/images/produtos/{{produto.imagem || 'default.jpg'}}" height="32" width="50" alt="Imagem do produto">
                         	</div>
                       	</div>
                     </td>
@@ -144,12 +144,38 @@
 			                    	</div>
 			                    </div>
 
-			                    <div class="row">
+			                    <br />
+	                    		<div class="row">
+									<div class="col-md-12">
+			                    		<div class="panel panel-default">
+											<div class="panel-heading">
+										    	<h3 class="panel-title"><strong>Valor Especial</strong></h3>
+											</div>
+										  	<div class="panel-body">
+										  		<div class="row">
+													<div class="col-md-3" ng-repeat="dia in week">
+														<p>{{dia.dia | uppercase}}</p>
+														<div class="input-group">
+															<span class="input-group-addon">
+																<input type="checkbox" data-toggle="tooltip" title="{{dia.dia}}" ng-model="dia.check">
+															</span>
+															<input type="text" ng-disabled="!dia.check" class="form-control" ng-model="dia.valor" money-mask>
+														</div>
+													</div>
+												</div>
+										  	</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- OLD-WAY. -->
+<!-- 			                <div class="row">
 									<div class="col-md-12">
 										<label for="inputValorE">Valor Especial</label>
 										<br />
 										<div class="row">
 											<div class="col-md-3" ng-repeat="dia in week">
+												<p>{{dia.dia | uppercase}}</p>
 												<div class="input-group">
 													<span class="input-group-addon">
 														<input type="checkbox" data-toggle="tooltip" title="{{dia.dia}}" ng-model="dia.check">
@@ -159,7 +185,7 @@
 											</div>
 										</div>
 			                    	</div>
-			                    </div>
+			                    </div> -->
 								
 				                <div class="row">
 			                    	<div class="col-md-12">
@@ -170,7 +196,7 @@
 			                    </div>
 
 			                    <div class="row">
-			                    	<div class="col-md-12">
+			                    	<div class="col-md-12" id="opFile">
 			                    		<label for="inputImagem">Imagem</label>
 			                    		<input type="file" file-model="produtoImagem"/>
 			                    	</div>
@@ -192,8 +218,6 @@
 							</div>
 
 						</form>
-
-						<!-- {{novoProduto}} -->
 
 					</div>
 				</div>

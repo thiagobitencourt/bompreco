@@ -31,9 +31,9 @@ app.post('/login', function(req, res){
 		return res.status(401).send({message: "Senha inválida"});
 	}else{
 
-		req.appSession.user = {username: "thiago", _id:"12345"};
+		req.appSession.user = {username: "thiago", _id:"12345", nome: "Thiago Bitencourt"};
 
-		var user = {name: "Thiago Bitencourt"};
+		var user = {nome: "Thiago Bitencourt"};
 		return res.status(200).send(user);
 	}
 });
@@ -41,6 +41,14 @@ app.post('/login', function(req, res){
 app.get('/logout', function(req, res){
 	delete req.appSession.user;
 	return res.redirect('/login');
+});
+
+app.get('/session', function(req, res){
+	if(req.appSession && req.appSession.user){
+		return res.send(req.appSession.user);
+	}else{
+		return res.redirect('/login');
+	}
 });
 
 var isSessionAuthorized = function(req,res,next){
@@ -62,8 +70,17 @@ var hasSession = function(req, res, next){
 };
 
 app.get('/', isSessionAuthorized);
+
+app.use('/login', function(req, res, next){
+	if(req.appSession && req.appSession.user)
+		return res.redirect('/web');
+
+	return next();
+});
 app.use('/login', express.static('web/public/login'));
+
 app.use('/tv', express.static('web/public/tv'));
+app.use('/images', express.static('web/images/'));
 
 app.use('/web', hasSession);
 app.use('/web', express.static('web/private'));

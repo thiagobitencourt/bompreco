@@ -59,7 +59,7 @@ mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 	});
 
 	app.get('/logout', function(req, res){
-		delete req.session.user;
+		delete req.session.userData;
 		return res.redirect('/login');
 	});
 
@@ -67,7 +67,7 @@ mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 		if(req.session && req.session.userData){
 			return res.send(req.session.userData);
 		}else{
-			return res.redirect('/login');
+			return res.status(403).send({message: "Unauthorized"});
 		}
 	});
 
@@ -106,7 +106,13 @@ mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 	app.use('/web', hasSession);
 	app.use('/web', express.static('web/private'));
 
-	app.use('/api', hasSession);
+	app.use('/api', function(req, res, next){
+		if(req.session && req.session.userData){
+			return next();
+		}
+
+		return res.status(403).send({message: "Unauthorized"});
+	});
 	app.use('/api', new RouterApi());
 
 	app.use('/tv', new RouterTv());

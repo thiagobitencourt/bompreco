@@ -87,7 +87,7 @@
             </li>
             
             <li>
-              <a href="http://localhost:8000/tv" target="_blank">
+              <a href="" ng-click="openTv()" target="_blank">
                 <i class="fa fa-circle-o text-aqua"></i> <span>Abrir TV</span>
               </a>
             </li>
@@ -147,8 +147,8 @@
           <h3 class="modal-title">{{titulo}}</h3>
       </div>
       <div class="modal-footer">
-          <button class="btn btn-danger" type="button" ng-click="ok()">Excluir</button>
-          <button class="btn btn-primary" ng-if="!notCancel"type="button" ng-click="cancel()">Cancelar</button>
+          <button class="btn btn-danger" type="button" ng-click="ok()">{{textOk}}</button>
+          <button class="btn btn-primary" ng-if="!notCancel"type="button" ng-click="cancel()">{{textCancel}}</button>
       </div>
     </script>
 
@@ -171,6 +171,7 @@
     <script src="js/controllers/produtoscontroller.js"></script>
     <script src="js/controllers/tvcontroller.js"></script>
     <script src="js/service/apiservice.js"></script>
+    <script src="js/service/httpInterceptor.js"></script>
 
   </body>
 </html>

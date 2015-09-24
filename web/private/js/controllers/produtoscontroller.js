@@ -1,4 +1,4 @@
-angular.module('bomprecotv').controller('produtosController', function(fileUpload, $modal, $scope, Produtos, categoriasService, produtosService){
+angular.module('bomprecotv').controller('produtosController', function(fileUpload, $rootScope, $location, $modal, $scope, Produtos, categoriasService, produtosService){
 
 	var produtos = $scope.produtos = Produtos.data;
 	var categorias = [];
@@ -27,7 +27,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
         });
     }
 
-	var loadCategorias = function(){
+	var loadCategorias = function(cb){
 		categoriasService.getCategorias().success(function(data){
 
 			categorias = $scope.categorias = data;
@@ -41,6 +41,8 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 				});
 			});
 
+			cb();
+
 		}).error(function(data){
 			console.log(data);
 			openModalError(data.message);
@@ -52,7 +54,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		produtosService.getProdutos().success(function(data){
 
 			produtos = $scope.produtos = data;
-			loadCategorias();
+			loadCategorias(function(){});
 
 		}).error(function(data){
 			console.log(data);
@@ -60,8 +62,32 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		});
 	}
 
+	var editarConfig = function(produto){
+		configSemana(produto.valorEspecial);
+
+		$scope.novoProduto = produto;
+
+		console.log($scope.categorias);
+		console.log(produto.categoria);
+
+		angular.forEach($scope.categorias, function(categoria){
+			if(categoria._id == produto.categoria){
+				$scope.paraCategoria = categoria;
+				return;
+			}
+		});
+
+		$scope.showProdutoForm = true;
+		updating = true;
+	}
+
 	$scope.editar = function(produto){
 
+		//TODO: aqui tbm
+		$rootScope.produto = produto;
+		$location.path('/produtos/insert');
+
+	/*
 		configSemana(produto.valorEspecial);
 
 		$scope.novoProduto = produto;
@@ -75,6 +101,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		$scope.showProdutoForm = true;
 		updating = true;
+	*/
 	}
 
 	$scope.excluir = function(produto){
@@ -86,6 +113,12 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
             resolve: {
                 titulo: function () {
                   return "Deseja excluir " + produto.nome + "?";
+                },
+                ok: function() {
+                	return "Excluir";
+                },
+                cancel: function(){
+                	return "Cancelar";
                 }
             }
         });
@@ -153,12 +186,18 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
     	delete $scope.paraCategoria;
     	delete $scope.novoProduto;
 		delete $scope.produtoImagem;
+		
+		//TODO: Arrumar aqui tbm.
+		delete $rootScope.produto;
+		$location.path('/produtos');
 	}
 
 	$scope.showForm = function(){
-		$scope.showProdutoForm = true;
 
-		configSemana();
+		//TODO: Arrumar esta gambia
+		$location.path('/produtos/insert');
+		// configSemana();
+		// $scope.showProdutoForm = true;
 	}
 
 	$scope.criarNovoProduto = function(novoProduto){
@@ -206,7 +245,6 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 			var file = $scope.produtoImagem;
 			fileUpload.uploadFile(file).success(function(data){
 				novoProduto.imagem = data;
-				console.log(novoProduto);
 				produtosService.postProduto(novoProduto).success(success).error(error);
 			}).error(function(data){
 				openModalError("Erro ao salvar imagem!");
@@ -214,5 +252,18 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		}
 	}
 
-	loadCategorias();
+	loadCategorias(function(){
+
+		//TODO: Remover esta gambia. Maior gambia da história
+		if($rootScope.produto){
+			console.log("Aditando...");
+			editarConfig($rootScope.produto);
+		}else{
+			console.log("Adicionando...");
+			configSemana();
+		}
+
+	});
+
+
 });

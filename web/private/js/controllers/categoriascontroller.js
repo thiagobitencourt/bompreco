@@ -62,6 +62,12 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
             resolve: {
                 titulo: function () {
                   return "Deseja excluir " + categoria.categoria + "?";
+                },
+                ok: function() {
+                	return "Excluir";
+                },
+                cancel: function(){
+                	return "Cancelar";
                 }
             }
         });

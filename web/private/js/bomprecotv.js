@@ -35,7 +35,10 @@ function formatReal( int ){
   return (neg ? '-'+tmp : tmp);
 }
 
-angular.module('bomprecotv', ['ngRoute', 'money-mask', 'ui.bootstrap', 'ngCookies']).config(function($routeProvider) {
+angular.module('bomprecotv', ['ngRoute', 'money-mask', 'ui.bootstrap', 'ngCookies']).config(function($routeProvider, $httpProvider) {
+
+$httpProvider.interceptors.push('httpInterceptor');
+
 $routeProvider
   .when('/sessoes', {
     controller: 'sessaoController',
@@ -64,6 +67,15 @@ $routeProvider
     	}
     }
   })
+  .when('/produtos/insert', {
+    controller:'produtosController',
+    templateUrl:'view/insertProduto.html',
+    resolve: {
+        Produtos: function(produtosService){
+            return produtosService.getProdutos();
+        }
+    }
+  })
   .when('/tv', {
     controller:'tvController as tvCtrl',
     templateUrl:'view/tv.html',
@@ -90,6 +102,7 @@ $routeProvider
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
+
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
             
@@ -108,8 +121,11 @@ $routeProvider
   };
 })
 
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance, titulo) {
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, titulo, ok, cancel) {
   $scope.titulo = titulo;
+
+  $scope.textOk = ok || "Excluir";
+  $scope.textCancel = cancel || "Cancelar";
 
   $scope.ok = function () {
     $modalInstance.close('ok');

@@ -211,6 +211,12 @@ angular.module('bomprecotv').controller('sessaoController',
             resolve: {
                 titulo: function () {
                   return "Deseja excluir " + activeSessao.nome + "?";
+                },
+                ok: function() {
+                    return "Excluir";
+                },
+                cancel: function(){
+                    return "Cancelar";
                 }
             }
         });

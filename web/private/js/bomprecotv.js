@@ -85,6 +85,10 @@ $routeProvider
       }
     }
   })
+  .when('/perfil',{
+    templateUrl:'view/perfil.html',
+    controller: 'perfilController'
+  })
   .when('/404', {
     templateUrl:'view/404.html'
   }).

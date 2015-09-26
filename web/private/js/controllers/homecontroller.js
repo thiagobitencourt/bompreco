@@ -1,9 +1,17 @@
-angular.module('bomprecotv').controller('homeController', function($scope, $modal, $http, $location){
+angular.module('bomprecotv').controller('homeController', function($scope, $modal, $http, $location, $rootScope){
 
     $http.get(window.location.origin + '/session').success(function(data){
         console.log(data);
-        $scope.user = data;
+        // $scope.user = data;
+        $scope.user = $rootScope.user = data;
     });
+
+	// listen for the event in the relevant $scope
+	$rootScope.$on('user', function (event, data) {
+  		console.log(data); // 'Data to send'
+  		$scope.user = $rootScope.user = data;
+	});
+
 
     $scope.openTv = function(){
     	$http.get(window.location.origin + '/tv/sessao').success(function(data){

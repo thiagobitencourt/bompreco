@@ -12,7 +12,7 @@ var Log = function(){
 				// 
 				// Name this logger 
 				// 
-				this.name = 'BijuMongoDBLogger';
+				this.name = 'BomPrecoMongoDBLogger';
 
 				// 
 				// Set the level from your options 

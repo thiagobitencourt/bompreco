@@ -21,6 +21,7 @@
     "winston": "~1.0.1",
     "express-session": "~1.11.3",
     "connect-mongo": "~0.8.2",
-    "client-session": "~0.1.7"
+    "client-session": "~0.1.7",
+    "bcrypt": "~0.8.5"
   }
 }

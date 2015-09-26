@@ -1,4 +1,5 @@
 var express = require('express');
+var logger = require('winston');
 
 var multer  = require('multer');
 // var upload = multer({ dest: 'uploads/' })
@@ -18,6 +19,7 @@ var upload = multer({ storage: storage });
 var Categorias = require('../models/categorias');
 var Produtos = require('../models/produtos');
 var Sessao = require('../models/sessao');
+var Usuarios = require('../models/users');
 
 var RouterApi = function(){
 
@@ -793,6 +795,104 @@ var setRouteSessoes = function(){
 
 var setRouteUsers = function(){
 	//TODO: implementar CRUD de usuários
+
+	var expressRouteSimple = "/usuarios";
+	var expressRouteId =  expressRouteSimple + "/:id";
+
+	// Usuarios
+
+	router.get(expressRouteSimple, function(req, res){
+		Usuarios.secureFind(null, function(err, user){
+			if(err){
+				var errMsg = "Erro ao buscar usuários";
+				logger.error(errMsg + ": " + err);
+				return res.status(500).send({message:err});
+			}
+
+			res.send(user);
+		});
+	});
+
+	router.get(expressRouteId, function(req, res){
+
+		Usuarios.secureFind(req.params.id, function(err, user){
+			if(err){
+				var errMsg = "Erro ao buscar usuário";
+				logger.error(errMsg + ": " + err);
+				return res.status(500).send({message:err});
+			}
+
+			if(user){
+				return res.send(user);				
+			}else{
+				return res.status(400).send({message:"Usuário não encontrado"});
+			}
+		});
+	});
+
+	router.post(expressRouteSimple, function(req, res){
+
+		var user = new Usuarios(req.body);
+		user.save(function(err, newUser){
+			
+			if(err){
+				var errMsg = "Erro ao salvar usuário";
+				logger.error(errMsg + ": " + err);
+				if(err.code == 11000){
+					err = "Usuário ja existe";
+				}
+				return res.status(500).send({message:err});
+			}
+
+			res.send(newUser);
+		});
+	});
+
+	router.put(expressRouteId, function(req, res){
+
+		if(req.body._id)
+			delete req.body._id;
+
+		Usuarios.secureUpdate(req.params.id, req.body, function(err, newUser){
+			if(err){
+				var errMsg = "Erro ao salvar usuário";
+				logger.error(errMsg + ": " + err);
+				return res.status(500).send({message:err});
+			}
+
+			if(newUser){
+				return res.send(newUser);				
+			}else{
+				return res.status(400).send({message:"Usuário não encontrado"});
+			}
+
+		});
+	});
+
+	router.delete(expressRouteId, function(req, res){
+		Usuarios.secureFind(req.params.id, function(err, user){
+			if(err){
+				var errMsg = "Erro ao buscar usuário";
+				logger.error(errMsg + ": " + err);
+				return res.status(500).send({message:err});
+			}
+
+			if(user){
+				user.remove(function(err, us){
+
+					if(err){
+						var errMsg = "Erro ao remover usuário";
+						logger.error(errMsg + ": " + err);
+						return res.status(500).send({message:err});
+					}
+
+					return res.send(us.clean());
+				});
+			}else{
+				return res.status(400).send({message:"Usuário não encontrado"});
+			}
+		});
+	});
 };
 
 module.exports = RouterApi;

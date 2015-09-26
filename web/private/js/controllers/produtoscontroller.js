@@ -67,9 +67,6 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		$scope.novoProduto = produto;
 
-		console.log($scope.categorias);
-		console.log(produto.categoria);
-
 		angular.forEach($scope.categorias, function(categoria){
 			if(categoria._id == produto.categoria){
 				$scope.paraCategoria = categoria;
@@ -256,10 +253,8 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		//TODO: Remover esta gambia. Maior gambia da história
 		if($rootScope.produto){
-			console.log("Aditando...");
 			editarConfig($rootScope.produto);
 		}else{
-			console.log("Adicionando...");
 			configSemana();
 		}
 

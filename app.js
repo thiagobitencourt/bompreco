@@ -11,6 +11,7 @@ var args = process.argv;
 var RouterApi = require('./server/controllers/routeapi');
 var RouterTv = require('./server/controllers/routetv');
 
+var Usuario = require(__base + 'models/users');
 
 mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 
@@ -41,21 +42,33 @@ mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 
 	app.post('/login', function(req, res){
 
-		//TODO: Validar usuário na base de dados
-		if(req.body.username != "thiago"){
-			return res.status(401).send({message: "Usuário inválido"});
-		}else if (req.body.password != "thiago"){
-			return res.status(401).send({message: "Senha inválida"});
-		}else{
+		Usuario.findOne({username: req.body.username}, function(err, user){
 
-			var userData = {username: "thiago", _id:"12345", nome: "Thiago Bitencourt"};
-			logger.debug(userData);
+			if(err){
+				return res.status(500).send({message: "Erro ao fazer login!"});
+			}
 
-			req.session.userData = userData;
+			if(user){
 
-			var user = {nome: "Thiago Bitencourt"};
-			return res.status(200).send(user);
-		}
+				user.comparePassword(req.body.password, function(err, passOk){
+
+					if(err){
+						return res.status(500).send({message: "Erro ao fazer login!"});
+					}
+
+					if(passOk){
+						req.session.userData = user.clean();
+						return res.status(200).send(user.clean());
+					}else{
+						return res.status(401).send({message: "Senha inválida"});
+					}
+				});
+
+			}else{
+				return res.status(401).send({message: "Usuário inválido"});
+			}
+		});
+
 	});
 
 	app.get('/logout', function(req, res){
@@ -65,8 +78,23 @@ mongoose.connect('mongodb://localhost/bompreco', null, function(err){
 
 	app.get('/session', function(req, res){
 		if(req.session && req.session.userData){
-			return res.send(req.session.userData);
+
+			Usuario.findOne({username: req.session.userData.username}, function(err, user){
+
+				if(err){
+					return res.status(500).send({message: "Erro ao fazer login!"});
+				}
+
+				if(user){
+					return res.send(user.clean());
+				}else{
+					delete req.session.userData;
+					return res.status(403).send({message: "Unauthorized"});		
+				}
+			});
+
 		}else{
+			delete req.session.userData;
 			return res.status(403).send({message: "Unauthorized"});
 		}
 	});

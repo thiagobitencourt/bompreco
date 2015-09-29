@@ -68,26 +68,7 @@
 										</div>
 									</div>
 								</div>
-
-								<!-- OLD-WAY. -->
-<!-- 			                <div class="row">
-									<div class="col-md-12">
-										<label for="inputValorE">Valor Especial</label>
-										<br />
-										<div class="row">
-											<div class="col-md-3" ng-repeat="dia in week">
-												<p>{{dia.dia | uppercase}}</p>
-												<div class="input-group">
-													<span class="input-group-addon">
-														<input type="checkbox" data-toggle="tooltip" title="{{dia.dia}}" ng-model="dia.check">
-													</span>
-													<input type="text" ng-disabled="!dia.check" class="form-control" ng-model="dia.valor" money-mask>
-												</div>
-											</div>
-										</div>
-			                    	</div>
-			                    </div> -->
-								
+							
 				                <div class="row">
 			                    	<div class="col-md-12">
 					                    <label for="inputDesc">Descrição</label>
@@ -104,8 +85,6 @@
 			                    	</div>
 
 			                    </div>
-
-			                    {{produtoImagem}}
 
 			                    <br />
 			                	<p class="text-red" ng-if="!novoProdutoForm.$pristine && novoProdutoForm.$error.required">

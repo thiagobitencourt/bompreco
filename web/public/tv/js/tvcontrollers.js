@@ -21,8 +21,8 @@ function($scope, $rootScope, $timeout, $location, sessao, sessaoService, produto
 		// });
 	}
 
-	//Mostra 6, porque inicia em 0.
-	var maxShow = 5;
+	//Mostra 7, porque inicia em 0.
+	var maxShow = 6;
 	$scope.showingPr = [];
 
 	var configCategorias = function(categorias){

@@ -16,11 +16,11 @@ var RouterTv = function(){
 	}
 
 	router.get('/sessao', function(req, res){
-		
+
 		buscaSessaoPadrao(function(err, sessao){
 			if(err){
 				console.error("buscaSessaoPadrao Error: " + err.message);
-				return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});	
+				return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});
 			}
 
 			if(sessao){
@@ -28,13 +28,13 @@ var RouterTv = function(){
 			}else{
 				var message = "Sessão padrão não encontrada";
 				console.log(message);
-				return res.status(400).send(message);	
+				return res.status(400).send(message);
 			}
 		});
 	});
 
 	router.get('/sessao/:sessao', function(req, res){
-		
+
 		//Redireciona qualquer requisição para a sessão padrão.
 		return res.redirect("/tv/sessao");
 
@@ -48,11 +48,32 @@ var RouterTv = function(){
 		Sessao.findOne({nome: nome}, function(err, sessao){
 			if(err){
 				console.error("Sessao.findOne Error: " + err.message);
-				return res.status(500).send({message: "500: Erro ao carregar sessão"});	
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
 			}
 
 			if(sessao){
 				res.status(200).send(sessao);
+			}
+		});
+	});
+
+	router.get('/sessao/hash/:id', function(req, res){
+
+		var id = req.params.id;
+
+		if(!id){
+			console.error("Error: ID de sessão não informado");
+			return res.status(500).send({message: "400: ID de sessão não informado"});
+		}
+
+		Sessao.findOne({_id: id}, function(err, sessao){
+			if(err){
+				console.error("Sessao.findOne Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
+			}
+
+			if(sessao){
+				res.status(200).send(sessao.hash);
 			}
 		});
 	});
@@ -95,17 +116,17 @@ var RouterTv = function(){
 
 			// res.headers['Content-type'] = 'image/jpg';
 			res.send(b);
-		});	
+		});
 
 		// var dir = 'private/images/produtos/';
 		// console.log(dir);
 
 		// res.sendfile('web/private/images/produtos/' + imgName);
-		
+
 		// buscaSessaoPadrao(function(err, sessao){
 		// 	if(err){
 		// 		console.error("buscaSessaoPadrao Error: " + err.message);
-		// 		return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});	
+		// 		return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});
 		// 	}
 
 		// 	if(sessao){
@@ -113,7 +134,7 @@ var RouterTv = function(){
 		// 	}else{
 		// 		var message = "Sessão padrão não encontrada";
 		// 		console.log(message);
-		// 		return res.status(400).send(message);	
+		// 		return res.status(400).send(message);
 		// 	}
 		// });
 	});
@@ -223,7 +244,7 @@ var setRouteProdutos = function(){
 				}
 
 				res.status(200).send(produtos);
-			});	
+			});
 		});
 	});
 };

@@ -4,29 +4,11 @@ angular.module("bpTv", ['ngRoute'])
 	$routeProvider
 	.when('/tabela', {
 	    controller: 'tabelaController',
-	    templateUrl:'view/tabela.html',
-	    resolve: 
-			{
-				sessao: function($routeParams, sessaoService){
-					if($routeParams.sessao)
-						return sessaoService.getSessao($routeParams.sessao);
-					else
-						return sessaoService.getPadrao();
-				}
-			}
+	    templateUrl:'view/tabela.html'
 	})
 	.when('/baners', {
 		controller: 'banersController',
-		templateUrl: 'view/baners.html',
-		resolve: 
-			{
-				sessao: function($routeParams, sessaoService){
-					if($routeParams.sessao)
-						return sessaoService.getSessao($routeParams.sessao);
-					else
-						return sessaoService.getPadrao();
-				}
-			}
+		templateUrl: 'view/baners.html'
 	})
 	.when('/:sessao', {
 		redirectTo: '/tabela'
@@ -41,7 +23,7 @@ angular.module("bpTv", ['ngRoute'])
 	sessaoUrl: "/sessao"
 })
 
-.factory("sessaoService", function($http, config){
+.factory("sessaoService", function($http, $rootScope, config){
 	var _sessao = config.sessaoUrl;
 
 	var _getPadrao = function(){
@@ -49,12 +31,20 @@ angular.module("bpTv", ['ngRoute'])
 	};
 
 	var _getSessao = function(sessaoNome){
-		return $http.get(config.baseWebTvUrl + _sessao + '/' + sessaoNome);		
+		if(sessaoNome)
+			return $http.get(config.baseWebTvUrl + _sessao + '/' + sessaoNome);
+		else
+			return _getPadrao();
+	}
+
+	var _hasUpdate = function(sessaoId) {
+		return $http.get(config.baseWebTvUrl + _sessao + '/hash/' + sessaoId);
 	}
 
 	return {
 		getPadrao: _getPadrao,
-		getSessao: _getSessao
+		getSessao: _getSessao,
+		hasUpdate: _hasUpdate
 	};
 })
 
@@ -62,7 +52,7 @@ angular.module("bpTv", ['ngRoute'])
 	var _produtos = '/produtos';
 
 	var _getProdutos = function(categoriaId){
-		return $http.get(config.baseWebTvUrl + _produtos + '/categoria/' + categoriaId);		
+		return $http.get(config.baseWebTvUrl + _produtos + '/categoria/' + categoriaId);
 	};
 
 	//Busca os produtos individuais, para apresentar nos baners.
@@ -99,18 +89,18 @@ angular.module("bpTv", ['ngRoute'])
 
 		var weekDay = new Array(7);
 	    weekDay[1] = "segunda-feira";
-	    weekDay[2] = "terça-feira"; 
+	    weekDay[2] = "terça-feira";
 	    weekDay[3] = "quarta-feira";
-		weekDay[4] = "quinta-feira";
-		weekDay[5] = "sexta-feira";
-		weekDay[6] = "sábado";
-		weekDay[7] = "domingo";
+			weekDay[4] = "quinta-feira";
+			weekDay[5] = "sexta-feira";
+			weekDay[6] = "sábado";
+			weekDay[7] = "domingo";
 
     	var hoje = weekDay[new Date().getDay()];
 
     	produtos.forEach(function(produto){
 	    	if(produto.valorEspecial && produto.valorEspecial.length > 0){
-	    		
+
 	    		var diasEspeciais = produto.valorEspecial;
 
 	    		diasEspeciais.forEach(function(iterator){
@@ -134,4 +124,31 @@ angular.module("bpTv", ['ngRoute'])
 	return {
 		definir: _func
 	};
+})
+
+.factory('sharedData', function(){
+	var _shareData = {};
+
+	var _setData = function(name, data){
+		_shareData[name] = data;
+	};
+
+	var _getData = function(name){
+		return _shareData[name];
+	};
+
+	var _removeData = function(name){
+		delete _shareData[name];
+	};
+
+	var _hasData = function(name){
+		return _shareData[name] ? true : false;
+	}
+
+	return {
+		set: _setData,
+		get: _getData,
+		remove: _removeData,
+		has: _hasData
+	}
 });

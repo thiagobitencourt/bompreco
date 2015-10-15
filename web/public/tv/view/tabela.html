@@ -1,9 +1,9 @@
-<h1>{{currentCategoria.categoria}}</h1>
+<h1>{{::currentCategoria.categoria}}</h1>
 <ul  class="precos">
     <li ng-repeat="produto in showingPr track by $index">
-        <div>{{produto.codigo}}</div>
-        <div>{{produto.nome}}</div>
-        <div>R$ {{produto.valorHoje}}</div>
-        <div>{{produto.unidadeMedida}}</div>
+        <div>{{::produto.codigo}}</div>
+        <div>{{::produto.nome}}</div>
+        <div>R$ {{::produto.valorHoje}}</div>
+        <div>{{::produto.unidadeMedida}}</div>
     </li>
 </ul>

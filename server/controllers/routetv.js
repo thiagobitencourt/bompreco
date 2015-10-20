@@ -8,6 +8,9 @@ var RouterTv = function(){
 
 	router = express.Router();
 
+	// setRouteSessoes();
+	// return router;
+
 	var buscaSessaoPadrao = function(done){
 		Sessao.findOne({padrao: true}, function(err, sessao){
 			if(err) return done(err, null);
@@ -249,8 +252,100 @@ var setRouteProdutos = function(){
 	});
 };
 
+
+
+// Use only this.
+var findProdutosByCategoria = function(categoria, callback){
+	Produtos.find({categoria: categoria._id}, function(err, produtos){
+		if(err){
+			console.error("Produtos.find Error: " + err.message);
+			return callback({message: "500: Erro ao carregar produtos da categora"});
+		}
+		callback(null, {tempo: categoria.tempo, produtos: produtos});
+	});
+}
+
+var findProdutosByArray = function(arrayProdutos, callback){
+	Produtos.find({ _id: { "$in" : arrayProdutos} }, function(err, produtos){
+		if(err){
+			console.error("Produtos.find Error: " + err.message);
+			return callback({message: "500: Erro ao carregar produtos da sessão"});
+		}
+		callback(null, produtos);
+	});
+};
+
 var setRouteSessoes = function(){
-	//TODO: implement
+	var getSessao = function(name, callback){
+		//get By name or get default
+		var query = name? {nome:name} : {padrao:true};
+		Sessao.findOne(query, function(err, sessao){
+			if(err) {
+				console.log('Erro ao buscar sessão: ' + err);
+				return callback(err);
+			}
+			if(sessao){
+				var responseSessao = {};
+				responseSessao.nome = sessao.nome;
+				responseSessao._id = sessao._id;
+				responseSessao.hash = sessao.hash;
+				responseSessao.categorias = [];
+
+				var produtosSes = [];
+				sessao.produtos.forEach(function(pr){
+					produtosSes.push(pr.produto);
+				});
+
+				findProdutosByArray(produtosSes, function(err, prodt){
+					if(err) {
+						console.log('Erro ao carregar produtos: ' + err);
+						return callback(err);
+					}
+					responseSessao.produtos = prodt;
+
+					var index = 0;
+					var loadCategoria = function(){
+						if(sessao.categorias[index]){
+							var categoria = sessao.categorias[index];
+							index++;
+							findProdutosByCategoria(categoria, function(err, produtos){
+								if(err){
+									console.log("Error ao carregar produtos: " + err);
+									return callback(err);
+								}
+								responseSessao.categorias.push(produtos);
+								loadCategoria();
+							});
+						}else{
+							callback(null, responseSessao);
+						}
+					}
+					loadCategoria();
+				});
+
+			}else{
+				return callback(null, null);
+			}
+		});
+	};
+
+	var handle = function(req, res){
+		var sesName = req.params.name;
+		getSessao(sesName, function(err, sessao){
+			if(err){
+				console.error('Erro ao carregar sessão: ' + err);
+				res.status(500).send('Erro ao carregar sessão');
+			}
+			if(sessao){
+				res.send(sessao);
+			}else{
+				res.status(404).send({message: 'Sessão não encontrada'});
+			}
+		});
+	}
+
+	router.get('/sessao', handle);
+	router.get('/sessao/:name', handle);
 };
 
 module.exports = RouterTv;

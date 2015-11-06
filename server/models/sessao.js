@@ -7,7 +7,7 @@ var bcrypt = require('bcrypt'),
 var Schema = mongoose.Schema;
 
 var sessaoSchema = new Schema({
-  nome: { type: String, required: true, unique: true },
+  nome: { type: String, required: true, unique: true, index: true },
   hash: { type: String },
   categorias:
   	[{

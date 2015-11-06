@@ -8,9 +8,9 @@ var RouterTv = function(){
 
 	router = express.Router();
 
-	// setRouteSessoes();
-	// return router;
-
+	setRouteSessoes();
+	return router;
+/*
 	var buscaSessaoPadrao = function(done){
 		Sessao.findOne({padrao: true}, function(err, sessao){
 			if(err) return done(err, null);
@@ -91,64 +91,14 @@ var RouterTv = function(){
 		res.sendfile(dir + imgName);
 
 	});
+*/
+	// setRouteCategorias();
+	// setRouteProdutos();
+	// setRouteSessoes();
 
-	router.get('/image/:name', function(req, res){
-
-		var imgName = req.params.name;
-
-		console.log("image name >>> " + imgName);
-
-		var fs = require('fs');
-		var dir = 'web/private/images/produtos/';
-		console.log(dir);
-
-		fs.readFile(dir + imgName, function (err, data) {
-			if (err) throw err;
-
-
-			// res.sendfile('web/private/images/produtos/' + imgName);
-
-			console.log("Imagem...")
-  			// console.log(data);
-
-  			var b = new Buffer(data, 'base64');
-  			console.log(b);
-			var s = b.toString();
-			// console.log(s);
-			res.header('Content-type', 'image/jpg');
-
-			// res.headers['Content-type'] = 'image/jpg';
-			res.send(b);
-		});
-
-		// var dir = 'private/images/produtos/';
-		// console.log(dir);
-
-		// res.sendfile('web/private/images/produtos/' + imgName);
-
-		// buscaSessaoPadrao(function(err, sessao){
-		// 	if(err){
-		// 		console.error("buscaSessaoPadrao Error: " + err.message);
-		// 		return res.status(500).send({message: "500: Erro ao carregar sessão padrão"});
-		// 	}
-
-		// 	if(sessao){
-		// 		return res.status(200).send(sessao);
-		// 	}else{
-		// 		var message = "Sessão padrão não encontrada";
-		// 		console.log(message);
-		// 		return res.status(400).send(message);
-		// 	}
-		// });
-	});
-
-	setRouteCategorias();
-	setRouteProdutos();
-	setRouteSessoes();
-
-	return router;
+	// return router;
 }
-
+/*
 var setRouteCategorias = function(){
 	var expressRouteSimple = "/categorias";
 	var expressRouteId =  expressRouteSimple + "/:id";
@@ -251,17 +201,23 @@ var setRouteProdutos = function(){
 		});
 	});
 };
-
+*/
 
 
 // Use only this.
 var findProdutosByCategoria = function(categoria, callback){
+	var errH = function(err){
+		console.error("Produtos.find Error: " + err.message);
+		return callback({message: "500: Erro ao carregar produtos da categora"});
+	};
 	Produtos.find({categoria: categoria._id}, function(err, produtos){
-		if(err){
-			console.error("Produtos.find Error: " + err.message);
-			return callback({message: "500: Erro ao carregar produtos da categora"});
-		}
-		callback(null, {tempo: categoria.tempo, produtos: produtos});
+		if(err)
+			return errH(err);
+		Categorias.findById(categoria._id, function(err, cate){
+			if(err)
+				return errH(err);
+			callback(null, {tempo: categoria.tempo, produtos: produtos, categoria: cate.categoria});
+		});
 	});
 }
 
@@ -302,7 +258,6 @@ var setRouteSessoes = function(){
 						return callback(err);
 					}
 					responseSessao.produtos = prodt;
-
 					var index = 0;
 					var loadCategoria = function(){
 						if(sessao.categorias[index]){
@@ -322,7 +277,6 @@ var setRouteSessoes = function(){
 					}
 					loadCategoria();
 				});
-
 			}else{
 				return callback(null, null);
 			}
@@ -344,8 +298,28 @@ var setRouteSessoes = function(){
 		});
 	}
 
+	var getHash = function(req, res){
+		var id = req.params.id;
+		if(!id){
+			console.error("Error: ID de sessão não informado");
+			return res.status(500).send({message: "400: ID de sessão não informado"});
+		}
+		Sessao.findById(id, function(err, sessao){
+			if(err){
+				console.error("Sessao.findById Error: " + err.message);
+				return res.status(500).send({message: "500: Erro ao carregar sessão"});
+			}
+			if(sessao){
+				res.status(200).send(sessao.hash);
+			}else{
+				res.status(400).send({message: "400: ID de sessão não encontrado"});
+			}
+		});
+	};
+
 	router.get('/sessao', handle);
 	router.get('/sessao/:name', handle);
+	router.get('/sessao/hash/:id', getHash);
 };
 
 module.exports = RouterTv;

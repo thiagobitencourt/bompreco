@@ -2,7 +2,10 @@
 	<div class="box-header with-border">
 		<h2 class="box-title">Categorias</h2>
 		<div class="box-tools">
-			<div class="input-group" style="width: 150px;">
+			<div class="pull-right" ng-show="!showCategoriaForm">
+					<button class="btn btn-primary" ng-click="showCategoriaForm = true"><i class="fa fa-plus"></i> Nova Categoria</button>
+			</div>
+			<div class="input-group" style="width: 150px; padding-right:5px;" ng-show="!showCategoriaForm">
 				<input type="text" ng-model="searchText" class="form-control input-sm pull-right" placeholder="Procurar"/>
 				<div class="input-group-btn">
 					<button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
@@ -47,9 +50,6 @@
 	                </td>
 	              </tr>
 	            </table>
-	            <div>
-	            	<button class="btn btn-primary" ng-click="showCategoriaForm = true"><i class="fa fa-plus"></i> Nova Categoria</button>
-	            </div>
             </div>
 
             <!-- <br> -->
@@ -57,11 +57,8 @@
               <div class="col-md-8">
                 <form class="form-inline" name="novaCategoriaForm">
                   <div class="form-group">
-                    
                     <input style="width: 20%;" type="text" class="form-control" placeholder="Código" ng-model="novaCategoria.codigo" ng-required="true" ng-maxlength="10" ng-minlength="2">
-                    
                     <input type="text" class="form-control" placeholder="Nome da categoria" ng-model="novaCategoria.categoria" ng-required="true" ng-maxlength="25" ng-minlength="3">
-                    
                     <a href="" class="btn btn-primary" ng-click="criarNovaCategoria(novaCategoria)" ng-disabled="novaCategoriaForm.$invalid">
                     	<i class="fa fa-floppy-o"> Salvar</i>
                     </a>
@@ -76,7 +73,6 @@
                 <div class="text-red" ng-if="novaCategoriaForm.$error.maxlength"><i class="glyphicon glyphicon-remove"></i> Permitido máximo de 25 caracteres</div>
               </div>
             </div>
-
 		</div>
 	</div>
 </div>

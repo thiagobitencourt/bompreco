@@ -2,21 +2,26 @@
 	<div class="box-header with-border">
 		<h2 class="box-title">Produtos</h2>
 		<div class="box-tools">
-           
-            <div class="form-inline">
+
+      <div class="form-inline" ng-show="!showProdutoForm">
 				<label>Categorias</label>
 				<select class="form-control" ng-model="categoria" style="width: 150px; height: 30px;">
 					<option></option>
 					<option ng-repeat="categoria in categorias">{{categoria.categoria}}</option>
 				</select>
 				&nbsp
-				<div class="input-group pull-right" style="width: 150px;">
+				<div class="pull-right">
+					<button class="btn btn-primary" ng-click="showForm()">
+						<i class="fa fa-plus"></i> Novo Produto
+					</button>
+				</div>
+				<div class="input-group pull-right" style="width: 150px;padding-right:5px;">
 					<input type="text" ng-model="searchText" class="form-control input-sm pull-right" placeholder="Procurar"/>
 					<div class="input-group-btn">
 						<button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
 					</div>
 				</div>
-            </div>
+    	</div>
 
 		</div>
 	</div>
@@ -28,14 +33,14 @@
 	                <th style="width: 80px">
 	                	<a href="" ng-click="order = order == 'codigo'? '-codigo' : 'codigo'">
 	                		<i class="fa fa-sort"></i>
-	                	</a> 
+	                	</a>
 	                	Código
 	                </th>
 	                <th style="width: 50px">Imagem</th>
 	                <th>
 	                	<a href="" ng-click="order = order == 'nome'? '-nome' : 'nome'">
 	                		<i class="fa fa-sort"></i>
-	                	</a> 
+	                	</a>
 	                	Nome</th>
 	                <th style="width: 80px">
 	                	<a href="" ng-click="order = order == 'valorPadrao'? '-valorPadrao' : 'valorPadrao'">
@@ -95,12 +100,6 @@
 	                </td>
 	              </tr>
 	            </table>
-
-				<div>
-	            	<button class="btn btn-primary" ng-click="showForm()">
-	            		<i class="fa fa-plus"></i> Novo Produto
-	            	</button>
-	            </div>
 			</div>
 
 			<div ng-show="showProdutoForm" class="container-fluid">
@@ -115,7 +114,7 @@
 										<label for="inputCodigo">Código*</label>
 										<input id="inputCodigo" type="text" class="form-control" ng-model="novoProduto.codigo" ng-required="true">
 									</div>
-								
+
 									<div class="col-md-8">
 					                    <label for="inputNome">Nome*</label>
 					                    <input type="text" class="form-control" id="inputNome" ng-model="novoProduto.nome" ng-required="true">
@@ -186,7 +185,7 @@
 										</div>
 			                    	</div>
 			                    </div> -->
-								
+
 				                <div class="row">
 			                    	<div class="col-md-12">
 					                    <label for="inputDesc">Descrição</label>
@@ -210,7 +209,7 @@
 			                	</p>
 
 			                    <p class="text-yellow">* Campos obrigatórios</p>
-								
+
 								<a href="" class="btn btn-primary" ng-click="criarNovoProduto(novoProduto)" ng-disabled="novoProdutoForm.$invalid">
 				                    <i class="fa fa-floppy-o"> Salvar</i>
 				                </a>

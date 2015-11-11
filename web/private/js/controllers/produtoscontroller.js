@@ -4,7 +4,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	var categorias = [];
 	var updating = false;
 	$scope.showProdutoForm = false;
-	$scope.unidadesMedidas = ['kg', 'lt', 'gr', 'un', 'pe'];
+	$scope.unidadesMedidas = ['KG', 'LT', 'GR', 'UN', 'PÇ'];
 
 	var openModalError = function(errorMessage){
 
@@ -140,7 +140,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		var d = $scope.week = [];
 		var weekDay = new Array(7);
 	    weekDay[0] = "segunda-feira";
-	    weekDay[1] = "terça-feira"; 
+	    weekDay[1] = "terça-feira";
 	    weekDay[2] = "quarta-feira";
 		weekDay[3] = "quinta-feira";
 		weekDay[4] = "sexta-feira";
@@ -157,7 +157,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		var it = 0;
 		angular.forEach(weekDay, function(day){
-			
+
 			if(hasSemana){
 				if(semana[it] && semana[it].dia == day){
 					var obj = {};
@@ -168,7 +168,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 					d.push(obj);
 					it++;
 				}else{
-					d.push(defObj(day));	
+					d.push(defObj(day));
 				}
 			}else{
 				d.push(defObj(day));
@@ -183,7 +183,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
     	delete $scope.paraCategoria;
     	delete $scope.novoProduto;
 		delete $scope.produtoImagem;
-		
+
 		//TODO: Arrumar aqui tbm.
 		delete $rootScope.produto;
 		$location.path('/produtos');
@@ -209,7 +209,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		angular.forEach($scope.week, function(day){
 			if(day.check){
 				day.valor = day.valor.replace('R$','');
-				novoProduto.valorEspecial.push({dia: day.dia, valor: day.valor});				
+				novoProduto.valorEspecial.push({dia: day.dia, valor: day.valor});
 			}
 		});
 

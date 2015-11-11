@@ -2,7 +2,7 @@
   <li ng-repeat="pr in showing track by $index">
     <div>
       <span>{{::pr.nome}}</span>
-      <span>R$ {{::pr.valorHoje}}</span>
+      <span>R$ {{::pr.valorHoje}} / {{::pr.unidadeMedida}}</span>
       <img ng-src="/images/produtos/{{::pr.imagem}}">
     </div>
   </li>

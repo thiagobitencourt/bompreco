@@ -77,13 +77,13 @@ var alterarSessaoPadrao = function(callback){
 	/*
 	Busca a sessão padrão, se encontrar esta sessão deixa de ser a sessão padrão.
 	O callback só recebe parâmetro de erro, então se for null é porque correu tudo bem.
-	Está função é usada para alterar a sessão padrão, 
+	Está função é usada para alterar a sessão padrão,
 	portanto, se uma sessão padrão não for encontrada não tem problema.
 	*/
 	Sessao.findOne({padrao : true}, function(err, sessao){
 		if(err)	return callback(err);
 
-		if(sessao){		
+		if(sessao){
 			sessao.padrao = null;
 			sessao.save(function(err){
 				if(err) return callback(err);
@@ -201,7 +201,7 @@ var setRouteCategorias = function(){
 
 			//Verifica todos os componentes de uma categoria
 			try{
-				
+
 				categoria.codigo = currentCategoria.codigo;
 				categoria.categoria = currentCategoria.categoria;
 
@@ -214,12 +214,12 @@ var setRouteCategorias = function(){
 					console.error("categoria.save Error: " + err.message);
 					return res.status(500).send({message: "500: Erro ao atualizar categoria"});
 				}
-				
+
 				console.info("Categoria Alterada: " + categoriaId);
 				res.status(204).send();
 			});
 		});
-	});	
+	});
 
 	//Remove uma categoria, por ID
 	router.delete(expressRouteId, function(req, res){
@@ -258,7 +258,7 @@ var setRouteCategorias = function(){
 				res.status(204).send();
 			});
 		});
-	});	
+	});
 };
 
 var setRouteProdutos = function(){
@@ -295,7 +295,7 @@ var setRouteProdutos = function(){
 				console.error("Nenhum produto encontrado");
 				return res.status(404).send({message:"Nenhum produto encontrado"});
 			}
-			
+
 			res.status(200).send(produto);
 		});
 	});
@@ -351,7 +351,7 @@ var setRouteProdutos = function(){
 				}
 
 				res.status(200).send(produtos);
-			});	
+			});
 		});
 	});
 
@@ -473,7 +473,7 @@ var setRouteProdutos = function(){
 					console.error("Error: " + err.message);
 					return res.status(500).send({message: "500: Erro ao atualizar produto"});
 				}
-				
+
 				console.info("Produto Alterado: " + produtoId);
 				res.status(204).send();
 			});
@@ -501,7 +501,7 @@ var setRouteProdutos = function(){
 				console.error("Nenhum produto encontrado");
 				return res.status(404).send({message:"Nenhum produto encontrado"});
 			}
-			
+
 			//TODO: Remover referencias em todas as categorias que este produto esta contido
 
 			removerProdutoDaSessao(produto, function(err){
@@ -516,7 +516,7 @@ var setRouteProdutos = function(){
 			});
 
 		});
-	});	
+	});
 };
 
 var setRouteSessoes = function(){
@@ -558,7 +558,7 @@ var setRouteSessoes = function(){
 				return res.status(404).send({message:"Nenhuma sessao encontrada"});
 			}
 
-			res.status(200).send(sessao);	
+			res.status(200).send(sessao);
 		});
 	});
 
@@ -582,7 +582,7 @@ var setRouteSessoes = function(){
 				return res.status(404).send({message:"Nenhuma sessao encontrada"});
 			}
 
-			res.status(200).send(sessao);	
+			res.status(200).send(sessao);
 		});
 	});
 
@@ -641,7 +641,7 @@ var setRouteSessoes = function(){
 			return res.status(400).send({message: "Objeto sessão inválido"});
 		}
 
-		
+
 	});
 
 	//Altera uma sessão existe, por ID
@@ -669,10 +669,11 @@ var setRouteSessoes = function(){
 			if(!sessao){
 				console.error("Nenhuma sessao encontrada");
 				return res.status(404).send({message:"Nenhuma sessao encontrada"});
-			}		
+			}
 
 			try{
 
+        //TODO: Mudar. Se currentSessao não tem categorias é pq deve ser salvo assim, não faz sentido manter o sessao.categorias.
 				sessao.nome = currentSessao.nome;
 				sessao.categorias = currentSessao.categorias || sessao.categorias || [];
 				sessao.produtos = currentSessao.produtos || sessao.produtos || [];
@@ -686,11 +687,15 @@ var setRouteSessoes = function(){
 						}
 						sessao.padrao = currentSessao.padrao;
 
-						sessao.save();
-						console.info("Sessão Alterada");
-						res.status(204).send();
+						sessao.save(function(err){
+              if(err){
+                console.error("Error0: " + err);
+                return res.status(500).send({message: 'Erro ao salvar sessão'});
+              }
+						  console.info("Sessão Alterada");
+						  res.status(204).send();
+            });
 					});
-
 				}else if(!currentSessao.padrao && sessao.padrao === true){
 					sessao.padrao = null;
 
@@ -723,9 +728,14 @@ var setRouteSessoes = function(){
 						});
 					});
 				}else{
-					sessao.save();
-					console.info("Sessão Alterada");
-					res.status(204).send();
+          sessao.save(function(err){
+            if(err){
+              console.error("Error0: " + err);
+              return res.status(500).send({message: 'Erro ao salvar sessão'});
+            }
+            console.info("Sessão Alterada");
+            res.status(204).send();
+          });
 				}
 
 			}catch(ex){
@@ -754,7 +764,7 @@ var setRouteSessoes = function(){
 			if(!sessao){
 				console.error("Nenhuma sessao encontrada");
 				return res.status(404).send({message:"Nenhuma sessao encontrada"});
-			}		
+			}
 
 			var wasPadrao;
 			if(sessao.padrao === true){
@@ -790,7 +800,7 @@ var setRouteSessoes = function(){
 
 			console.info("Sessão removida");
 		});
-	});		
+	});
 };
 
 var setRouteUsers = function(){
@@ -823,7 +833,7 @@ var setRouteUsers = function(){
 			}
 
 			if(user){
-				return res.send(user);				
+				return res.send(user);
 			}else{
 				return res.status(400).send({message:"Usuário não encontrado"});
 			}
@@ -834,7 +844,7 @@ var setRouteUsers = function(){
 
 		var user = new Usuarios(req.body);
 		user.save(function(err, newUser){
-			
+
 			if(err){
 				var errMsg = "Erro ao salvar usuário";
 				logger.error(errMsg + ": " + err);
@@ -861,7 +871,7 @@ var setRouteUsers = function(){
 			}
 
 			if(newUser){
-				return res.send(newUser);				
+				return res.send(newUser);
 			}else{
 				return res.status(400).send({message:"Usuário não encontrado"});
 			}

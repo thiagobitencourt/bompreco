@@ -150,9 +150,10 @@ var setRouteCategorias = function(){
 		if(!categoria){
 			console.warn("Categoria não informada");
 			return res.status(400).send({message: "Categoria não informada"});
-		}else if(!codigo){
+		}
+    else if(!codigo){
 			console.warn("Código não informado");
-			return res.status(400).send({message: "Código não informado"});
+			// return res.status(400).send({message: "Código não informado"});
 		}
 
 		var newCategoria = Categorias({

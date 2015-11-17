@@ -57,7 +57,7 @@
               <div class="col-md-8">
                 <form class="form-inline" name="novaCategoriaForm">
                   <div class="form-group">
-                    <input style="width: 20%;" type="text" class="form-control" placeholder="Código" ng-model="novaCategoria.codigo" ng-required="true" ng-maxlength="10" ng-minlength="2">
+                    <input style="width: 20%;" type="text" class="form-control" placeholder="Código" ng-model="novaCategoria.codigo" ng-maxlength="10" ng-minlength="2">
                     <input type="text" class="form-control" placeholder="Nome da categoria" ng-model="novaCategoria.categoria" ng-required="true" ng-maxlength="25" ng-minlength="3">
                     <a href="" class="btn btn-primary" ng-click="criarNovaCategoria(novaCategoria)" ng-disabled="novaCategoriaForm.$invalid">
                     	<i class="fa fa-floppy-o"> Salvar</i>

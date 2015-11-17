@@ -4,28 +4,33 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 	var categorias = [];
 	var updating = false;
 	$scope.showProdutoForm = false;
-	$scope.unidadesMedidas = ['kg', 'lt', 'gr', 'un', 'pe'];
+	$scope.unidadesMedidas = ['KG', 'LT', 'GR', 'UN', 'PÇ'];
 
 	var openModalError = function(errorMessage){
+		var modalInstance = $modal.open({
+			animation: false,
+			templateUrl: 'confirmModal.html',
+			controller: 'ModalInstanceCtrl',
+			size: 'sm',
+			resolve: {
+					titulo: function () {
+						return errorMessage + '!';
+					},
+					ok: function() {
+						return 'OK';
+					},
+					cancel: function(){
+						return null;
+					}
+			}
+		});
 
-        var modalInstance = $modal.open({
-            animation: false,
-            templateUrl: 'errorModal.html',
-            controller: 'ModalInstanceCtrl',
-            size: 'sm',
-            resolve: {
-                titulo: function () {
-                  return errorMessage;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            console.log("Modal Fechada");
-        }, function () {
-            // console.info('Modal dismissed at: ' + new Date());
-        });
-    }
+    // modalInstance.result.then(function (selectedItem) {
+    //     // console.log("Modal Fechada");
+    // }, function () {
+    //     // console.info('Modal dismissed at: ' + new Date());
+    // });
+  }
 
 	var loadCategorias = function(cb){
 		categoriasService.getCategorias().success(function(data){
@@ -139,9 +144,9 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		var d = $scope.week = [];
 		var weekDay = new Array(7);
-	    weekDay[0] = "segunda-feira";
-	    weekDay[1] = "terça-feira"; 
-	    weekDay[2] = "quarta-feira";
+    weekDay[0] = "segunda-feira";
+    weekDay[1] = "terça-feira";
+    weekDay[2] = "quarta-feira";
 		weekDay[3] = "quinta-feira";
 		weekDay[4] = "sexta-feira";
 		weekDay[5] = "sábado";
@@ -157,7 +162,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 
 		var it = 0;
 		angular.forEach(weekDay, function(day){
-			
+
 			if(hasSemana){
 				if(semana[it] && semana[it].dia == day){
 					var obj = {};
@@ -168,7 +173,7 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 					d.push(obj);
 					it++;
 				}else{
-					d.push(defObj(day));	
+					d.push(defObj(day));
 				}
 			}else{
 				d.push(defObj(day));
@@ -180,10 +185,10 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 		var opFile = "opFile";
     	document.getElementById(opFile).innerHTML = document.getElementById(opFile).innerHTML;
 
-    	delete $scope.paraCategoria;
-    	delete $scope.novoProduto;
+  	delete $scope.paraCategoria;
+  	delete $scope.novoProduto;
 		delete $scope.produtoImagem;
-		
+
 		//TODO: Arrumar aqui tbm.
 		delete $rootScope.produto;
 		$location.path('/produtos');
@@ -205,13 +210,29 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 			return;
 		}
 
+		var fatalError = false;
 		novoProduto.valorEspecial = [];
 		angular.forEach($scope.week, function(day){
 			if(day.check){
 				day.valor = day.valor.replace('R$','');
-				novoProduto.valorEspecial.push({dia: day.dia, valor: day.valor});				
+				if(day.valor === '0,00'){
+					openModalError('Os valores usados não podem ser R$ 0,00');
+					fatalError = true;
+				}else{
+					novoProduto.valorEspecial.push({dia: day.dia, valor: day.valor});
+				}
 			}
 		});
+
+		novoProduto.categoria = $scope.paraCategoria._id;
+		novoProduto.valorPadrao = novoProduto.valorPadrao.replace('R$','');
+		if(novoProduto.valorPadrao === '0,00'){
+			openModalError('O valor do produto não pode ser R$ 0,00');
+			fatalError = true;
+		}
+
+		if(fatalError)
+			return;
 
 		var success = function(data){
 			$scope.showProdutoForm = false;
@@ -223,9 +244,6 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 			console.log(data);
 			openModalError(data.message);
 		}
-
-		novoProduto.categoria = $scope.paraCategoria._id;
-		novoProduto.valorPadrao = novoProduto.valorPadrao.replace('R$','');
 
 		if(updating == true){
 			if($scope.produtoImagem){
@@ -239,13 +257,17 @@ angular.module('bomprecotv').controller('produtosController', function(fileUploa
 				produtosService.updateProduto(novoProduto).success(success).error(error);
 			}
 		}else{
-			var file = $scope.produtoImagem;
-			fileUpload.uploadFile(file).success(function(data){
-				novoProduto.imagem = data;
+			if($scope.produtoImagem){
+				var file = $scope.produtoImagem;
+				fileUpload.uploadFile(file).success(function(data){
+					novoProduto.imagem = data;
+					produtosService.postProduto(novoProduto).success(success).error(error);
+				}).error(function(data){
+					openModalError("Erro ao salvar imagem!");
+				});
+			}else{
 				produtosService.postProduto(novoProduto).success(success).error(error);
-			}).error(function(data){
-				openModalError("Erro ao salvar imagem!");
-			});
+			}
 		}
 	}
 

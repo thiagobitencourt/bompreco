@@ -92,8 +92,8 @@ h1.logo {
 h1.logo a {
     display: block;
     text-indent: -1000px;
-    height: 90px;
-    width: 325px;
+    height: 106px;
+    width: 380px;
     background: url("../../images/logo.svg") no-repeat
 }
 
@@ -162,7 +162,7 @@ article h1{
     padding: 8px;
     background: rgba(0, 0, 0, 0.8);
     color: #fff;
-    font-size: 40px
+    font-size: 60px
 }
 ul.precos{
     display: table;
@@ -170,7 +170,7 @@ ul.precos{
     padding: 0;
     margin: 0 20px;
     border-spacing:2px;
-    border-collapse:separate;
+    border-collapse:separate; 
     height: auto;
 }
 ul.precos li{
@@ -180,8 +180,8 @@ ul.precos li div{
     display: table-cell;
     color: #fff;
     vertical-align: middle;
-    padding: 7px 20px;
-    font-size: 40px;
+    padding: 10px 20px;
+    font-size: 60px;
 }
 ul.precos li:nth-child(2n+1) div{
     background: rgba(0, 0, 0, 0.4);
@@ -192,7 +192,7 @@ ul.precos li:nth-child(2n+2) div{
 ul.precos li div:first-child{
     width: 15%;
     text-align: center;
-    font-size: 40px
+    font-size: 50px
 }
 ul.precos li div:nth-child(2){
     width: 60%;
@@ -220,48 +220,48 @@ ul.banner li{
     position: relative;
     overflow: hidden;
     width: 30%;
-    height: 415px;
+    height: 370px;
     margin-left: 2%;
     margin-bottom: 2%;
-       border-color: #DDDDDD;
-    border-radius: 0px;
+       border-color: #DDDDDD; 
+    border-radius: 0px; 
     box-shadow: 0px 1px 4px 0px #735117, 0px 0px 20px #b95310;
     background: rgba(8, 3, 0, 0.78)
 }
 ul.banner li img{
     position: absolute;
-    min-width: auto;
-    width: 100%;
-    min-height:100%;
+    min-width: 100%;
+    width: auto;
+    max-height:100%;
     height: auto;
     left: 0;
-
+  
 }
 ul.banner li span{
     position: relative;
     z-index: 10;
-    display: block;
-    float:left;
-    clear: both;
+    display: inline-block;
     background: rgba(0, 0, 0, 0.6);
     color: #fff500;
-    padding: 7px 12px;
-    margin-top: 5px;
+    padding: 10px;
+    margin-top: 300px;
     font-weight: 600;
-    font-size: 38px
-
+    font-size: 30px
+ 
 }
 ul.banner li span:first-child{
+    margin-right: -4px;
     color: #fff;
+    font-weight: 200;
 }
 /**Relogio_Analógico**/
 
 .outer_face {
     float: left;
     position: relative;
-    width: 70px;
+    width: 80px;
     /* width of clock */
-    height: 70px;
+    height: 80px;
     /* height of clock */
     border-radius: 100%;
     /* clock round corner radius */

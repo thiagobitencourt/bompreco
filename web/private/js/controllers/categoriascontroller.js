@@ -1,28 +1,31 @@
 angular.module('bomprecotv').controller('categoriasController', function($scope, $modal, Categorias, categoriasService, produtosService){
-
 	var categorias = $scope.categorias = Categorias.data;
 	var updating = false;
 
-    var openModalError = function(errorMessage){
-
-        var modalInstance = $modal.open({
-            animation: false,
-            templateUrl: 'errorModal.html',
-            controller: 'ModalInstanceCtrl',
-            size: 'sm',
-            resolve: {
-                titulo: function () {
-                  return errorMessage;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            console.log("Modal Fechada");
-        }, function () {
-            // console.info('Modal dismissed at: ' + new Date());
-        });
-    }
+  var openModalError = function(errorMessage){
+		var modalInstance = $modal.open({
+			animation: false,
+			templateUrl: 'confirmModal.html',
+			controller: 'ModalInstanceCtrl',
+			size: 'sm',
+			resolve: {
+					titulo: function () {
+						return errorMessage + '!';
+					},
+					ok: function() {
+						return 'OK';
+					},
+					cancel: function(){
+						return null;
+					}
+			}
+		});
+    modalInstance.result.then(function (selectedItem) {
+        console.log("Modal Fechada");
+    }, function () {
+        // console.info('Modal dismissed at: ' + new Date());
+    });
+  }
 
 	var loadProdutosLength = function(categorias){
 		angular.forEach(categorias, function(categoria){
@@ -36,7 +39,7 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 
 	var loadCategorias = function(){
 		categoriasService.getCategorias().success(function(data){
-			
+
 			categorias = $scope.categorias = data;
 			loadProdutosLength(categorias);
 
@@ -53,7 +56,6 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
 	};
 
 	$scope.excluir = function(categoria){
-
 		var modalInstance = $modal.open({
             animation: false,
             templateUrl: 'confirmModal.html',
@@ -76,7 +78,7 @@ angular.module('bomprecotv').controller('categoriasController', function($scope,
             //Verifica os produtos relacionados a esta categoria. Não pode excluir se houver produtos relacionados
 			produtosService.getLengthByCategoria(categoria._id).success(function(data){
 				if(data[0] == 0){
-					
+
 					categoriasService.deleteCategoria(categoria._id).success(function(data){
 						loadCategorias();
 					}).error(function(data){

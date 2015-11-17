@@ -25,7 +25,7 @@ angular.module("bpTv", ['ngRoute', 'tb-sharedata'])
 	showTime: 10000
 })
 .constant('tabelaConfig', {
-	maxShow: 6 //mostra sempre 1 a mais.
+	maxShow: 13 //mostra sempre 1 a mais.
 })
 .factory("sessaoService", function($http, config){
 	var _sessao = config.sessaoUrl;

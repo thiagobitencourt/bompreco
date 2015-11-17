@@ -109,7 +109,7 @@ $routeProvider
 
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
-            
+
             element.bind('change', function(){
                 scope.$apply(function(){
                     modelSetter(scope, element[0].files[0]);
@@ -129,7 +129,11 @@ $routeProvider
   $scope.titulo = titulo;
 
   $scope.textOk = ok || "Excluir";
-  $scope.textCancel = cancel || "Cancelar";
+  if(cancel)
+    $scope.textCancel = cancel;
+  else {
+    $scope.notCancel = true;
+  }
 
   $scope.ok = function () {
     $modalInstance.close('ok');

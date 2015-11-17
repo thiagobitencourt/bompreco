@@ -1,4 +1,4 @@
-angular.module('bomprecotv').controller('sessaoController', 
+angular.module('bomprecotv').controller('sessaoController',
     function($scope, Categorias, sessaoService, produtosService, $modal){
 
     $scope.defaultTime = 30;
@@ -6,7 +6,7 @@ angular.module('bomprecotv').controller('sessaoController',
 
     $scope.isDefault = false;
 
-    var lastTab; //Ultima sessão sendo mostrada [ se1 | se2 | se3 | ultimaSes |      < - > (Nova Sessão)] 
+    var lastTab; //Ultima sessão sendo mostrada [ se1 | se2 | se3 | ultimaSes |      < - > (Nova Sessão)]
     var maxTabs = 6; // Número máximo de sessões sendo mostrada
     var currTabIndex = maxTabs; //Indice da sessão atual.
 
@@ -16,24 +16,29 @@ angular.module('bomprecotv').controller('sessaoController',
     var produtosSessao = {};
 
     var openModalError = function(errorMessage){
+      var modalInstance = $modal.open({
+  			animation: false,
+  			templateUrl: 'confirmModal.html',
+  			controller: 'ModalInstanceCtrl',
+  			size: 'sm',
+  			resolve: {
+  					titulo: function () {
+  						return errorMessage + '!';
+  					},
+  					ok: function() {
+  						return 'OK';
+  					},
+  					cancel: function(){
+  						return null;
+  					}
+  			}
+  		});
 
-        var modalInstance = $modal.open({
-            animation: false,
-            templateUrl: 'errorModal.html',
-            controller: 'ModalInstanceCtrl',
-            size: 'sm',
-            resolve: {
-                titulo: function () {
-                  return errorMessage;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            console.log("Modal Fechada");
-        }, function () {
-            // console.info('Modal dismissed at: ' + new Date());
-        });
+      modalInstance.result.then(function (selectedItem) {
+          console.log("Modal Fechada");
+      }, function () {
+          // console.info('Modal dismissed at: ' + new Date());
+      });
     }
 
     var closeAllSes = function(){
@@ -147,7 +152,7 @@ angular.module('bomprecotv').controller('sessaoController',
     }
 
     /*
-    Ao clicar na caixa de seleção de um produro, 
+    Ao clicar na caixa de seleção de um produro,
     adiciona ou remove este produto da lista de produtos selecionados para a sessão corrente.
     */
     $scope.selecionaProduto = function(produto){
@@ -161,7 +166,7 @@ angular.module('bomprecotv').controller('sessaoController',
     }
 
     /*
-    Salva as alterações realizadas na sessão corrente 
+    Salva as alterações realizadas na sessão corrente
     TODO: Manter uma variável que indica que foi realizada alguma alteração na sessão para ativar ou não o botão salvar;
     */
     $scope.salvarSessao = function(categorias){
@@ -185,8 +190,8 @@ angular.module('bomprecotv').controller('sessaoController',
         activeSessao.padrao = $scope.isDefault;
 
         sessaoService.updateSessao(activeSessao).success(function(data){
-            /* 
-            Define como falso, porque se acontecer de a sessão estar deixando de ser padrão 
+            /*
+            Define como falso, porque se acontecer de a sessão estar deixando de ser padrão
             então ao recarregar as sessões esta sessão não deve mais estar como padrão.
             Se por acaso esta sessão for a padrão, então isso será configurado na função select
             que é chamado dentro da função loadSessoes();
@@ -235,10 +240,10 @@ angular.module('bomprecotv').controller('sessaoController',
     }
 
 
-    /* 
-    Cadastra a nova sessão e fecha o formulário. 
-    A mesma função é utilizada para o botão de salvar e cancelar. 
-    Quando a função é chamada sem o parâmetro novaSessao então se trata de uma operação de cancelamento, 
+    /*
+    Cadastra a nova sessão e fecha o formulário.
+    A mesma função é utilizada para o botão de salvar e cancelar.
+    Quando a função é chamada sem o parâmetro novaSessao então se trata de uma operação de cancelamento,
     nete caso o formulário é apenas fechado.
     */
     $scope.criarNovaSessao = function(novaSessao){
@@ -279,7 +284,7 @@ angular.module('bomprecotv').controller('sessaoController',
             $scope.temSessao = $scope.sessoes.length > 0? true : false;
             if($scope.temSessao){
                 /*
-                Ao recarregar as sessões verifica-se se existem sessões. 
+                Ao recarregar as sessões verifica-se se existem sessões.
                 Se existir então uma nova verificação é feita para saber se uma sessão atual esta sendo utilizada.
                 Então, em todas as sessões carregadas verifica-se qual destas estava sendo usada como sessão atual e então reestabelece como sessão selecionada.
                 */
@@ -290,32 +295,32 @@ angular.module('bomprecotv').controller('sessaoController',
 
                         if(sessao._id == sessaoAtual._id){
                             found = true;
-                            return $scope.select(sessao);    
+                            return $scope.select(sessao);
                         }
 
                     });
                 }else{
                     /*
-                    Se não houver uma sessão atual então busca a sessão padrão para apresentação 
+                    Se não houver uma sessão atual então busca a sessão padrão para apresentação
                     */
                     $scope.sessoes.forEach(function(sessao){
                         if(sessao.padrao == true){
                             found = true;
-                            return $scope.select(sessao);    
+                            return $scope.select(sessao);
                         }
                     });
                 }
 
-                /* 
-                Se houverem sessões, porém não houver uma sessão atual e nenhuma sessão padrão for encontrada, 
+                /*
+                Se houverem sessões, porém não houver uma sessão atual e nenhuma sessão padrão for encontrada,
                 então seleciona a primeira sessão da lista.
                 */
                 if(!found){
-                    $scope.select($scope.sessoes[0]); 
+                    $scope.select($scope.sessoes[0]);
                 }
 
                 /*
-                Se houverem mais sessões do que o máximo permitido para visualizações, 
+                Se houverem mais sessões do que o máximo permitido para visualizações,
                 então é criada e mantida uma 'fila' com as sessões para serem mostradas.
 
                 Veja as funções nextTab() e prevTab() mais abaixo.
@@ -323,7 +328,7 @@ angular.module('bomprecotv').controller('sessaoController',
                 if($scope.sessoes.length > maxTabs){
                     $scope.limit = maxTabs;
                     lastTab = $scope.sessoes.length;
-                    
+
                     othersSes = $scope.sessoes;
                     $scope.sessoes = [];
 
@@ -344,11 +349,11 @@ angular.module('bomprecotv').controller('sessaoController',
         currTabIndex++;
 
         /*
-            Se a primeira sessão estiver seleciona e irá deixar de ser exibida, 
+            Se a primeira sessão estiver seleciona e irá deixar de ser exibida,
             então deve-se deselecioná-la e seleciona a sessão do seu lado direito.
         */
         if($scope.sessoes[0].selected){
-            $scope.select($scope.sessoes[1]);            
+            $scope.select($scope.sessoes[1]);
         }
 
         var tmpSes = $scope.sessoes.shift();
@@ -368,11 +373,11 @@ angular.module('bomprecotv').controller('sessaoController',
         currTabIndex--;
 
         /*
-            Se a última sessão estiver seleciona e irá deixar de ser exibida, 
+            Se a última sessão estiver seleciona e irá deixar de ser exibida,
             então deve-se deselecioná-la e seleciona a sessão do seu lado esquerdo.
         */
         if($scope.sessoes[maxTabs-1].selected){
-            $scope.select($scope.sessoes[maxTabs-2]);            
+            $scope.select($scope.sessoes[maxTabs-2]);
         }
 
         $scope.hasMoreTabs = true;

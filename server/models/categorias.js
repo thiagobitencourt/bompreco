@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var relationship = require("mongoose-relationship");
 
 var categoriaSchema = new Schema({
-  codigo: { type: String, required: true, unique: true },
+  codigo: { type: String},
   categoria: { type: String, required: true, unique: true }
 });
 

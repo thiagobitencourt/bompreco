@@ -21,11 +21,11 @@ angular.module("bpTv", ['ngRoute', 'tb-sharedata'])
 	sessaoUrl: "/sessao"
 })
 .constant('banersConfig', {
-	maxShow: 3,
+	maxShow: 6,
 	showTime: 10000
 })
 .constant('tabelaConfig', {
-	maxShow: 7 //mostra sempre 1 a mais.
+	maxShow: 13 //mostra sempre 1 a mais.
 })
 .factory("sessaoService", function($http, config){
 	var _sessao = config.sessaoUrl;

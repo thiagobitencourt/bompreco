@@ -40,9 +40,9 @@ angular.module('bomprecotv', ['ngRoute', 'money-mask', 'ui.bootstrap', 'ngCookie
 $httpProvider.interceptors.push('httpInterceptor');
 
 $routeProvider
-  .when('/sessoes', {
+  .when('/secoes', {
     controller: 'sessaoController',
-    templateUrl:'view/sessoes.html',
+    templateUrl:'view/secoes.html',
     resolve: {
       Categorias: function (categoriasService) {
         return categoriasService.getCategorias();
@@ -93,7 +93,7 @@ $routeProvider
     templateUrl:'view/404.html'
   }).
   when('/', {
-    redirectTo:'/sessoes'
+    redirectTo:'/secoes'
   })
   .otherwise({
     redirectTo:'/404'

@@ -2,6 +2,7 @@ angular.module("bpTv")
 .controller("banersController",
 function($scope, $timeout, $location, $routeParams, sharedData, sessaoService, defineValor, banersConfig){
 
+  var timer = banersConfig.showTime;
   var sessao = {};
   var initConfig = function(){
     if(sharedData.has('sessao')){
@@ -23,6 +24,15 @@ function($scope, $timeout, $location, $routeParams, sharedData, sessaoService, d
   };
 
   var configProdutos = function(data){
+
+    //If no produtos are available to be shown, just show the BomPreçoTV logo for 2 seconds each time
+    if(data && data.length === 0){
+      $scope.prAvailable = false;
+      timer = 2000;
+      return;
+    }
+
+    $scope.prAvailable = true;
     var produtos = $scope.produtos = data;
     produtos = defineValor.definir(produtos);
 
@@ -57,5 +67,5 @@ function($scope, $timeout, $location, $routeParams, sharedData, sessaoService, d
   initConfig();
   $timeout(function(){
     $location.path('/tabela');
-  }, banersConfig.showTime);
+  }, timer);
 });

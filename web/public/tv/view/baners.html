@@ -1,9 +1,17 @@
-<ul class="banner">
-  <li ng-repeat="pr in showing track by $index">
-    <div>
-      <span>{{::pr.nome}}</span>
-      <span>R$ {{::pr.valorHoje}} / {{::pr.unidadeMedida}}</span>
-      <img ng-src="/images/produtos/{{::pr.imagem}}">
-    </div>
-  </li>
-</ul>
+<div ng-if="prAvailable">
+  <ul class="banner">
+    <li ng-repeat="pr in showing track by $index">
+      <div>
+        <span>{{::pr.nome}}</span>
+        <span>R$ {{::pr.valorHoje}} / {{::pr.unidadeMedida}}</span>
+        <img ng-src="/images/produtos/{{::pr.imagem}}">
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div ng-if="!prAvailable">
+  <div align="center"style="padding-top:15%;">
+    <img src="images/bompreco.png" alt="BomPreçoTv"/>
+  </div>
+</div>

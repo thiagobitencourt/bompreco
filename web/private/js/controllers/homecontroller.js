@@ -15,7 +15,7 @@ angular.module('bomprecotv').controller('homeController', function($scope, $moda
           controller: 'ModalInstanceCtrl',
           resolve: {
             titulo: function () {
-              return "Sessão " + data.nome +" não configurada. Deseja Configurá-la?";
+              return "Seção " + data.nome +" não configurada. Deseja Configurá-la?";
             },
             ok: function() {
             	return "Configurar";
@@ -27,13 +27,13 @@ angular.module('bomprecotv').controller('homeController', function($scope, $moda
         });
 
         modalInstance.result.then(function (selectedItem) {
-        	$location.path('/sessoes');
+        	$location.path('/secoes');
         }, function () {
         	//Modal dismissed. Cancel
         });
     	}
 
-    	if(data.categorias.length == 0 || data.produtos.length == 0){
+    	if(data.categorias.length == 0){
     		openModal();
     	}else{
     		window.open(window.location.origin + '/tv','_blank');

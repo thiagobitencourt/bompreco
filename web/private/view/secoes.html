@@ -1,0 +1,178 @@
+<h2 class="page-header">Configuração de Seções
+  <small ng-if="!temSessao">
+    <p class="text-red">
+      Nenhuma seção cadastrada
+    </p>
+  </small>
+</h2>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li ng-repeat="sessao in sessoes | limitTo: limit" ng-class="{active:sessao.selected}"><a href="" ng-click="select(sessao)">
+          {{sessao.nome}} &nbsp
+          <span class="text-red pull-right" ng-if="sessao.padrao">
+            <i class="fa fa-star-o" data-toggle="tooltip" title="Sessão Padrão"></i>
+          </span>
+        </a></li>
+        <li class="pull-right" data-toggle="tooltip" title="Nova Sessão">
+          <button class="btn btn-primary" ng-click="openNovaSessaoForm()">
+            <i class="fa fa-plus"></i> Nova Seção
+          </button>
+        </li>
+
+        <li  class="pull-right"><a ng-click="netxTab()" ng-show="hasMoreTabs"><i class="fa fa-chevron-right"></i></a></li>
+
+        <li  class="pull-right" ><a ng-click="prevTab()" ng-show="hasPreviousSession"><i class="fa fa-chevron-left"></i></a></li>
+
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+          <div class="row" ng-show="hasSelected && !showCadastrarSessaoForm">
+            <div class="col-md-6">
+
+              <div class="box-header with-border">
+                <h3 class="box-title">Tabelas</h3>
+
+                <div class="input-group pull-right" style="width: 150px;">
+                  <input type="text" ng-model="searchCategoria" class="form-control input-sm pull-right" placeholder="Procurar"/>
+                  <div class="input-group-btn">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+
+              </div>
+              <div class="box-body">
+
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 10px">Usar</th>
+                    <th>Categoria</th>
+                    <th style="width: 100px;">Tempo</th>
+                    <th style="width: 40px">Produtos</th>
+                  </tr>
+
+                  <tr ng-repeat="categoria in categorias | filter: searchCategoria">
+                    <td>
+                      <input type="checkbox" ng-checked="categoria.selecionada" ng-model="categoria.selecionada"/>
+                    </td>
+                    <td>{{categoria.categoria}}</td>
+                    <td>
+                      <input style="width: 50px; display: inline;" type="range" min="10" max="60" step="10" ng-model="categoria.tempo"/>
+                      <span>
+                        {{categoria.tempo || defaultTime}}s
+                      </span>
+                    </td>
+                    <td>
+                      <span ng-click="openProdutos(categoria)" ng-if="!categoria.prShowing" class="label" ng-class="categoria.temProdutosSelecionado ? 'label-warning': 'label-info'">
+                        Mostrar
+                      </span>
+                      <span ng-click="closeProdutos(categoria)" ng-if="categoria.prShowing" class="label label-success">
+                          Esconder
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+
+              </div><!-- END BOX-BODY -->
+
+              <div class="box-footer clearfix">
+                <button class="btn btn-success" ng-click="salvarSessao(categorias)">
+                  <i class="fa fa-floppy-o"> Salvar</i>
+                </button>
+                <button class="btn btn-danger" ng-click="excluirSessao()">
+                  <i class="fa fa-times"> Excluir</i>
+                </button>
+                  <input type="checkbox" class="pull-right" ng-checked="isDefault" ng-model="isDefault"> </input>
+                  <p class="text-red pull-right">Seção padrão&nbsp&nbsp</p>
+              </div>
+
+            </div><!-- END COL-MD-6 -->
+
+            <!-- Tabela de produtos -->
+            <div class="col-md-6" ng-show="produtos">
+
+              <div class="box-header with-border">
+                  <h3 class="box-title">Baners</h3>
+
+                  <div class="input-group pull-right" style="width: 150px;">
+                    <input type="text" ng-model="searchProduto" class="form-control input-sm pull-right" placeholder="Procurar"/>
+                    <div class="input-group-btn">
+                      <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+
+              </div>
+              <div class="box-body">
+
+                <table class="table table-bordered" ng-if="produtos.length > 0;">
+                  <tr>
+                    <th style="width: 10px;">Usar</th>
+                    <th style="width: 50px">Imagem</th>
+                    <th>Produto</th>
+                    <!-- <th style="width: 5px">Ver</th> -->
+                  </tr>
+                  <tr ng-repeat="produto in produtos | filter: searchProduto">
+                    <td>
+                      <input type="checkbox" ng-checked="produto.selecionado" ng-model="produto.selecionado" ng-click="selecionaProduto(produto)"/>
+                    </td>
+                    <td>
+                      <div class="media">
+                        <div class="media-left">
+                            <img class="media-object" ng-src="/images/produtos/{{produto.imagem || 'default.jpg'}}" height="32" width="50" alt="Imagem do produto">
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      {{produto.nome}}
+                    </td>
+                    <!-- Botão de visualização prévis do baner do produto -->
+                    <!-- <td>
+                      <a href=""><i class="fa fa-search" data-toggle="tooltip" title="Visualizar Baner"></i></a>
+                    </td> -->
+                  </tr>
+                  <p ng-if="produtos.length == 0;" class="text-red">Nenhum produto cadastrado!</p>
+                </table>
+
+              </div><!-- END BOX-BODY -->
+            </div><!-- END COL-MD-6 -->
+
+          </div><!-- END ROW -->
+
+          <!-- CADASTRO DE UMA NOVA SESSÃO -->
+          <br>
+            <div class="row" ng-if="showCadastrarSessaoForm || !temSessao">
+              <div class="col-md-6">
+                <form class="form-inline" name="novaSessaoForm">
+                  <div class="form-group">
+
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        <input type="checkbox" data-toggle="tooltip" title="Sessão Padrão" ng-model="novaSessao.padrao">
+                      </span>
+                      <input type="text" class="form-control" placeholder="Nome da sessão" ng-model="novaSessao.nome" ng-required="true" ng-maxlength="10" ng-minlength="3">
+                    </div>
+                    <a href="" class="btn btn-primary" ng-click="criarNovaSessao(novaSessao)" ng-disabled="novaSessaoForm.$invalid">
+                      <i class="fa fa-floppy-o"> Salvar</i>
+                    </a>
+                    <a href="" class="btn btn-danger" ng-click="criarNovaSessao()">
+                      <i class="fa fa-times"> Cancelar</i>
+                    </a>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-4" ng-if="novaSessaoForm.$error" style="margin-top: 10px;">
+                <div class="text-red" ng-if="novaSessaoForm.$error.minlength"><i class="fa fa-times"></i> Necessário mínimo de 3 caracteres</div>
+                <div class="text-red" ng-if="novaSessaoForm.$error.maxlength"><i class="fa fa-times"></i> Permitido máximo de 10 caracteres</div>
+              </div>
+            </div>
+          <!-- FIM DO FORMULARIO DE CADASTRO DE UMA NOVA SESSÃO -->
+
+        </div><!-- END TAB PANE -->
+      </div><!-- END TAB CONTENT -->
+    </div><!-- END TABS-CUSTOM -->
+  </div><!-- END COL-MD-12 -->
+</div><!-- END ROW -->
+
+<!-- {{selectedProdutos}} -->

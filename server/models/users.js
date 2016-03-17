@@ -10,7 +10,7 @@ userSchema = new Schema({
     nome: {type: String, required: true, unique: true},
     email: String,
   	username: { type: String, required: true, index: { unique: true }},
-  	password: { type: String, required: true, unique: true},
+  	password: { type: String, required: true},
 });
 
 userSchema.pre('save', function(next) {
